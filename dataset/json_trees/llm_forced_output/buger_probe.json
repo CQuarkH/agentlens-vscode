@@ -1,0 +1,485 @@
+{
+  "projectInfo": {
+    "repoName": "buger/probe",
+    "agentsMdSource": "buger_probe.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_System Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "ALWAYS use code-search-agent to navigate the codebase and ask questions about it.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "EVERY feature, bug fix, or change MUST include tests.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Unit tests for new functions/modules (in same file using #[cfg(test)]).",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Integration tests for cross-module functionality (in tests/ directory).",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "CLI tests for command-line interface changes (tests/cli_tests.rs).",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 10,
+        "children": [
+          {
+            "id": "cat_Debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Use DEBUG=1 environment variable for verbose output.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Check error.log for detailed errors.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Use RUST_BACKTRACE=1 for stack traces.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Performance",
+            "label": "Performance",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Profile before optimizing using DEBUG=1 environment variable.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Document performance-critical code with comments.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Prefer lazy evaluation and iterators over collecting.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Use rayon for CPU-bound parallel tasks.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Maintanability",
+            "label": "Maintanability",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Search codebase first: probe search topic ./src.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Check existing tests for usage examples.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Review similar implementations.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_Implementation Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Always use proper error handling with anyhow.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Return Result<T> for all fallible operations.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Use .context() to add error context.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Never use .unwrap() except in tests.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Result<T> everywhere: All fallible operations return Result.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Lazy evaluation: Parse only what's needed.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Parallel processing: Use rayon for file processing.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Caching: Multiple cache levels (parser pool, tree cache, search cache).",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "cat_Project Management",
+            "label": "Project Management",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "When adding files to examples/chat/, ALWAYS update the files array in examples/chat/package.json.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Install git hooks with make install-hooks.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Development Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Before EVERY commit run make format, make lint, make test, or make fix-all.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Keep modules focused and single-purpose.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Use descriptive names (avoid abbreviations like cfg, ctx).",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Add doc comments (///) for all public APIs.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Keep functions under 50 lines when possible.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "projectInfo": {
+    "repoName": "FarmBot/Farmbot-Web-App",
+    "agentsMdSource": "FarmBot_Farmbot-Web-App.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_configuration_environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Run 'npm install' and 'bundle install' to set up the project dependencies.",
+                  "originalHeader": "Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_test",
+            "label": "Test",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Fix any test or type errors until the whole suite is green.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "After moving files or changing imports, be sure linters still pass.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Add or update tests for the code you change, even if nobody asked.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_implementation_details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Follow existing codebase conventions and style.",
+                  "originalHeader": "Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

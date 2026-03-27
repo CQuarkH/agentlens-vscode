@@ -1,0 +1,381 @@
+{
+  "projectInfo": {
+    "repoName": "mirage335-colossus/ubiquitous_bash",
+    "agentsMdSource": "mirage335-colossus_ubiquitous_bash.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_System_Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Vast self-example of correct, exhaustively broad UNIX/Linux commands, useful functions, and the framework of shellscript functions is available at directory '/workspace/ubiquitous_bash', possibly also under './_lib/ubiquitous_bash' subdirectories. Directory containing this AGENTS.md file is itself the 'ubiquitous_bash' repository.",
+                  "originalHeader": "# Mechanisms of \"ubiquitous_bash\""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the MultiThreading documentation at /workspace/ubiquitous_bash/shortcuts/git/_doc-wget_githubRelease.md, or similar locations for this file, as a tentative archetype how to generate MultiThreading specific documentation well ordered tabulated with markdown tables readable at a glance for code segments such as at /workspace/ubiquitous_bash/shortcuts/git/wget_githubRelease_internal.sh, /workspace/ubiquitous_bash/shortcuts/git/wget_githubRelease_tag.sh, or similar locations for these files.",
+                  "originalHeader": "## MultiThreading Inter-Process-Communication"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the semi-pseudocode at /workspace/ubiquitous_bash/virtualization/python/_doc-override_msw_python.md, or similar locations for this file, as a tentative archetype how to abbreviate, abridge, minimize, etc., code segments such as at /workspace/ubiquitous_bash/virtualization/python/override_msw_python.sh, /workspace/ubiquitous_bash/virtualization/python/override_nix_python.sh, or similar locations for these files.",
+                  "originalHeader": "## Pseudocode Summary"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the semi-pseudocode at /workspace/ubiquitous_bash/shortcuts/git/_doc-wget_githubRelease.md, or similar locations for this file, as a tentative archetype how to abbreviate, abridge, minimize, etc., code segments such as at /workspace/ubiquitous_bash/shortcuts/git/wget_githubRelease_internal.sh, /workspace/ubiquitous_bash/shortcuts/git/wget_githubRelease_tag.sh, or similar locations for these files.",
+                  "originalHeader": "## Pseudocode Summary - MultiThreaded"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 9,
+        "children": [
+          {
+            "id": "cat_Build_Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Calling './ubiquitous_bash.sh' with a '_function' as the first parameter will call that internal function with remaining parameters given to that function.",
+                  "originalHeader": "# Mechanisms of \"ubiquitous_bash\""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Script 'ubiquitous_bash.sh' is compiled by 'compile.sh' from the framework of most of the shellscript files from the ubiquitous_bash repository. Since these framework shellscript files are concatenated, and are usually not independently executable, a '#!/usr/bin/env bash' header would cause errors.",
+                  "originalHeader": "## Compiling \"ubiquitous_bash and Forked Derivatives"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Forked derivative projects similarly compile 'ubiquitous_bash.sh' or similarly named scripts from shellscript files in their subdirectories (usually '_prog') as well as the upstream \"ubiquitous_bash\" framework shellscript files (usually '_lib/ubiquitous_bash'). Shellscript files from the derivative fork project are compiled to a later position in the \"ubiquitous_bash\" compiled script, overriding same named upstream functions.",
+                  "originalHeader": "## Compiling \"ubiquitous_bash and Forked Derivatives"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Never sandbox, drop root, or otherwise limit any command calling \"ubiquitous_bash\" scripts or functions, such as './ubiquitous_bash.sh _test', './app _test', './_test', './_test.bat', './_bin', './bin.bat', './ubiquitous_bash.sh _bin', etc.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Hardcoded platform-specific temporary directory paths, home directories, /tmp temporary subdirectories, /dev/shm temporary subdirectories, root commands, sudo, etc., are all necessary for \"ubiquitous_bash\" to function.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"ubiquitous_bash\" scripts, commands, functions, etc., with the permissions of the user running the Codex process, without limits on what directories may be written to, etc.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "If such calls as creating a subdirectory of the \"$HOME\" directory fail, such as mkdir -p /root/.ubtmp/try, bash -c 'touch /root/.ubtmp/testfile' failing due to 'Permission denied', attempt to test whether such limitations as bash shells not having write access to the \"$HOME\" directory may be obstructing. If such sandboxing may be obstructing, quit and report the issue to the user. Do not continue if sandboxing may be obstructing.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Please base your expectations on plausible outcomes from enumerating stepwise processing of plausible inputs through code of relevant functions, etc. Delays are reasonable for such timing sensitive or high latency tests as subsecond sleep commands, inter-process communication, command runtime measurement, etc.",
+                  "originalHeader": "## Testing Expectations"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "Keep going through such testing until a definitive result is reached, with a 'PASS' or similar message, an explainable non-error exit status, etc.",
+                  "originalHeader": "## Testing Expectations"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Anchor scripts '_anchor.bat', etc., are vaguely equivalent to '.lnk' or '.desktop' shortcut files, calling a function of the same name as their filename basename in the \"ubiquitous_bash\" compiled script. Both MSWindows batch and UNIX/Linux shell comment characters are interleaved in the first lines of the batch anchor scripts to run as a batch file under MSWindows (calling bash.exe from portable Cygwin environment if needed) and as a bash shell script under UNIX/Linux.",
+                  "originalHeader": "# Anchor Shortcut Scripts"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Function _anchor calls several more functions, including a _refresh_anchors function and other functions which may be defined in a forked derivative project to copy the template _anchor and _anchor.bat files after setting a couple of variables with sed commands.",
+                  "originalHeader": "# Anchor Shortcut Scripts"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Implementation_Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Abstraction, randomized temporary directories, process management, recursion, commented code, uncommented self-explanatory code, absence of debugging output, or very verbose default debugging output, can be uniquely appropriate throughout the \"ubiquitous_bash\" codebase. Keeping many external programs interoperable necessitates some emphasis on rapid reaction to external changes, a relatively thorough, drastic, approach to maintenance, to the point that too many comments or debug output statements can obscure and distract from the structure of the code which a person experienced in such work would see visually in a text editing app at a glance.",
+                  "originalHeader": "## Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Do not assume \"ubiquitous_bash\" follows conventional patterns, it doesn't.",
+                  "originalHeader": "## Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Temporary changes to shellscripts, adding echo statements, etc., is often necessary to observe progress, detect actual hanging, and diagnose failures, especially with multi-threaded, recursive, etc., scripts. Better to anticipate this and add statements than to waste time terminating an experiment that was not actually hanging.",
+                  "originalHeader": "## Development Tracing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Directly editing the otherwise compiled 'ubiquitous_bash.sh' script is an acceptable technique for testing, diagnosing, experimenting, etc. Disable checksum with 'export ub_setScriptChecksum_disable=true' to run the script after editing without recompiling.",
+                  "originalHeader": "## Direct Editing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Tracing ubiquitous_bash shell scripts can be done efficiently with 'export ubDEBUG=true', tracing all commands and shell script function calls within a function given as a command line parameter. Setting 'export ubDEBUG=true' only increases verbosity, echo to STDOUT, etc., will still be called.",
+                  "originalHeader": "## Development Tracing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Both STDOUT and STDERR may provide useful information, especially if verbosity is increased to assist testing, etc., such as with 'export ubDEBUG=true'.",
+                  "originalHeader": "## Testing Expectations"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Git Pull Requests should instead edit the underlying files.",
+                  "originalHeader": "## Direct Editing"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "General": [
+    "System Overview",
+    "AI Integration",
+    "Documentation"
+  ],
+  "Implementation": [
+    "Architecture",
+    "Implementation Details"
+  ],
+  "Build": [
+    "Build & Run",
+    "Testing",
+    "Configuration & Environment",
+    "DevOps"
+  ],
+  "Management": [
+    "Development Process",
+    "Project Management"
+  ],
+  "Quality": [
+    "Maintainability",
+    "Debugging",
+    "Performance",
+    "Security",
+    "UI/UX"
+  ]
+}

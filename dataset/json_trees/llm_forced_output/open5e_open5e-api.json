@@ -1,0 +1,170 @@
+{
+  "thinking_process": "1. Analyze the input document content against the assigned categories: System Overview, Implementation Details, Build & Run, Project Management, Development Process.\n2. Identify specific instructions/rules within the text.\n3. Map each rule to the appropriate category and assign strength (MUST/SHOULD) and format (ListItem/Paragraph).\n4. Construct the JSON AST structure as requested.",
+  "projectInfo": {
+    "repoName": "open5e/open5e-api",
+    "agentsMdSource": "open5e_open5e-api.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_System_Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This is a project that encodes 5th Edition Dungeons and Dragons rules into an API.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Build_Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "To ingest data, it is best to run `manage.py quicksetup` from within the pipenv environment.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "You can check the readme.md for additional instructions about using this repo.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Before calling a task finished, always run scripts like `quicksetup` and tests, plus any other reasonable checks, to ensure that data can correctly be ingested and your changes work.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Project_Management",
+            "label": "Project Management",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Where possible, we want to create re-runnable scripts and use them to populate the new structure, but it may be more efficient for you to simply parse the data re-write it yourself, so to speak.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Implementation_Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "All data is populated by ingesting .json files from the /data/v1 or /data/v2 directory using Django fixtures, it does not have a persistent database.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "The current main project on this repo is converting data from the v1 format to the much more structured v2 format. This requires a lot of interpretation and parsing of old data, and the new endpoints for v2 are still being developed.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "projectInfo": {
+    "repoName": "cortesi/musq",
+    "agentsMdSource": "cortesi_musq.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo test\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo clippy --fix --allow-dirty --tests --examples --benches\" and fix all warnings before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo fmt\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Edition 2024 is now stable",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Let chains are permitted",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

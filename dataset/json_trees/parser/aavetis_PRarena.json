@@ -1,0 +1,53 @@
+{
+  "projectInfo": {
+    "repoName": "aavetis/PRarena",
+    "agentsMdSource": "aavetis_PRarena.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_configuration_environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "always use our venv called venv",
+                  "originalHeader": "General Context"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "main way to run the end to end workflow: python3 collect_data.py # this gets new data into data.csv python3 generate_chart.py # this generates the chart image, renders the index template, the readme template. python3 -m http.server 8000 # this runs our web server so we can see the index page.",
+                  "originalHeader": "General Context"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

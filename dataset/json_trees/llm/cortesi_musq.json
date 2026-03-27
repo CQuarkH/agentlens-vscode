@@ -1,0 +1,136 @@
+{
+  "projectInfo": {
+    "repoName": "cortesi/musq",
+    "agentsMdSource": "cortesi_musq.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo test\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_DevelopmentProcess",
+            "label": "Development Process",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo clippy --fix --allow-dirty --tests --examples --benches\" and fix all warnings before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo fmt\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 0,
+        "children": [
+          {
+            "id": "cat_Maintanability",
+            "label": "Maintanability",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_ImplementationDetails",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Edition 2024 is now stable.",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Let chains are permitted.",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

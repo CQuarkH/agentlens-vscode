@@ -1,0 +1,5 @@
+---
+repo: "AzureAD/microsoft-identity-web"
+categories: []
+---
+Carefully review the agents.md file in the repository root. This contains your custom instructions for agent automation and development guidelines.

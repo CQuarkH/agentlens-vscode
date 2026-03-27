@@ -1,0 +1,437 @@
+{
+  "projectInfo": {
+    "repoName": "seasonedcc/remix-forms",
+    "agentsMdSource": "seasonedcc_remix-forms.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 31,
+        "children": [
+          {
+            "id": "cat_build_run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 16,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This repository contains a monorepo managed with npm workspaces and Turborepo. The two main workspaces are `apps/` and `packages/`.",
+                  "originalHeader": "Contributor Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Install dependencies with `npm i`.",
+                  "originalHeader": "Development Setup"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Start the dev server with `npm run dev`. The dev command runs Turborepo tasks in parallel. Development works best on Node 16 (see README).",
+                  "originalHeader": "Development Setup"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Configure Git hooks: `git config core.hooksPath .githooks`",
+                  "originalHeader": "Development Setup"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "These scripts should be executed from the repository root.",
+                  "originalHeader": "Common Scripts"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Formatting and linting are handled by Biome. Important settings are two\u2011space indentation, single quotes, trailing commas (`es5`) and semicolons only where necessary.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Import order and unused code rules are enforced. If a rule must be bypassed, use `// biome-ignore` comments as seen in the existing source.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Source code is written in TypeScript using ES modules.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Export types and values explicitly (e.g.\u00a0`export { Foo }` and `export type { Bar }`).",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Prefer static imports. Use dynamic `import()` only when strictly necessary and document why it\u2019s required.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "The public API for the `remix-forms` package is defined by `packages/remix-forms/src/index.ts`. Whenever you modify this file or the modules it re-exports:",
+                  "originalHeader": "Public API"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "Ensure every exported value or type has a TSDoc comment in its source file.",
+                  "originalHeader": "Public API"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "Follow the existing style seen in the codebase: multi-line `/** ... */` blocks with a short description, `@param`/`@returns` tags and `@example` sections when relevant.",
+                  "originalHeader": "Public API"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "Keep `src/index.ts` in sync with the actual exports so consumers see an up\u2011to\u2011date public API.",
+                  "originalHeader": "Public API"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "Commits typically use a short, imperative description starting with a capital letter (e.g.\u00a0`Fix useFetcher example`). Follow this style when adding commits.",
+                  "originalHeader": "Commit Messages"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "Run the following commands and make a best effort to ensure they succeed:",
+                  "originalHeader": "Before Sending a Pull Request"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_test",
+            "label": "Test",
+            "type": "label",
+            "count": 15,
+            "children": [
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Playwright is required for tests. Install the browser binaries with `npx playwright install` or `npm run playwright:ci:install`.",
+                  "originalHeader": "Development Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "The root `package.json` defines the main scripts: - `npm run build` \u2013 Runs `turbo run build` across workspaces. - `npm run dev` \u2013 Runs `turbo run dev --parallel`. - `npm run lint` \u2013 Runs Biome to lint/format the codebase. - `npm run tsc` \u2013 Runs the TypeScript compiler in all packages. - `npm run test` \u2013 Runs Vitest/Playwright tests via Turborepo.",
+                  "originalHeader": "Common Scripts"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Run `npm run test` to execute the test suite.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Always run the tests before committing changes.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "Focus tests on application behavior and accessibility. Avoid checking Tailwind classes, CSS, or which specific HTML tag is rendered. Prefer queries based on roles or other a11y attributes.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Group tests with a single `describe` block per subject (e.g.\u00a0per public function or component). Use the name of the subject as the param for `describe`. Avoid catch\u2011all labels like \"additional tests\".",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "Prefer expressive matchers such as `toContain`, `toContainEqual`, or `containSubset` instead of manual array scans with `.some`.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "When validating failure cases, assert on the specific error (name or class) rather than only checking `result.success === false`.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "Don\u2019t export internal helpers purely for test coverage.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "Use descriptive names for both `describe` and `it` blocks to make code folding and navigation easier.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "Do not test Zod schemas.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "Tests may take a while because Playwright launches browsers. If they fail due to missing executables, run `npm run playwright:ci:install` first.",
+                  "originalHeader": "Before Sending a Pull Request"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "When addressing a bug, follow a test-driven development approach: 1. Red \u2013 Write a test that reproduces the issue and fails. 2. Green \u2013 Implement the minimal fix so the new test passes. 3. Refactor \u2013 Clean up the solution while keeping all tests green.",
+                  "originalHeader": "Fixing Bugs"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "A task is not done unless `npm run lint`, `npm run tsc`, and `npm run test` are all passing.",
+                  "originalHeader": "Definition of Done"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "A task is not done if it has new behavior without tests to ensure the new behavior.",
+                  "originalHeader": "Definition of Done"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_implementation_details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Do your best to test the exposed API, its inputs and outputs rather than implementation details.",
+                  "originalHeader": "Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

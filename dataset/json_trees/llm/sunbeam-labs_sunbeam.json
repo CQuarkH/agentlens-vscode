@@ -1,0 +1,157 @@
+{
+  "projectInfo": {
+    "repoName": "sunbeam-labs/sunbeam",
+    "agentsMdSource": "sunbeam-labs_sunbeam.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_System_Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This is a Python library wrapping a Snakemake pipeline for metagenomic bioinformatics.",
+                  "originalHeader": "# Dear Agents"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Project Structure: sunbeam/ contains bfx/ (Helper bioinformatics functions), configs/ (Example and template config and profile files), project/ (Classes for managing Sunbeam specific config files), scripts/ (CLI commands), workflow/ (The Snakemake workflow definition). extensions/ is where extensions are installed to via git clone, can also live elsewhere as defined by the $SUNBEAM_EXTENSIONS variable.",
+                  "originalHeader": "## Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Before making contributions to the codebase: Reformat the codebase with `black .`",
+                  "originalHeader": "## Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Make sure unit tests pass with `pytest tests/unit/`",
+                  "originalHeader": "- Make sure unit tests pass with `pytest tests/unit/`"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "If unit tests aren't passing, be sure to include an explanation why",
+                  "originalHeader": "- If they aren't passing be sure to include an explanation why"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Configuration_&_Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "The extensions directory can live elsewhere as defined by the $SUNBEAM_EXTENSIONS variable",
+                  "originalHeader": "extensions/: This is where extensions are installed to (`git clone`d). This directory can also live elsewhere as defined by the `$SUNBEAM_EXTENSIONS` variable"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

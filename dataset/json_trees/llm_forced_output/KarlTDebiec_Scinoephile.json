@@ -1,0 +1,327 @@
+{
+  "thinking_process": "I need to extract all the rules from the provided markdown document and map them into the specified JSON AST format. Let me analyze each section:\n\n1. **Tools Section**:\n   - Use `uv run` when executing tools (ListItem)\n   - Run checks on only Python files changed/asked about (ListItem with sub-items)\n     - `uv run ruff format`\n     - `uv run ruff check --fix`\n   - Run `ruff format` only on Python files (Paragraph)\n   - Testing: run pytest from test directory (ListItem)\n   - Pytest timeout: up to 10 minutes without asking (ListItem)\n   - Test files do not need __init__.py files (ListItem)\n\n2. **Code Style Section**:\n   - Include standard copyright header at top of file (ListItem)\n   - Include module docstring at top of each file (ListItem)\n   - Include `from __future__ import annotations` unless empty (ListItem)\n   - Include type annotations for all function/method signatures with exceptions (Paragraph with sub-item about None returns)\n   - In __init__.py files, only import classes not functions/variables (ListItem)\n   - Do not commit binary files (ListItem with sub-item about test scripts)\n   - Use logging module rather than print (ListItem)\n\n3. **Documentation Section**:\n   - Use Markdown for formatting (ListItem)\n   - Do not include reStructuredText markup (ListItem)\n   - Provide docstrings for all classes and functions (ListItem)\n   - Format docstrings using Google style with tweaks (Paragraph with sub-items about Arguments/Returns formatting)\n\nNow I need to map these to the assigned categories:\n- Build & Run: Tools section (uv, pytest commands)\n- Test: Testing rules (pytest, timeout, __init__.py)\n- Implementation Details: Code Style section\n- Development Process: Not explicitly mentioned but could include some code style\n- Documentation: Documentation section\n- Claude/AI Integration: Not present in this document\n- Configuration & Environment: Not explicitly present\n\nLet me organize by the assigned categories and create proper IDs.",
+  "projectInfo": {
+    "repoName": "KarlTDebiec/Scinoephile",
+    "agentsMdSource": "KarlTDebiec_Scinoephile.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "cat_Build_Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This repository uses `uv`. Use `uv run` when executing tools.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Run the following checks on only the Python files you have changed or been asked to: 1. `uv run ruff format` 2. `uv run ruff check --fix`",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Run `ruff format` only on Python files (do not run it on JSON or other data files).",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Testing: run pytest from `test` directory, e.g. `cd test && uv run pytest`",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Pytest timeout: you may run pytest for up to 10 minutes without asking.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "Test files do **not** need `__init__.py` files. Pytest can discover tests without them.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "If binary assets are required for tests, provide a script under test/scripts to generate them.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Configuration_Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_Implementation_Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Include the standard copyright header at the top of the file.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Include a module docstring at the top of each file.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Include `from __future__ import annotations`, unless the file is empty (i.e., contains only copyright headers and module docstrings such as otherwise empty `__init__.py` files).",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Include type annotations for all function and method signatures, with the following exceptions: If a function always returns `None`, omit the return type annotation.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "In `__init__.py` files, only import classes from the module, not functions or variables.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Do **not** commit binary files.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Use the `logging` module rather than `print` for any user-facing output in scripts or libraries.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "Provide docstrings for all classes and functions, including internal helpers prefixed with an underscore.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 0,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_Documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Use Markdown for formatting.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Do **not** include any reStructuredText markup such as double backticks.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "Format docstrings using Google style, with the following tweaks: Use \"Arguments:\" instead of \"Args:\". Do not include a blank line between the \"Arguments:\" and \"Returns:\" sections. In argument descriptions, the first word after the colon should be lowercase unless it is a type name. In the Returns section, the first word should be lowercase unless it is a type name.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "Include type annotations for all function and method signatures, with the following exceptions: If a function always returns `None`, omit the return type annotation.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Claude_AI_Integration",
+            "label": "Claude/AI Integration",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

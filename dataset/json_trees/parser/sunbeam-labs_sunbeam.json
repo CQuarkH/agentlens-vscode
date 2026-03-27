@@ -1,0 +1,117 @@
+{
+  "projectInfo": {
+    "repoName": "sunbeam-labs/sunbeam",
+    "agentsMdSource": "sunbeam-labs_sunbeam.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This is a Python library wrapping a Snakemake pipeline for metagenomic bioinformatics.",
+                  "originalHeader": "Dear Agents,"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "`sunbeam/` `bfx/`: Helper bioinformatics functions `configs/`: Example and template config and profile files `project/`: Classes for managing Sunbeam specific config files `scripts/`: CLI commands `workflow/`: The Snakemake workflow definition",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "`extensions/`: This is where extensions are installed to (`git clone`d). This directory can also live elsewhere as defined by the `$SUNBEAM_EXTENSIONS` variable",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Before making contributions to the codebase:",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Reformat the codebase with `black .`",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_test",
+            "label": "Test",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "Make sure unit tests pass with `pytest tests/unit/` If they aren\u2019t passing be sure to include an explanation why",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "thinking_process": "1. Analyze the input document content against the provided system categories.\n2. Identify specific instructions/rules in the text.\n3. Map each rule to the appropriate category from the allowed list (Configuration & Environment, Implementation Details, Test).\n4. Determine 'strength' (MUST vs SHOULD) and 'format' (ListItem vs Paragraph) for each rule.\n5. Construct the JSON AST structure strictly following the schema.",
+  "projectInfo": {
+    "repoName": "FarmBot/Farmbot-Web-App",
+    "agentsMdSource": "FarmBot_Farmbot-Web-App.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "cat_Configuration & Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Run 'npm install' and 'bundle install' to set up the project environment.",
+                  "originalHeader": "Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Follow the Frontend Contributor Guide for frontend work (changes to files in the 'frontend/' directory).",
+                  "originalHeader": "Other guides"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Fix any test or type errors until the whole suite is green.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "After moving files or changing imports, be sure linters still pass.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "Add or update tests for the code you change, even if nobody asked.",
+                  "originalHeader": "Testing Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Implementation Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Follow existing codebase conventions and style.",
+                  "originalHeader": "Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Follow the Backend Contributor Guide for backend work (changes to files in the 'app/' or 'spec/' directories).",
+                  "originalHeader": "Other guides"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

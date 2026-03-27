@@ -1,0 +1,89 @@
+{
+  "projectInfo": {
+    "repoName": "cortesi/musq",
+    "agentsMdSource": "cortesi_musq.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "cat_test",
+            "label": "Test",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo test\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo clippy \u2013fix \u2013allow-dirty \u2013tests \u2013examples \u2013benches\" and fix all warnings before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"cargo fmt\" before committing.",
+                  "originalHeader": "Build & Commands"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Edition 2024 is now stable",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Let chains are permitted",
+                  "originalHeader": "Rust Guideance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

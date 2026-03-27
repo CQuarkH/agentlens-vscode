@@ -1,0 +1,86 @@
+{
+  "thinking_process": "1. Analyze the input document content to identify specific instructions or rules.\n2. Map these instructions to the provided system categories (specifically 'Configuration & Environment' and 'Build & Run').\n3. Determine the strength ('MUST' vs 'SHOULD') for each rule based on the wording (e.g., 'always use', 'main way to run').\n4. Determine the format ('ListItem' vs 'Paragraph') based on whether the instruction is a bullet point or a paragraph.\n5. Construct the JSON AST following the exact schema provided, ensuring valid JSON output without markdown ticks.",
+  "projectInfo": {
+    "repoName": "aavetis/PRarena",
+    "agentsMdSource": "aavetis_PRarena.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_Configuration & Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "always use our venv called venv",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Build & Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "python3 collect_data.py # this gets new data into data.csv",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "python3 generate_chart.py # this generates the chart image, renders the index template, the readme template.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "python3 -m http.server 8000 # this runs our web server so we can see the index page.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

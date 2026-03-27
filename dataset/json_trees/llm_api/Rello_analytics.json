@@ -1,0 +1,249 @@
+{
+  "projectInfo": {
+    "repoName": "Rello/analytics",
+    "agentsMdSource": "Rello_analytics.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 7,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "/vendor directory contains external plugins that may help understand data sources.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "/l10n directory contains translation files from Transifex.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "/js/3rdParty directory contains third-party JavaScript plugins.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "/css/3rdParty directory contains third-party CSS plugins.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "/sample_data directory contains example data for human reference and is irrelevant to agents.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "/screenshots directory contains UI images for documentation purposes and is irrelevant to agents.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "/tests directory contains phpUnit and SeleniumIDE test cases that should be used if possible.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_claude_ai_integration",
+            "label": "Claude/AI Integration",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Do not modify the /vendor directory.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Do not modify the /l10n directory.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Do not modify the /js/3rdParty directory.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Do not modify the /css/3rdParty directory.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Agents should focus on the core application logic and ignore files or folders marked as third-party, sample, or media-related.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "No nodejs or vue components are used. Everything is plain Javascript.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "For every change, add a meaningful one-liner to the corresponding section (Added, Changed, Fixed) in CHANGELOG.md.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "All changes should preserve the integrity of external dependencies and translations.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

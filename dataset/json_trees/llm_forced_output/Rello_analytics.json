@@ -1,0 +1,202 @@
+{
+  "thinking_process": "1. Analyze the input document content to identify all explicit instructions, rules, and guidelines.\n2. Map these rules to the provided system categories (Architecture, AI Integration, Development Process, Documentation).\n3. Determine the 'strength' (MUST vs SHOULD) for each rule based on the wording (e.g., 'Do not modify', 'should focus', 'add a meaningful one-liner').\n4. Determine the 'format' (ListItem vs Paragraph) based on whether the instruction was presented as a bullet point or a paragraph/table.\n5. Construct the JSON AST structure strictly adhering to the provided schema.",
+  "projectInfo": {
+    "repoName": "Rello/analytics",
+    "agentsMdSource": "Rello_analytics.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "No nodejs or vue components are used. Everything is plain Javascript.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 9,
+        "children": [
+          {
+            "id": "cat_AI_Integration",
+            "label": "Claude/AI Integration",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "/vendor: External plugins; may help understand data sources. Do not modify.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "/l10n: Translation files from Transifex. Do not modify.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "/js/3rdParty: Third-party JavaScript plugins. Do not modify.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "/css/3rdParty: Third-party CSS plugins. Do not modify.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "/sample_data: Example data for human reference. Irrelevant to agents.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "/screenshots: UI images for documentation purposes. Irrelevant to agents.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "/tests: phpUnit and SeleniumIDE test cases. use if possible.",
+                  "originalHeader": "Project Structure: AI Agent Handling Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Agents should focus on the core application logic and ignore files or folders marked as third-party, sample, or media-related.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "For every change, add a meaningful one-liner to the corresponding section (Added, Changed, Fixed) in CHANGELOG.md.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "All changes should preserve the integrity of external dependencies and translations.",
+                  "originalHeader": "General Guidance"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

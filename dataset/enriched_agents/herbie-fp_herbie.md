@@ -1,0 +1,57 @@
+---
+repo: "herbie-fp/herbie"
+categories: ["Test", "Project Management", "Documentation", "Development Process", "Performance"]
+---
+
+# Formatting
+
+- Run `make fmt` to format the code before finishing a task. This is
+  mandatory and PRs that don't follow the coding style are rejected.
+- Always check your `git diff` before finishing a task. There's often
+  leftover or dead code, and you should delete it.
+- Documentation lives in `www/doc/2.3/` and is HTML-formatted. Update
+  it if you change any user-visible options.
+
+# Testing
+
+- Run `racket src/main.rkt report bench/tutorial.fpcore tmp` to test
+  that your changes work; this should take about 5-10 seconds and all
+  of the tests should pass, getting basically perfect accuracy.
+- After running tests, you should be able to look into `tmp`, and see
+  one directory per benchmark. Each directory has a `graph.html` with
+  more detail on what happened, including tracebacks for crashes.
+- You can also run the unit tests with `raco test <file>`, when unit
+  tests exist. Often they don't.
+- Arguments come after the word `report` before any other arguments.
+- Herbie prints a seed every time it runs; you can pass `--seed N`
+  after the "report" argument to fix the seed reproducibly.
+- You can pass `--timeout T` to time out a benchmark after T seconds.
+- You can enable the `egglog` backend with `--enable generate:egglog`.
+  Otherwise the `egg` backend is used. You'll need to add
+  `~/.cargo/bin` to the `PATH`.
+
+# Profiling
+
+- Herbie generates a profile by default; run the `report` command
+  above and look at `tmp/<benchmark>/profile.json`.
+- You can also run with `--enable dump:trace` to output
+  `dump-trace.json` in chrome://tracing format
+- Additionally `--enable dump:rival` outputs all Rival commands it
+  executes, which can be useful for debugging Rival &
+  arbitrary-precision code, and `--enable dump:egglog` outputs all
+  egglog commands. Dumps go in `dump-XXX` in the current directory,
+  and that folder grows with every run.
+  
+# Timeline
+
+- The timeline is Herbie's observability tooling. Timeline information
+  goes into `timeline.json` and `timeline.html`.
+- A timeline is a list of phases, each of which is a hash table from
+  key to "table", where a table is a list of rows each of which is a
+  fixed-length array. Define new timeline types in
+  `src/utils/timeline.rkt` and add/change HTML generation in
+  `src/reports/timeline.rkt`.
+- Add to the timeline with `(timeline-push! 'type val1 val2 ...)`. The
+  `val`s must be JSON-compatible; this mostly means you have to
+  convert symbols to strings.
+

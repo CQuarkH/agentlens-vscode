@@ -1,0 +1,302 @@
+{
+  "projectInfo": {
+    "repoName": "KarlTDebiec/Scinoephile",
+    "agentsMdSource": "KarlTDebiec_Scinoephile.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_Build_Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This repository uses `uv`. Use `uv run` when executing tools.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Run the following checks on only the Python files you have changed or been asked to: 1. `uv run ruff format` 2. `uv run ruff check --fix`",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Run `ruff format` only on Python files (do not run it on JSON or other data files).",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Testing: run pytest from `test` directory, e.g. `cd test && uv run pytest`",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Pytest timeout: you may run pytest for up to 10 minutes without asking.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "Test files do **not** need `__init__.py` files. Pytest can discover tests without them.",
+                  "originalHeader": "Tools"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Configuration_Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "cat_Implementation_Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 7,
+            "children": [
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "Include the standard copyright header at the top of the file.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Include a module docstring at the top of each file.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Include `from __future__ import annotations`, unless the file is empty (i.e., contains only copyright headers and module docstrings such as otherwise empty `__init__.py` files).",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Include type annotations for all function and method signatures, with the following exceptions: If a function always returns `None`, omit the return type annotation.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "In `__init__.py` files, only import classes from the module, not functions or variables.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Do **not** commit binary files. If binary assets are required for tests, provide a script under test/scripts to generate them.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Use the `logging` module rather than `print` for any user-facing output in scripts or libraries.",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 0,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_Documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Use Markdown for formatting.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "Do **not** include any reStructuredText markup such as double backticks.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Provide docstrings for all classes and functions, including internal helpers prefixed with an underscore.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Format docstrings using Google style, with the following tweaks: Use \"Arguments:\" instead of \"Args:\". Do not include a blank line between the \"Arguments:\" and \"Returns:\" sections. In argument descriptions, the first word after the colon should be lowercase unless it is a type name. In the Returns section, the first word should be lowercase unless it is a type name.",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Claude_AI_Integration",
+            "label": "Claude/AI Integration",
+            "type": "label",
+            "count": 0,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

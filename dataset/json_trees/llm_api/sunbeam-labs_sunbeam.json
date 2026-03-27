@@ -1,0 +1,181 @@
+{
+  "projectInfo": {
+    "repoName": "sunbeam-labs/sunbeam",
+    "agentsMdSource": "sunbeam-labs_sunbeam.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This is a Python library wrapping a Snakemake pipeline for metagenomic bioinformatics.",
+                  "originalHeader": "Dear Agents"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "The sunbeam/ directory contains bfx/ for helper bioinformatics functions.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "The sunbeam/ directory contains configs/ for example and template config and profile files.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "The sunbeam/ directory contains project/ for classes managing Sunbeam specific config files.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "The sunbeam/ directory contains scripts/ for CLI commands.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "The sunbeam/ directory contains workflow/ for the Snakemake workflow definition.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "The extensions/ directory is where extensions are installed to (git cloned). This directory can also live elsewhere as defined by the $SUNBEAM_EXTENSIONS variable.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Before making contributions to the codebase, reformat the codebase with `black .`",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Before making contributions to the codebase, make sure unit tests pass with `pytest tests/unit/`",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "If unit tests aren't passing, be sure to include an explanation why when making contributions.",
+                  "originalHeader": "Contribution Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

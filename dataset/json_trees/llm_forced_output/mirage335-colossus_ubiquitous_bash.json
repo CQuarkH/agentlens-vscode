@@ -1,0 +1,310 @@
+{
+  "thinking_process": "1. Analyze the document content to identify all explicit instructions, rules, and guidelines.\n2. Map each identified rule to one of the assigned categories: System Overview, Architecture, Implementation Details, Debugging, Test, Development Process, Documentation, Build & Run.\n3. Determine the 'strength' (MUST vs SHOULD) for each rule based on the language used (e.g., 'Never', 'Always', 'Please', 'Avoid').\n4. Determine the 'format' (ListItem vs Paragraph) based on whether the instruction is a bullet point or a paragraph.\n5. Construct the JSON AST structure, ensuring all nodes have unique IDs and correct types.\n6. Verify that the output is valid JSON without markdown formatting.",
+  "projectInfo": {
+    "repoName": "mirage335-colossus/ubiquitous_bash",
+    "agentsMdSource": "mirage335-colossus_ubiquitous_bash.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_System_Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Calling './ubiquitous_bash.sh' with a '_function' as the first parameter will call that internal function with remaining parameters given to that function.",
+                  "originalHeader": "# Mechanisms of \"ubiquitous_bash\""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the MultiThreading documentation at /workspace/ubiquitous_bash/shortcuts/git/_doc-wget_githubRelease.md , or similar locations for this file, as a tentative archetype how to generate MultiThreading specific documentation well ordered tabulated with markdown tables readable at a glance for code segments.",
+                  "originalHeader": "## MultiThreading Inter-Process-Communication"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the semi-pseudocode at /workspace/ubiquitous_bash/virtualization/python/_doc-override_msw_python.md , or similar locations for this file, as a tentative archetype how to abbreviate, abridge, minimize, etc, code segments.",
+                  "originalHeader": "## Pseudocode Summary"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Please regard the semi-pseudocode at /workspace/ubiquitous_bash/shortcuts/git/_doc-wget_githubRelease.md , or similar locations for this file, as a tentative archetype how to abbreviate, abridge, minimize, etc, code segments.",
+                  "originalHeader": "## Pseudocode Summary - MultiThreaded"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_Build_and_Run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Script 'ubiquitous_bash.sh', etc, is compiled by 'compile.sh' from the framework of most of the shellscript files from the ubiquitous_bash repository.",
+                  "originalHeader": "## Compiling \"ubiquitous_bash and Forked Derivatives"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Forked derivative projects similarly compile 'ubiquitous_bash.sh' or similarly named scripts from shellscript files in their subdirectories (usually '_prog') as well as the upstream \"ubiquitous_bash\" framework shellscript files (usually '_lib/ubiquitous_bash').",
+                  "originalHeader": "## Compiling \"ubiquitous_bash and Forked Derivatives"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Never sandbox , drop root , or otherwise limit any command calling \"ubiquitous_bash\" scripts or functions , such as './ubiquitous_bash.sh _test' , './app _test' , './_test' , './_test.bat' , './_bin' , './bin.bat' , './ubiquitous_bash.sh _bin' , etc.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Hardcoded platform-specific temporary directory paths , home directories , /tmp temporary subdirectories , /dev/shm temporary subdirectories , root commands , sudo , etc, are all necessary for \"ubiquitous_bash\" to function .",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "Always run \"ubiquitous_bash\" scripts, commands, functions, etc, with the permissions of the user running the Codex process, without limits on what directories may be written to, etc.",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "If such calls as creating a subdirectory of the \"$HOME\" directory fail, such as mkdir -p /root/.ubtmp/try , bash -c 'touch /root/.ubtmp/testfile' failing due to 'Permission denied' , attempt to test whether such limitations as bash shells not having write access to the \"$HOME\" directory may be obstructing . If such sandboxing may be obstructing, quit and report the issue to the user. Do not continue if sandboxing may be obstructing .",
+                  "originalHeader": "## Sandbox, Harness"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Vast self-example of correct, exhaustively broad UNIX/Linux commands, useful functions, and the framework of shellscript functions, etc, is available at directory '/workspace/ubiquitous_bash' , possibly also under './_lib/ubiquitous_bash' subdirectories of derivatives.",
+                  "originalHeader": ""
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Implementation_Details",
+            "label": "Implementation Details",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Abstraction, randomized temporary directories, process management, recursion, commented code, uncommented self-explanatory code, absence of debugging output, or very verbose default debugging output, can be uniquely appropriate throughout the \"ubiquitous_bash\" codebase.",
+                  "originalHeader": "## Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Temporary changes to shellscripts, adding echo statements, etc, is often necessary to observe progress, detect actual hanging, and diagnose failures, especially with multi-threaded, recursive, etc, scripts.",
+                  "originalHeader": "## Development Tracing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Tracing ubiquitous_bash shell scripts can be done efficiently with 'export ubDEBUG=true' , tracing all commands and shell script function calls within a function given as a command line parameter.",
+                  "originalHeader": "## Development Tracing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Avoid suffering dependency and availability issues by preferring to use commands from external programs, libraries, etc, using not older or abandoned codebases, dependencies, etc, but the more actively developed codepaths.",
+                  "originalHeader": "## Robustness, Resilience"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Although Git Pull Requests should instead edit the underlying files, directly editing the otherwise compiled 'ubiquitous_bash.sh' script is an acceptable technique for testing, diagnosing, experimenting, etc.",
+                  "originalHeader": "## Direct Editing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

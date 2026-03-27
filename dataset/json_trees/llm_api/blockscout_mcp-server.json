@@ -1,0 +1,441 @@
+{
+  "projectInfo": {
+    "repoName": "blockscout/mcp-server",
+    "agentsMdSource": "blockscout_mcp-server.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "The project is a Blockscout MCP Server that provides blockchain data access through the Model Context Protocol.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "The server supports two operational modes: stdio mode for direct MCP communication and HTTP Streamable mode for REST API access.",
+                  "originalHeader": "server.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "All MCP tools must return data in a consistent, machine-readable format using the standardized ToolResponse model defined in models.py.",
+                  "originalHeader": "models.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "The ToolResponse model must separate the data payload from metadata like pagination and notes.",
+                  "originalHeader": "models.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "For production use with Claude, users must install the official Blockscout connector from the Anthropic Connectors Directory rather than using the development MCPB bundle.",
+                  "originalHeader": "mcpb/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "The MCPB directory is for development and testing purposes only.",
+                  "originalHeader": "mcpb/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "The GPT integration package provides files required to create the 'Blockscout X-Ray' GPT in ChatGPT that integrates with the Blockscout MCP server via REST API.",
+                  "originalHeader": "gpt/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "The instructions.md file must be updated if the __unlock_blockchain_analysis__ tool output changes.",
+                  "originalHeader": "gpt/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 25,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 25,
+            "children": [
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "The main Python package is organized under blockscout_mcp_server/ with clear separation of concerns: API layer, server logic, tools, configuration, and utilities.",
+                  "originalHeader": "Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Tool implementations must be organized by domain (address/, block/, contract/, transaction/, etc.) with each tool in its own module named after the tool function.",
+                  "originalHeader": "tools/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Shared helpers used by multiple tools in the same domain must live in _shared.py modules alongside the individual tool files.",
+                  "originalHeader": "tools/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "The server.py module must initialize a FastMCP instance using constants from constants.py.",
+                  "originalHeader": "server.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Each tool must be registered with the FastMCP instance using the @mcp.tool() decorator, including tool name, description, and argument type hints.",
+                  "originalHeader": "server.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Tool argument descriptions must use typing.Annotated and pydantic.Field, which FastMCP uses to generate the input schema.",
+                  "originalHeader": "server.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "The config.py module must define a Pydantic BaseSettings class to manage server configuration loaded from environment variables.",
+                  "originalHeader": "config.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Configuration must be provided as a singleton object that can be imported and used by other modules, especially by tools/common.py for API calls.",
+                  "originalHeader": "config.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "The constants.py module must define centralized constants used throughout the application, including data truncation limits and server instructions.",
+                  "originalHeader": "constants.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "Constants must be used by both server.py and tools to maintain a single source of truth.",
+                  "originalHeader": "constants.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "The tools/common.py module must provide shared utilities and common functionality for all MCP tools, including API communication, chain resolution, pagination, data processing, and error handling.",
+                  "originalHeader": "tools/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "Tool functions must be async, accept a Context argument for progress reporting, and use typing.Annotated/pydantic.Field for argument descriptions.",
+                  "originalHeader": "tools/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "The function docstring must provide the description surfaced to FastMCP clients.",
+                  "originalHeader": "tools/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "The cache.py module must encapsulate in-memory caching of chain data with TTL management.",
+                  "originalHeader": "cache.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "The web3_pool.py module must manage pooled AsyncWeb3 instances with shared aiohttp sessions.",
+                  "originalHeader": "web3_pool.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "The web3_pool.py module must provide a custom provider to ensure Blockscout RPC compatibility and connection reuse.",
+                  "originalHeader": "web3_pool.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "The API layer must include helpers.py for shared utilities, routes.py for endpoint definitions, and dependencies.py for dependency providers.",
+                  "originalHeader": "api/"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "Analytics must be centralized in analytics.py and enabled only in HTTP mode when BLOCKSCOUT_MIXPANEL_TOKEN is set.",
+                  "originalHeader": "analytics.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "Analytics must generate deterministic distinct_id based on client IP, name, and version fingerprint.",
+                  "originalHeader": "analytics.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "Analytics must track tool invocations with client metadata, protocol version, and call source (MCP vs REST).",
+                  "originalHeader": "analytics.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "Analytics must include IP geolocation metadata for Mixpanel and graceful error handling to avoid breaking tool execution.",
+                  "originalHeader": "analytics.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "Telemetry must be designed as fire-and-forget and never disrupt tool execution.",
+                  "originalHeader": "telemetry.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "Client metadata extraction must use the ClientMeta dataclass and extract_client_meta_from_ctx() function from client_meta.py.",
+                  "originalHeader": "client_meta.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "Client metadata extraction must fall back to User-Agent header when MCP client name is unavailable.",
+                  "originalHeader": "client_meta.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "Client metadata must ensure consistent sentinel defaults ('N/A', 'Unknown') across logging and analytics modules.",
+                  "originalHeader": "client_meta.py"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

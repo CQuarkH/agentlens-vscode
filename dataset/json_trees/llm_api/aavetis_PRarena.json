@@ -1,0 +1,85 @@
+{
+  "projectInfo": {
+    "repoName": "aavetis/PRarena",
+    "agentsMdSource": "aavetis_PRarena.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_configuration_environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "always use our venv called venv",
+                  "originalHeader": "General Instructions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_build_run",
+            "label": "Build & Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "python3 collect_data.py # this gets new data into data.csv",
+                  "originalHeader": "Main Workflow - Step 1"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "python3 generate_chart.py # this generates the chart image, renders the index template, the readme template.",
+                  "originalHeader": "Main Workflow - Step 2"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "python3 -m http.server 8000 # this runs our web server so we can see the index page.",
+                  "originalHeader": "Main Workflow - Step 3"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

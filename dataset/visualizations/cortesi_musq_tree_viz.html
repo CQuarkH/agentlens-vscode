@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AST Tree View: cortesi/musq</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow: hidden;
+        }
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-title { margin: 0; font-size: 1.2rem; }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+        
+        .left-pane {
+            flex: 0 0 35%;
+            overflow-y: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            box-sizing: border-box;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+        
+        .right-pane {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #graph-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #graph-container:active { cursor: grabbing; }
+        
+        .pane-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        #details-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 5;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        #details-panel h3 { margin-top: 0; color: #0f172a; font-size: 1.1rem; }
+        #details-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        #details-panel .close-btn:hover { color: #0f172a; }
+        
+        .node circle {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+        }
+        .node:hover circle {
+            stroke: #334155;
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-family: sans-serif;
+            fill: #334155;
+            text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+            pointer-events: none;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #cbd5e1;
+            stroke-width: 1.5px;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+        .legend-item { display: flex; align-items: center; margin-bottom: 5px; }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 class="header-title">cortesi/musq - Strict Hierarchical Tree V1</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="left-pane">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; font-family: sans-serif;">Raw Document (cortesi_musq.md)</h2>
+            ---
+repo: &quot;cortesi/musq&quot;
+categories: [&quot;Test&quot;, &quot;Development Process&quot;, &quot;Maintanability&quot;, &quot;Implementation Details&quot;]
+---
+
+
+
+## Build &amp; Commands
+
+- Always run &quot;cargo test&quot; before committing.
+- Always run &quot;cargo clippy --fix --allow-dirty --tests --examples --benches&quot;
+  and fix all warnings before committing.
+- Always run &quot;cargo fmt&quot; before committing.
+
+
+## Rust Guideance
+
+- Edition 2024 is now stable
+- Let chains are permitted
+
+        </div>
+        
+        <div class="right-pane">
+            <h2 class="pane-title">Hierarchical AST Tree</h2>
+            
+            <div id="graph-container"></div>
+            
+            <div id="details-panel">
+                <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+                <h3>Node Details</h3>
+                <div id="details-content">Click a node to view its structural properties and rules.</div>
+            </div>
+            
+            <div class="legend">
+                <strong>Node Types</strong>
+                <div class="legend-item"><div class="legend-color" style="background: #1e293b;"></div> Repository (Root)</div>
+                <div class="legend-item"><div class="legend-color" style="background: #60a5fa;"></div> Category</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> MUST Rule</div>
+                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> SHOULD Rule</div>
+                <br>
+                <small><em>Hint: Scroll to zoom, drag to pan.<br>Click nodes to inspect metadata.</em></small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {"name": "cortesi/musq", "group": "root", "radius": 15, "color": "#1e293b", "details": "Repository Name: cortesi/musq", "children": [{"name": "Test", "group": "category", "radius": 10, "color": "#4ade80", "details": "Category: Test<br>Total Rules: 1", "children": [{"name": "Always run \"cargo test\" before...", "group": "rule", "radius": 6, "color": "#ef4444", "details": "\n            <strong>MUST</strong><br><br>\n            Always run \"cargo test\" before committing.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Build & Commands<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Development Process", "group": "category", "radius": 10, "color": "#94a3b8", "details": "Category: Development Process<br>Total Rules: 2", "children": [{"name": "Always run \"cargo clippy --fix...", "group": "rule", "radius": 6, "color": "#ef4444", "details": "\n            <strong>MUST</strong><br><br>\n            Always run \"cargo clippy --fix --allow-dirty --tests --examples --benches\" and fix all warnings before committing.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Build & Commands<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Always run \"cargo fmt\" before ...", "group": "rule", "radius": 6, "color": "#ef4444", "details": "\n            <strong>MUST</strong><br><br>\n            Always run \"cargo fmt\" before committing.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Build & Commands<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_2\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Implementation Details", "group": "category", "radius": 10, "color": "#e879f9", "details": "Category: Implementation Details<br>Total Rules: 2", "children": [{"name": "Edition 2024 is now stable", "group": "rule", "radius": 6, "color": "#eab308", "details": "\n            <strong>SHOULD</strong><br><br>\n            Edition 2024 is now stable<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Rust Guideance<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Let chains are permitted", "group": "rule", "radius": 6, "color": "#eab308", "details": "\n            <strong>SHOULD</strong><br><br>\n            Let chains are permitted<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Rust Guideance<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_2\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]};
+
+        const container = document.getElementById("graph-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const g = svg.append("g");
+        
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+            
+        svg.call(zoom);
+
+        // Define the hierarchy and tree layout
+        const root = d3.hierarchy(treeData);
+        
+        // We use a horizontal tree layout
+        // dx is vertical spacing, dy is horizontal depth spacing
+        const dx = 25;
+        const dy = width / 4; 
+        const treeLayout = d3.tree().nodeSize([dx, dy]);
+        
+        treeLayout(root);
+
+        // Center the tree visually within the view
+        let x0 = Infinity;
+        let x1 = -x0;
+        root.each(d => {
+            if (d.x > x1) x1 = d.x;
+            if (d.x < x0) x0 = d.x;
+        });
+        
+        g.attr("transform", `translate(${dy / 2},${height / 2 - (x0 + x1) / 2})`);
+        svg.call(zoom.transform, d3.zoomIdentity.translate(dy / 2, height / 2 - (x0 + x1) / 2));
+
+        // Draw Links
+        g.append("g")
+            .attr("class", "links")
+            .selectAll("path")
+            .data(root.links())
+            .join("path")
+            .attr("class", "link")
+            .attr("d", d3.linkHorizontal()
+                .x(d => d.y)
+                .y(d => d.x)
+            );
+
+        // Draw Nodes
+        const node = g.append("g")
+            .attr("class", "nodes")
+            .selectAll("g")
+            .data(root.descendants())
+            .join("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.y},${d.x})`)
+            .on("click", (event, d) => showDetails(d.data, event.currentTarget));
+
+        // Node Circles
+        node.append("circle")
+            .attr("r", d => d.data.radius)
+            .attr("fill", d => d.data.color);
+
+        // Node Labels
+        node.append("text")
+            .attr("dy", "0.31em")
+            .attr("x", d => d.children ? -d.data.radius - 6 : d.data.radius + 6)
+            .attr("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name)
+            .clone(true).lower()
+            .attr("stroke", "white")
+            .attr("stroke-width", 3);
+
+        // Details Panel Function
+        function showDetails(nodeData, nodeElement) {
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            
+            let html = `<strong>${nodeData.group.toUpperCase()}</strong><br>`;
+            html += nodeData.details;
+            
+            content.innerHTML = html;
+            panel.style.display = "block";
+            
+            // Highlight clicked node
+            node.selectAll("circle").style("stroke", "#fff").style("stroke-width", "2px");
+            d3.select(nodeElement).select("circle").style("stroke", "#0f172a").style("stroke-width", "3px");
+        }
+
+        window.addEventListener("resize", () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            svg.attr("width", newWidth).attr("height", newHeight);
+        });
+    </script>
+</body>
+</html>
+    

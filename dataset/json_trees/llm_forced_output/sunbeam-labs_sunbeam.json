@@ -1,0 +1,158 @@
+{
+  "thinking_process": "1. Analyze the input document content against the provided system categories.\n2. Identify specific instructions/rules within the text.\n3. Map each rule to the appropriate category from the allowed list.\n4. Determine 'strength' (MUST vs SHOULD) and 'format' (ListItem vs Paragraph) for each rule.\n5. Construct the JSON AST following the exact schema provided.",
+  "projectInfo": {
+    "repoName": "sunbeam-labs/sunbeam",
+    "agentsMdSource": "sunbeam-labs_sunbeam.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_System_Overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "This is a Python library wrapping a Snakemake pipeline for metagenomic bioinformatics.",
+                  "originalHeader": "# Dear Agents"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_Architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "The project structure includes directories for helper functions (bfx/), configs (configs/), project classes (project/), CLI commands (scripts/), and workflow definition (workflow/). Extensions are installed in the extensions/ directory or defined by the $SUNBEAM_EXTENSIONS variable.",
+                  "originalHeader": "## Project Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Development_Process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Reformat the codebase with `black .` before making contributions.",
+                  "originalHeader": "- Reformat the codebase with `black .`"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Make sure unit tests pass with `pytest tests/unit/` before making contributions.",
+                  "originalHeader": "- Make sure unit tests pass with `pytest tests/unit/`"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_Test",
+            "label": "Test",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "If unit tests are not passing, include an explanation why.",
+                  "originalHeader": "- If they aren't passing be sure to include an explanation why"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_Configuration_&_Environment",
+            "label": "Configuration & Environment",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Extensions can be installed in the extensions/ directory or defined by the $SUNBEAM_EXTENSIONS variable.",
+                  "originalHeader": "This directory can also live elsewhere as defined by the `$SUNBEAM_EXTENSIONS` variable"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
