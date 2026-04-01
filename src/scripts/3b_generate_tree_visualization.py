@@ -410,7 +410,7 @@ def generate_html(md_content, doc, output_path):
                 .on("click", (event, d) => {{
                     showDetails(d.data, event.currentTarget);
                     if (d.data.group === "rule" && d.data.raw_text) {{
-                        highlightTextInLeftPane(d.data.raw_text);
+                        highlightTextInLeftPane(d.data.raw_text, d.data.color);
                     }} else {{
                         clearHighlightInLeftPane();
                     }}
@@ -427,8 +427,8 @@ def generate_html(md_content, doc, output_path):
                     }}
                 }});
                 
-            // Rectangles
-            nodeEnter.append("rect")
+            // Rectangles (For Categories, Labels, Rules)
+            nodeEnter.filter(d => d.data.group !== "root").append("rect")
                 .attr("class", "main-rect")
                 .attr("width", d => d.data.width || 120)
                 .attr("height", d => d.data.height || 40)
@@ -436,25 +436,61 @@ def generate_html(md_content, doc, output_path):
                 .attr("rx", 6).attr("ry", 6)
                 .attr("fill", d => d.data.color)
                 .attr("stroke-width", d => d.data.border_width || 2)
-                .attr("stroke", d => d._children ? "#0f172a" : "#cbd5e1");
+                .attr("stroke", "#0f172a");
                 
-            // Text inside Rects
+            // Markdown Icon (Only for Root node)
+            nodeEnter.filter(d => d.data.group === "root")
+                .append("image")
+                .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
+                .attr("width", 32)
+                .attr("height", 32)
+                .attr("x", -16)
+                .attr("y", -16);
+                
+            // White Pill Background for Text (Only for Categories and Labels with color conflict issues)
+            nodeEnter.append("rect")
+                .attr("class", "text-bg")
+                .attr("fill", "rgba(255, 255, 255, 0.70)")
+                .attr("rx", 3).attr("ry", 3)
+                .style("pointer-events", "none");
+                
+            // Text inside Nodes
             nodeEnter.append("text")
-                .attr("dy", "0.31em")
-                .attr("x", 12)
-                .attr("text-anchor", "start")
+                .attr("class", "node-label")
+                .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
+                .attr("x", d => d.data.group === "root" ? 0 : 12)
+                .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
                 .text(d => d.data.name)
-                .style("fill", d => d.data.group === "root" ? "#fff" : "#0f172a")
+                .style("fill", d => d.data.group === "rule" ? "#ffffff" : "#0f172a")
                 .style("font-weight", "500");
                 
             // Transitions
             const nodeUpdate = nodeEnter.merge(node);
             
+            // Adjust Background Pill dynamically based on Typography Bounding Box 
+            nodeUpdate.each(function(d) {{
+                const textNode = d3.select(this).select(".node-label").node();
+                if (textNode && textNode.getBBox) {{
+                    const bbox = textNode.getBBox();
+                    if (d.data.group === "category" || d.data.group === "label") {{
+                        d3.select(this).select(".text-bg")
+                            .attr("x", bbox.x - 4)
+                            .attr("y", bbox.y - 2)
+                            .attr("width", bbox.width + 8)
+                            .attr("height", bbox.height + 4);
+                    }} else {{
+                        // Roots and Rules don't need the white pill (rules are yellow, root is dark)
+                        d3.select(this).select(".text-bg")
+                            .attr("width", 0).attr("height", 0);
+                    }}
+                }}
+            }});
+            
             nodeUpdate.transition().duration(400)
                 .attr("transform", d => `translate(${{d.y}},${{d.x}})`);
                 
             nodeUpdate.select("rect").transition().duration(400)
-                .attr("stroke", d => d._children ? "#0f172a" : "#cbd5e1");
+                .attr("stroke", "#0f172a");
                 
             node.exit().transition().duration(400)
                 .attr("transform", d => `translate(${{source.y}},${{source.x}})`)
@@ -481,8 +517,7 @@ def generate_html(md_content, doc, output_path):
             content.innerHTML = html;
             panel.style.display = "block";
             
-            d3.selectAll("rect.main-rect").style("stroke", function(d) {{ return d._children ? "#0f172a" : "#cbd5e1"; }});
-            d3.select(nodeElement).select("rect.main-rect").style("stroke", "#0f172a");
+            // Optionally we could add a CSS class for active states here without mutating the raw stroke color
         }}
 
         window.addEventListener("resize", () => {{
@@ -499,7 +534,7 @@ def generate_html(md_content, doc, output_path):
             return s.replace(/[.*+?^${{}}()|[\\]\\\\]/g, '\\\\$&');
         }}
 
-        function highlightTextInLeftPane(searchText) {{
+        function highlightTextInLeftPane(searchText, highlightColor) {{
             // 1. Restaurar HTML limpio
             leftPaneEl.innerHTML = originalLeftHtml;
 
@@ -525,7 +560,7 @@ def generate_html(md_content, doc, output_path):
                 // 4. Aplicar resaltado directamente sobre el innerHTML
                 leftPaneEl.innerHTML = originalLeftHtml.replace(regex, (match) => {{
                     matchFound = true;
-                    return '<mark style="background-color:#fce7f3;color:#9d174d;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px #fbcfe8;">' + match + '</mark>';
+                    return `<mark style="background-color:${{highlightColor}};color:#ffffff;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${{highlightColor}};">` + match + '</mark>';
                 }});
 
                 // 5. Autoscroll al primer match

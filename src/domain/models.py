@@ -4,11 +4,11 @@ import math
 
 # --- Visual Mappings ---
 CATEGORY_COLORS: Dict[str, str] = {
-    "General": "#94a3b8",      # Slate 400
-    "Implementation": "#60a5fa", # Blue 400
-    "Build": "#4ade80",         # Green 400
-    "Management": "#c084fc",    # Purple 400
-    "Quality": "#f87171",       # Red 400
+    "General": "#E41A1C",
+    "Implementation": "#984EA3",
+    "Build": "#377EB8",
+    "Management": "#FF7F00",
+    "Quality": "#4DAF4A",
     "Uncategorized": "#e2e8f0"
 }
 
@@ -37,6 +37,7 @@ class AgentRule(BaseModel):
     
     # Optional parent reference injected during tree building for uniqueness mapping if needed
     parent_id: Optional[str] = None
+    parent_color: Optional[str] = None
 
     @property
     def graph_id(self) -> str:
@@ -61,15 +62,36 @@ class AgentRule(BaseModel):
 
     @property
     def color(self) -> str:
-        return SHOULD_COLOR
+        if not self.parent_color:
+            return SHOULD_COLOR
+            
+        import colorsys
+        hex_code = self.parent_color.lstrip('#')
+        r, g, b = tuple(int(hex_code[i:i+2], 16)/255.0 for i in (0, 2, 4))
+        h, l, s = colorsys.rgb_to_hls(r, g, b)
+        
+        # Fixed low semantic luminosity (Dark) for Rules to optimize white typography contrast
+        r_new, g_new, b_new = colorsys.hls_to_rgb(h, 0.22, s)
+        return '#%02x%02x%02x' % (int(r_new*255), int(g_new*255), int(b_new*255))
+        
+    @property
+    def special_chars_count(self) -> int:
+        import re
+        symbols = re.findall(r'[\{\}\[\]\(\)<>/\\`#\*\+\-=\|@_]', self.content.text)
+        return len(symbols)
         
     @property
     def tree_width(self) -> int:
-        return 250
+        """Width based on absolute string character count"""
+        chars = len(self.content.text)
+        width = 120 + (chars * 2.5) 
+        return int(max(120, min(400, width)))
         
     @property
     def tree_height(self) -> int:
-        return 45
+        """Height encoded to density of programming syntax symbols"""
+        height = 36 + (self.special_chars_count * 6)
+        return int(min(height, 120))
 
     @property
     def force_graph_radius(self) -> int:
@@ -105,11 +127,25 @@ class RuleLabel(BaseModel):
     children: List[AgentRule] = Field(default_factory=list)
     fre_score: Optional[float] = None
     parent_id: Optional[str] = None
+    parent_color: Optional[str] = None
+    area_ratio: float = 1.0
 
     @property
     def color(self) -> str:
-        # Fallback if frontend doesn't override with category lightness modification
-        return "#e2e8f0" 
+        # Dynamic lightness interpolator based on the mathematical 2D Area of the node
+        if not self.parent_color:
+            return "#e2e8f0"
+            
+        import colorsys
+        hex_code = self.parent_color.lstrip('#')
+        r, g, b = tuple(int(hex_code[i:i+2], 16)/255.0 for i in (0, 2, 4))
+        h, l, s = colorsys.rgb_to_hls(r, g, b)
+        
+        # Larger areas inherit original base intensity. Smaller ones linearly wash out to #f2f2f2 (0.95 lightness).
+        l_new = l + (1.0 - self.area_ratio) * (0.95 - l)
+        
+        r_new, g_new, b_new = colorsys.hls_to_rgb(h, l_new, s)
+        return '#%02x%02x%02x' % (int(r_new*255), int(g_new*255), int(b_new*255)) 
         
     @property
     def total_rules(self) -> int:
@@ -127,15 +163,28 @@ class RuleLabel(BaseModel):
         
     @property
     def border_width(self) -> float:
-        """Density formulation: 1.5px base + multiplier, max 8px"""
-        bw = 1.5 + (self.code_ratio * 1.5)
-        return min(bw, 8.0)
+        """Density formulation: 2.0px base + steeper multiplier, max 10px"""
+        bw = 2.0 + (self.code_ratio * 4.0)
+        return min(bw, 10.0)
         
+    @property
+    def computed_fre_score(self) -> float:
+        if self.fre_score is not None:
+            return self.fre_score
+        if not self.children:
+            return 100.0
+            
+        import textstat
+        concatenated = " ".join([r.content.text for r in self.children])
+        try:
+            return max(0.0, textstat.flesch_reading_ease(concatenated))
+        except:
+            return 50.0
+
     @property
     def tree_width(self) -> int:
         """Width = 80 + fre_score. Capped between 80px and 180px."""
-        fre = self.fre_score if self.fre_score is not None else 50
-        width = 80 + fre
+        width = 80 + self.computed_fre_score
         return max(80, min(180, width))
         
     @property
@@ -146,12 +195,13 @@ class RuleLabel(BaseModel):
 
     @property
     def html_details(self) -> str:
-        fre_val = round(self.fre_score, 1) if self.fre_score is not None else 'N/A'
+        fre_val = round(self.computed_fre_score, 1)
         return f"Label: {self.label}<br>Total Rules: {self.count}<br>Code Ratio: {round(self.code_ratio, 2)}<br>FRE Cognitive Load: {fre_val}"
 
     def inject_parent_ids(self) -> None:
         for rule in self.children:
             rule.parent_id = self.id
+            rule.parent_color = self.color
 
 class RuleCategory(BaseModel):
     """Macro parent node representing a parent category mapping (General, Implementation, etc)."""
@@ -185,8 +235,8 @@ class RuleCategory(BaseModel):
         
     @property
     def border_width(self) -> float:
-        bw = 1.5 + (self.code_ratio * 1.5)
-        return min(bw, 8.0)
+        bw = 2.0 + (self.code_ratio * 4.0)
+        return min(bw, 10.0)
         
     @property
     def tree_width(self) -> int:
@@ -205,9 +255,28 @@ class RuleCategory(BaseModel):
         return f"Category: {self.label}<br>Total Labels: {self.total_labels}<br>Total Rules: {self.total_rules}<br>Code Ratio: {round(self.code_ratio, 2)}"
 
     def inject_parent_ids(self) -> None:
-        """Hydrates the labels nodes with this macro category's ID"""
+        """Hydrates the labels nodes with this macro category's ID and computes geometrical luminosity"""
+        if not self.children:
+            return
+            
+        areas = [(label.tree_width * label.tree_height) for label in self.children]
+        max_area = max(areas)
+        min_area = min(areas)
+        
         for label in self.children:
             label.parent_id = self.id
+            label.parent_color = self.color
+            
+            area = label.tree_width * label.tree_height
+            
+            if max_area == min_area:
+                label.area_ratio = 1.0
+            else:
+                # Min-Max normalization spread to artificially bump visual contrast between similar labels
+                normalized = (area - min_area) / (max_area - min_area)
+                # The smallest label will get an area_ratio of 0.3 (very light), the largest gets 1.0 (pure color)
+                label.area_ratio = 0.3 + (0.7 * normalized)
+                
             label.inject_parent_ids()
 
 class ASTProjectInfo(BaseModel):
@@ -239,7 +308,7 @@ class AgentASTDocument(BaseModel):
 
     @property
     def repo_name(self) -> str:
-        return self.projectInfo.repoName
+        return f"{self.projectInfo.repoName} - {self.source_file}"
 
     @property
     def source_file(self) -> str:

@@ -166,14 +166,17 @@ Genera un diagrama estático utilizando `d3.tree()`. Elimina la física caótica
 El árbol visual desglosa el contexto en cuaatro profundidades secuenciales:
 1. **Nodos Raíz (Root):** Origen del árbol representando al repositorio (color gris oscuro).
 2. **Macro-Categorías (Category):** Primer nivel de agrupamiento analítico. Existen 6 dominios inmutables con una semaforización de colores fijos que heredan visualmente hacia sus hijos:
-   - **General:** Pizarra (`#94a3b8`)
-   - **Implementation:** Azul (`#60a5fa`)
-   - **Build:** Verde (`#4ade80`)
-   - **Management:** Púrpura (`#c084fc`)
-   - **Quality:** Rojo (`#f87171`)
+   - **General:** Rojo Brillante (`#E41A1C`)
+   - **Implementation:** Púrpura Amethyst (`#984EA3`)
+   - **Build:** Azul Acero (`#377EB8`)
+   - **Management:** Naranja Intenso (`#FF7F00`)
+   - **Quality:** Verde Olivo (`#4DAF4A`)
    - **Uncategorized:** Gris Claro (`#e2e8f0`)
-3. **Etiquetas (Label):** Áreas temáticas intermedias inferidas originalmente por el LLM en la Fase 2 (ej. *Tests*, *Architecture*, *Performance*) antes de ser categorizadas en el script de migración. Actúan como el segundo nivel de agrupamiento.
-4. **Instrucciones (Rule):** Nodos terminales (hojas) que contienen el texto crudo y descriptivo de la acción extraída del Markdown.
+3. **Etiquetas (Label):** Áreas temáticas intermedias inferidas originalmente por el LLM en la Fase 2 (ej. *Tests*, *Architecture*, *Performance*) antes de ser categorizadas en el script de migración. Actúan como el segundo nivel de agrupamiento. Cada etiqueta **hereda el color base de su Categoría Padre**, pero aplica una interpolación algorítmica de **Luminosidad HSL** calculada en base a su Área topológica (Ancho × Alto). Las etiquetas más colosales que monopolizan las pantallas retienen el color primario intenso, mientras que las de menor área se destiñen gradualmente hacia escalas iluminadas garantizando un gradiente jerárquico visual de relevancia temática.
+4. **Instrucciones (Rule):** Nodos terminales (hojas) que contienen el texto crudo y descriptivo de la acción extraída del Markdown. Heredan el color base de la etiqueta padre fijado en una **luminosidad intencionalmente baja (22% HSL Dark Mode)** para favorecer un contraste de tipografía en blanco.
+   - Su geometría se codifica de manera léxica pura:
+   - **Ancho (Width):** Mapeado matemáticamente a la longitud absoluta de caracteres de la regla.
+   - **Alto (Height):** Mapeado algorítmicamente mediante Regex a la densidad acumulada de símbolos arquitectónicos/lógicos especiales (llaves `{{}}`, corchetes `[]`, literales `_`, `*`, extenciones `.py`, etc.).
 
 **Ejecución:**
 ```bash
