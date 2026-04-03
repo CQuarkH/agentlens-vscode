@@ -68,6 +68,7 @@ def extract_frontmatter_and_content(file_path: Path):
 
 def main():
     parser = argparse.ArgumentParser(description="Extract structured JSON from Markdown using Anthropic API.")
+    parser.add_argument("file", type=str, nargs='?', help="Path to a specific Markdown file to process (optional)")
     parser.add_argument("-l", "--limit", type=int, help="Limit the number of files to process", default=None)
     args = parser.parse_args()
 
@@ -123,9 +124,16 @@ For "format", use "ListItem" if the instruction was a bullet point, or "Paragrap
 
     processed_count = 0
     
-    md_files = list(input_dir.glob("*.md"))
-    if args.limit:
-        md_files = md_files[:args.limit]
+    if args.file:
+        target_path = Path(args.file)
+        if not target_path.exists():
+            logger.error(f"Error: Specified file does not exist: {target_path}")
+            return
+        md_files = [target_path]
+    else:
+        md_files = list(input_dir.glob("*.md"))
+        if args.limit:
+            md_files = md_files[:args.limit]
         
     for md_file in md_files:
         logger.info(f"Processing {md_file.name} via Anthropic API...")
@@ -144,8 +152,8 @@ Extract the rules based on the instructions above and return the required JSON s
         
         try:
             response = client.messages.create(
-                model="claude-sonnet-4-5-20250929",
-                max_tokens=4000,
+                model="claude-sonnet-4-6",
+                max_tokens=16000,
                 temperature=0.0,
                 system=system_prompt,
                 messages=[
@@ -176,8 +184,12 @@ Extract the rules based on the instructions above and return the required JSON s
         except json.JSONDecodeError as e:
             logger.error(f"Failed to decode JSON from API for {md_file.name}: {e}")
             logger.debug(f"Raw Output: {output_text}")
+            import sys
+            sys.exit(1)
         except Exception as e:
             logger.error(f"An error occurred while processing {md_file.name}: {e}")
+            import sys
+            sys.exit(1)
 
     logger.info(f"Phase 2C (Anthropic API) completed. {processed_count} files processed.")
 

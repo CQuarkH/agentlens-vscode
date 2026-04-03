@@ -12,6 +12,7 @@
     "Build & Run",
     "Testing",
     "Configuration & Environment",
+    "Conf.&Env.",
     "DevOps"
   ],
   "Management": [
@@ -20,6 +21,7 @@
   ],
   "Quality": [
     "Maintainability",
+    "Maintenance",
     "Debugging",
     "Performance",
     "Security",

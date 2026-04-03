@@ -1,0 +1,1153 @@
+{
+  "projectInfo": {
+    "repoName": "nodetool-ai/nodetool",
+    "agentsMdSource": "nodetool-ai_nodetool.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "cat_system_overview",
+        "label": "System Overview",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "rule_1",
+            "type": "rule",
+            "content": {
+              "text": "NodeTool is an open-source, privacy-first, no-code platform for rapidly building and automating AI workflows. It enables users to create sophisticated AI solutions visually through a drag-and-drop interface with no coding required.",
+              "originalHeader": "Project Overview"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_2",
+            "type": "rule",
+            "content": {
+              "text": "NodeTool follows a client-server architecture with multiple components: Web UI (React/TypeScript), Electron Wrapper, Mobile App (React Native/Expo), API Server, and WebSocket Runner for real-time communication during workflow execution.",
+              "originalHeader": "Architecture"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_3",
+            "type": "rule",
+            "content": {
+              "text": "Key directories are: /web (Main React web application), /electron (Electron desktop app wrapper), /mobile (React Native mobile app), /docs (Documentation files), /scripts (Build and release scripts).",
+              "originalHeader": "Key Directories"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_4",
+            "type": "rule",
+            "content": {
+              "text": "The data flow is: User creates workflows in the editor → Workflows are executed through the WebSocket Runner → Workers process the workflow nodes (local or cloud) → Results are streamed back to the UI in real-time.",
+              "originalHeader": "Architecture"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_5",
+            "type": "rule",
+            "content": {
+              "text": "Technologies used in web/package.json include: React 18, Vite 6, Material UI + Emotion, React Router v7, XYFlow (@xyflow/react), Zustand, TanStack React Query, Supabase, Dockview, Lexical, Xterm.js, Wavesurfer.js, Plotly, and ELK.js. Backend uses Python, FastAPI, and WebSockets.",
+              "originalHeader": "Technologies Used"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_6",
+            "type": "rule",
+            "content": {
+              "text": "The backend is not part of this repository. The server provides REST API endpoints at http://localhost:7777/api/, health check at http://localhost:7777/health, WebSocket connections for workflow execution, and Models API for managing AI models.",
+              "originalHeader": "E2E Testing Setup"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_architecture",
+        "label": "Architecture",
+        "type": "category",
+        "count": 10,
+        "children": [
+          {
+            "id": "rule_7",
+            "type": "rule",
+            "content": {
+              "text": "The application entry point is web/src/index.tsx, which is the SPA entry point that imports global styles, initializes the React tree with providers (QueryClientProvider, ThemeProvider, MobileClassProvider, MenuProvider, WorkflowManagerProvider, KeyboardProvider, RouterProvider, DownloadManagerDialog), and on boot calls useAuth.getState().initialize(), initKeyListeners(), and loadMetadata().",
+              "originalHeader": "Application Entry Point & Routing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_8",
+            "type": "rule",
+            "content": {
+              "text": "Routes are created via createBrowserRouter(getRoutes()) and include: / (NavigateToStart), /dashboard (main workspace with Dockview panels), /login (Supabase OAuth), /chat/:thread_id? (full-screen global assistant chat), /editor (redirects to root), /assets (asset explorer), /collections, /templates, /editor/:workflow (main node editor), /models (model manager), and /layouttest (dev-only).",
+              "originalHeader": "Routes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_9",
+            "type": "rule",
+            "content": {
+              "text": "ApiClient.ts uses openapi-fetch with types generated to web/src/api.ts from /openapi.json. It determines isLocalhost based on host or overrides (VITE_FORCE_LOCALHOST, query, localStorage). For non-localhost, it fetches the current Supabase session and attaches Authorization and apikey headers via middleware.",
+              "originalHeader": "API Client & Environment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_10",
+            "type": "rule",
+            "content": {
+              "text": "WorkflowManagerContext creates a React context backed by a Zustand store with state for nodeStores, currentWorkflowId, openWorkflows, systemStats, and queryClient. It persists currentWorkflowId and openWorkflows to localStorage.",
+              "originalHeader": "WorkflowManagerContext"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_11",
+            "type": "rule",
+            "content": {
+              "text": "NodeContext provides a per-workflow NodeStore via a React context, exposing useNodes(selector) hook and useTemporalNodes for accessing the zundo temporal state (undo/redo stack). It is used heavily by NodeEditor, properties panel, etc.",
+              "originalHeader": "NodeContext"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_12",
+            "type": "rule",
+            "content": {
+              "text": "web/src/core/graph.ts contains graph utilities: topologicalSort (Kahn's algorithm, returns node layers), subgraph (DFS-based extraction), and autoLayout (uses ELK/elkjs to layout the graph, filtering comment nodes, grouping by parentId, and adjusting parent group node sizes).",
+              "originalHeader": "Core Graph & Layout Logic"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_13",
+            "type": "rule",
+            "content": {
+              "text": "GlobalWebSocketManager.ts is a singleton that owns a single WebSocketManager for WORKER_URL, ensures only one connection, and tracks isConnected/isConnecting. WorkflowRunner uses this to subscribe to updates and send commands: run_job, reconnect_job, stream_input, end_input_stream, cancel_job.",
+              "originalHeader": "Global WebSocket Manager (Workflows)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_14",
+            "type": "rule",
+            "content": {
+              "text": "WebSocketManager.ts is a generic WebSocket wrapper used by GlobalChatStore and GlobalWebSocketManager. It supports auto reconnect with backoff and event listeners for open, message, error, close, and reconnecting.",
+              "originalHeader": "Chat WebSocket Manager"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_15",
+            "type": "rule",
+            "content": {
+              "text": "loadMetadata() calls client.GET('/api/nodes/metadata'), builds nodeTypes mapping node_type to BaseNode, metadataByType record, and recommendedModels list. It stores node types and metadata in MetadataStore and calls createConnectabilityMatrix to precompute which output types can connect to which inputs.",
+              "originalHeader": "Node Metadata & Node Types"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_16",
+            "type": "rule",
+            "content": {
+              "text": "ThemeNodetool.tsx creates a MUI CSS-vars-based theme with light and dark palettes, configures font families (Inter, JetBrains Mono), custom font size tokens, rounded corners, and z-index layers. It overrides MUI components to match NodeTool's visual identity.",
+              "originalHeader": "Theming & Styling"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_build_run",
+        "label": "Build & Run",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "rule_17",
+            "type": "rule",
+            "content": {
+              "text": "For local development, activate the conda environment before running Python commands: conda activate nodetool. Note: GitHub CI and Copilot Agent use a different setup via .github/workflows/copilot-setup-steps.yml — no conda needed there.",
+              "originalHeader": "Development Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_18",
+            "type": "rule",
+            "content": {
+              "text": "To start Web UI development: cd web && npm install && npm start. Access at http://localhost:3000.",
+              "originalHeader": "Development Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_19",
+            "type": "rule",
+            "content": {
+              "text": "To run the Electron app in development: first build the web UI (cd web && npm install && npm run build), then run the Electron app (cd electron && npm install && npm start).",
+              "originalHeader": "Development Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_20",
+            "type": "rule",
+            "content": {
+              "text": "To build the Web UI: cd web && npm run build.",
+              "originalHeader": "Build Commands"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_21",
+            "type": "rule",
+            "content": {
+              "text": "To build the Electron app: cd electron && npm run build.",
+              "originalHeader": "Build Commands"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_22",
+            "type": "rule",
+            "content": {
+              "text": "Use Make for linting and type checking (recommended): make typecheck (type check all packages), make lint (lint all packages), make lint-fix (auto-fix linting issues).",
+              "originalHeader": "Linting & Type Checking"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_23",
+            "type": "rule",
+            "content": {
+              "text": "For Web UI linting and type checking: cd web && npm run lint (ESLint), npm run lint:fix (fix issues), npm run typecheck (TypeScript types). For Electron: cd electron && npm run lint, npm run lint:fix, npm run typecheck.",
+              "originalHeader": "Linting & Type Checking"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_24",
+            "type": "rule",
+            "content": {
+              "text": "After making any code changes, you MUST run: make typecheck (type check all packages), make lint (lint all packages), and make test (run all tests). All three commands must pass with exit code 0 before considering the task complete. If any fail: fix the errors, re-run the failing command(s), and continue until all three pass.",
+              "originalHeader": "Mandatory Post-Change Verification"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_test",
+        "label": "Test",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "rule_25",
+            "type": "rule",
+            "content": {
+              "text": "Web UI unit/integration tests: cd web && npm test (run all), npm run test:watch (watch mode), npm run test:coverage (coverage report), npm run test:summary (summary output only).",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_26",
+            "type": "rule",
+            "content": {
+              "text": "E2E tests: cd web && npm run test:e2e (run all), npm run test:e2e:ui (interactive UI mode), npm run test:e2e:headed (run in headed mode to see browser).",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_27",
+            "type": "rule",
+            "content": {
+              "text": "E2E tests require both Python backend and Node.js frontend. Setup: create Python environment (conda env create -f environment.yml -n nodetool), activate and install packages (conda activate nodetool && uv pip install git+... nodetool-core and nodetool-base), install web dependencies and Playwright browsers (cd web && npm install && npx playwright install chromium), then run npm run test:e2e.",
+              "originalHeader": "E2E Testing Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_28",
+            "type": "rule",
+            "content": {
+              "text": "Test structure: Component tests in src/components/__tests__/, Store tests in src/stores/__tests__/, Hook tests in src/hooks/__tests__/, Utility tests in src/utils/__tests__/, E2E tests in tests/e2e/.",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_29",
+            "type": "rule",
+            "content": {
+              "text": "Testing frameworks: Unit/Integration uses Jest 29.7 with ts-jest for TypeScript support. Component Testing uses React Testing Library 16.1. User Interactions use @testing-library/user-event. DOM Matchers use @testing-library/jest-dom. E2E Testing uses Playwright 1.57.",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_30",
+            "type": "rule",
+            "content": {
+              "text": "Test behavior, not implementation details.",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_31",
+            "type": "rule",
+            "content": {
+              "text": "Use accessible queries (getByRole, getByLabelText), use userEvent for realistic user interactions, mock external dependencies and API calls, and keep tests independent and isolated.",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_32",
+            "type": "rule",
+            "content": {
+              "text": "Follow existing test patterns in the codebase. See /web/TESTING.md for comprehensive testing guide, /web/TEST_HELPERS.md for test utilities and patterns, and .github/copilot-instructions.md for AI-specific guidelines.",
+              "originalHeader": "Testing"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_development_process",
+        "label": "Development Process",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "rule_33",
+            "type": "rule",
+            "content": {
+              "text": "Respect the component architecture in the frontend.",
+              "originalHeader": "Development Workflow"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_34",
+            "type": "rule",
+            "content": {
+              "text": "Keep UI changes consistent with the existing design system.",
+              "originalHeader": "Development Workflow"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_35",
+            "type": "rule",
+            "content": {
+              "text": "Use TypeScript for all new code.",
+              "originalHeader": "Development Workflow"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_36",
+            "type": "rule",
+            "content": {
+              "text": "Run linting and type checking before submitting changes.",
+              "originalHeader": "Development Workflow"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_37",
+            "type": "rule",
+            "content": {
+              "text": "When starting a new feature, check the root AGENTS.md Quick Navigation. When working on UI components, refer to /web/src/components/AGENTS.md. When adding state management, refer to /web/src/stores/AGENTS.md. When creating custom hooks, refer to /web/src/hooks/AGENTS.md.",
+              "originalHeader": "When to Use Which Guide"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_38",
+            "type": "rule",
+            "content": {
+              "text": "When adding new sections or directories: create an AGENTS.md file in the new directory, add breadcrumb navigation at the top, include cross-references to related guides, follow the established structure and patterns, update the root file's Quick Navigation section, keep content focused on what AI agents need to know, and include practical examples and code patterns.",
+              "originalHeader": "Contributing to AGENTS.md Files"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_39",
+            "type": "rule",
+            "content": {
+              "text": "For manual E2E debugging: Terminal 1 starts backend (conda activate nodetool && nodetool serve --port 7777), Terminal 2 starts frontend (cd web && npm start), Terminal 3 runs tests (cd web && npx playwright test).",
+              "originalHeader": "E2E Testing Setup"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_implementation_details",
+        "label": "Implementation Details",
+        "type": "category",
+        "count": 30,
+        "children": [
+          {
+            "id": "rule_40",
+            "type": "rule",
+            "content": {
+              "text": "Custom hooks must be prefixed with 'use' (e.g., useWorkflow, useNodeSelection), extract reusable logic, keep hooks focused on single responsibilities, and use TypeScript for all hook parameters and return types.",
+              "originalHeader": "Hooks Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_41",
+            "type": "rule",
+            "content": {
+              "text": "Use useEffect when you need to synchronize React with the outside world (side effects: network requests, subscriptions, timers, DOM mutations, logging, something that must run after render). Do NOT use useEffect to derive data from props/state, react to state changes inside render logic, or fix re-render performance.",
+              "originalHeader": "useEffect"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_42",
+            "type": "rule",
+            "content": {
+              "text": "Every value used inside useEffect must be in the dependency array or intentionally stable. If you can compute it during render, do it there instead of using useEffect.",
+              "originalHeader": "useEffect"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_43",
+            "type": "rule",
+            "content": {
+              "text": "Use useMemo when computation is expensive, result is reused across renders, or referential stability matters for child props or dependency arrays. Do NOT use useMemo when computation is cheap, to prevent re-renders, or when guessing about performance. useMemo caches values, not renders.",
+              "originalHeader": "useMemo"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_44",
+            "type": "rule",
+            "content": {
+              "text": "Use useCallback when passing functions to memoized children, when a function is a dependency of useEffect or useMemo, or when you need stable function identity. Do NOT use useCallback when the function is only used locally, the child is not memoized, or you are trying to speed things up blindly.",
+              "originalHeader": "useCallback"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_45",
+            "type": "rule",
+            "content": {
+              "text": "Use React.memo when a component is pure, receives stable props, renders often, and rendering is expensive. Do NOT use React.memo when props change every render, the component is small or cheap, or you need internal state updates to trigger render. Memoization only works if props are referentially stable.",
+              "originalHeader": "React.memo"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_46",
+            "type": "rule",
+            "content": {
+              "text": "Never add useEffect, useMemo, useCallback, or React.memo 'just in case', without measuring or clear reasoning, or to patch design problems. If performance is fine, do nothing.",
+              "originalHeader": "React.memo"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_47",
+            "type": "rule",
+            "content": {
+              "text": "Keep Zustand stores focused on specific domains (e.g., workflowStore, nodeStore), use TypeScript interfaces for store state, and implement actions as methods within the store.",
+              "originalHeader": "Zustand State Management"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_48",
+            "type": "rule",
+            "content": {
+              "text": "Use Immer for complex state updates via immer middleware. Keep state updates immutable when not using Immer. Use shallow comparison for selectors when possible.",
+              "originalHeader": "Zustand State Management"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_49",
+            "type": "rule",
+            "content": {
+              "text": "Store architecture best practices: Domain Separation (each store focuses on a specific domain), Action Collocation (actions defined within the store alongside state), Selector Optimization (use selectors to prevent unnecessary re-renders), Persistence (settings and preferences persisted to localStorage), Real-time Sync (WebSocket stores handle real-time updates), Error Handling (dedicated error stores for centralized error management).",
+              "originalHeader": "Store Architecture Best Practices"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_50",
+            "type": "rule",
+            "content": {
+              "text": "Use MUI components over custom HTML elements when available. Leverage MUI's built-in accessibility features. Use the sx prop for component-specific styling. Prefer composition over deep prop drilling.",
+              "originalHeader": "Material-UI (MUI) Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_51",
+            "type": "rule",
+            "content": {
+              "text": "For MUI theming: define custom theme extensions in theme configuration, use module augmentation for TypeScript support, use theme breakpoints for responsive design, leverage theme palette for consistent colors, and use theme typography variants for consistent text styling.",
+              "originalHeader": "Theming"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_52",
+            "type": "rule",
+            "content": {
+              "text": "For MUI performance: use styled() utility for reusable styled components, avoid inline styles and sx props for frequently re-rendering components, and use MUI's unstable_useEnhancedEffect for server-side rendering compatibility.",
+              "originalHeader": "Performance"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_53",
+            "type": "rule",
+            "content": {
+              "text": "For TanStack Query, use hierarchical query keys (e.g., ['workflows', 'list'] or ['workflow', workflowId]), create query key factories for consistency, and use TypeScript for query key types.",
+              "originalHeader": "TanStack Query (React Query)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_54",
+            "type": "rule",
+            "content": {
+              "text": "For TanStack Query configuration: set appropriate staleTime and cacheTime values, use the enabled option for conditional queries, implement proper error handling with onError callbacks, and use refetchOnWindowFocus judiciously.",
+              "originalHeader": "TanStack Query (React Query)"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_55",
+            "type": "rule",
+            "content": {
+              "text": "For TanStack Query mutations: use optimistic updates for better UX, implement proper rollback on mutation failures, invalidate related queries after successful mutations, and use useMutation hooks for side effects.",
+              "originalHeader": "TanStack Query (React Query)"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_56",
+            "type": "rule",
+            "content": {
+              "text": "For TanStack Router: use TypeScript for route parameters and search params, implement proper route guards and authentication, use nested routing for hierarchical UI structures, and define route-specific data loading.",
+              "originalHeader": "TanStack Router"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_57",
+            "type": "rule",
+            "content": {
+              "text": "For Emotion styled components: use styled() for reusable component styling, implement theme-aware styled components, use props for dynamic styling logic, and keep styled components co-located with their usage.",
+              "originalHeader": "Emotion CSS Guidelines"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_58",
+            "type": "rule",
+            "content": {
+              "text": "For Emotion performance: use CSS prop sparingly for one-off styles, prefer sx prop for MUI components, use css helper for shared style objects, and avoid recreating style objects on every render.",
+              "originalHeader": "Emotion CSS Guidelines"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_59",
+            "type": "rule",
+            "content": {
+              "text": "Keep components focused on single responsibilities, use composition over inheritance, implement proper prop interfaces with TypeScript, and use React.memo for performance optimization when needed.",
+              "originalHeader": "Component Architecture"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_60",
+            "type": "rule",
+            "content": {
+              "text": "For component file structure: co-locate related files (component, styles, tests), use index files for clean imports, separate presentation and container components, and keep components tree-shakeable.",
+              "originalHeader": "Component Architecture"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_61",
+            "type": "rule",
+            "content": {
+              "text": "For component error handling: implement error boundaries for component trees, use proper TypeScript error types, provide meaningful error messages to users, and log errors appropriately for debugging.",
+              "originalHeader": "Component Architecture"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_62",
+            "type": "rule",
+            "content": {
+              "text": "NodeStore.ts holds nodes, edges, workflow metadata, selection, viewport, hover, etc. It uses XYFlow node/edge types, validates edges, sanitizes the graph when metadata changes, and uses zundo temporal middleware for undo/redo on nodes/edges/workflow.",
+              "originalHeader": "Node & Workflow Management Stores (Expanded)"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_63",
+            "type": "rule",
+            "content": {
+              "text": "WorkflowRunner.ts manages WebSocket job execution. getWorkflowRunnerStore lazily creates one store per workflow ID. useWebsocketRunner returns a selected slice of the runner store based on the current workflow in WorkflowManagerContext.",
+              "originalHeader": "Node & Workflow Management Stores (Expanded)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_64",
+            "type": "rule",
+            "content": {
+              "text": "BaseNode.tsx is the generic node component for the majority of node types, driven by metadata. PlaceholderNode.tsx is used for unknown or not-yet-loaded node types to keep graphs stable.",
+              "originalHeader": "Workflow Editor"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_65",
+            "type": "rule",
+            "content": {
+              "text": "FrontendToolRegistry (web/src/lib/tools/frontendTools.ts) defines tools starting with 'ui_' that can be invoked by the backend agent (e.g., ui_add_node, ui_align_nodes). Built-in tools are defined in web/src/lib/tools/builtin/*.ts and registered from index.tsx imports.",
+              "originalHeader": "Global Chat & Agent Tools"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_66",
+            "type": "rule",
+            "content": {
+              "text": "useWorkflowGraphUpdater subscribes to GlobalChatStore's lastWorkflowGraphUpdate. When an assistant modifies a workflow graph, it converts the updated graph to XYFlow nodes/edges, updates the corresponding NodeStore, triggers autoLayout, and marks the workflow as not dirty.",
+              "originalHeader": "Node Editor & Workflow Hooks (Expanded)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_67",
+            "type": "rule",
+            "content": {
+              "text": "Use graphNodeToReactFlowNode, reactFlowNodeToGraphNode, graphEdgeToReactFlowEdge, and reactFlowEdgeToGraphEdge utilities for data transformation between backend API and ReactFlow formats.",
+              "originalHeader": "ReactFlow Integration Utilities"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_68",
+            "type": "rule",
+            "content": {
+              "text": "supabaseClient.ts configures the Supabase client using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, with local fallbacks in dev. useAuth.ts is a Zustand store that in localhost mode fakes a logged-in user with id '1' and skips Supabase.",
+              "originalHeader": "API Client & Environment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_69",
+            "type": "rule",
+            "content": {
+              "text": "For MUI dark mode support: use useMediaQuery to detect system preference, implement theme switching with proper state management, test components in both light and dark modes, and use theme-aware colors throughout the application.",
+              "originalHeader": "Dark Mode Support"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_ui_ux",
+        "label": "UI/UX",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "rule_70",
+            "type": "rule",
+            "content": {
+              "text": "Dashboard.tsx builds a Dockview-based workspace with AppHeader pinned at top, DockviewReact container with panels (welcome, setup, templates, workflows, recent-chats, chat). It uses AddPanelDropdown and LayoutMenu to allow adding panels and saving/restoring layouts via LayoutStore and Dockview's JSON export/import.",
+              "originalHeader": "Dashboard"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_71",
+            "type": "rule",
+            "content": {
+              "text": "TabsNodeEditor manages multiple open workflows as tabs, each tab embedding a NodeContext + NodeEditor. NodeEditor wires to NodeStore via useNodes/useTemporalNodes, uses useWebsocketRunner for workflow run state, and integrates NodeMenu for node search and insertion.",
+              "originalHeader": "Workflow Editor"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_72",
+            "type": "rule",
+            "content": {
+              "text": "NodeEditor has a CommandMenu (command palette) triggered by meta+k / ctrl+k and configures keyboard shortcuts via useNodeEditorShortcuts and KeyPressedStore.",
+              "originalHeader": "Workflow Editor"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_73",
+            "type": "rule",
+            "content": {
+              "text": "MiniAppPage.tsx exposes workflows as simpler apps: loads the workflow, derives input definitions, builds a React form for inputs, on submit clamps numeric values and runs the workflow, and displays status message, progress bar, and MiniAppResults for outputs. It has an 'Open in Editor' button to jump to /editor/<workflow.id>.",
+              "originalHeader": "Mini-Apps"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_74",
+            "type": "rule",
+            "content": {
+              "text": "Asset viewers (AudioViewer, ImageViewer, PDFViewer, TextViewer, VideoViewer) handle previewing different asset types using appropriate viewers (e.g., react-pdf, video tags, etc.).",
+              "originalHeader": "Assets & Asset Viewer"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_75",
+            "type": "rule",
+            "content": {
+              "text": "GlobalChat is thread-centric where each thread is persisted on the backend, can be loaded/deleted/summarized, and has Message history cached locally with pagination. agentMode toggle causes messages to trigger more planning and tool call behavior.",
+              "originalHeader": "Global Chat & Agent Tools"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_76",
+            "type": "rule",
+            "content": {
+              "text": "Use useNumberInput hook for sophisticated number input behavior (drag-to-change, clamping, decimal precision) and useDelayedHover for delayed hover logic for tooltips and menus.",
+              "originalHeader": "UI & UX Hooks (Expanded)"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_77",
+            "type": "rule",
+            "content": {
+              "text": "The text editor uses Lexical integration with LexicalEditor.tsx, EditorToolbar.tsx, EditorStatusBar.tsx, FindReplaceBar.tsx, and plugins for code highlighting, markdown paste, floating text format toolbar, and horizontal rule. It supports markdown export and syntax highlighting with Prism.",
+              "originalHeader": "Text Editor, Terminal, Audio"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_maintainability",
+        "label": "Maintanability",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "rule_78",
+            "type": "rule",
+            "content": {
+              "text": "Update AGENTS.md files when making changes: when modifying core functionality, update the relevant AGENTS.md.",
+              "originalHeader": "Documentation Maintenance"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_79",
+            "type": "rule",
+            "content": {
+              "text": "Review AGENTS.md documentation periodically (monthly) for stale content or broken links.",
+              "originalHeader": "Documentation Maintenance"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_80",
+            "type": "rule",
+            "content": {
+              "text": "Test all code examples in AGENTS.md files to verify they still work.",
+              "originalHeader": "Documentation Maintenance"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_81",
+            "type": "rule",
+            "content": {
+              "text": "Ensure AGENTS.md docs reflect current implementation (sync with codebase).",
+              "originalHeader": "Documentation Maintenance"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_82",
+            "type": "rule",
+            "content": {
+              "text": "For major changes, consider adding version notes to AGENTS.md files.",
+              "originalHeader": "Documentation Maintenance"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_83",
+            "type": "rule",
+            "content": {
+              "text": "Use useRenderLogger debug hook (development only) for tracking component re-render triggers when debugging performance issues.",
+              "originalHeader": "UI Interaction Hooks"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_84",
+            "type": "rule",
+            "content": {
+              "text": "All routes must attach a shared ErrorBoundary. Implement error boundaries for component trees and use proper TypeScript error types.",
+              "originalHeader": "Routes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem"
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_conf_env",
+        "label": "Configuration & Environment",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_85",
+            "type": "rule",
+            "content": {
+              "text": "Supabase client is configured using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables, with local fallbacks in dev.",
+              "originalHeader": "API Client & Environment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_86",
+            "type": "rule",
+            "content": {
+              "text": "isLocalhost is determined based on host or overrides: VITE_FORCE_LOCALHOST environment variable, query parameter, or localStorage value.",
+              "originalHeader": "API Client & Environment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_87",
+            "type": "rule",
+            "content": {
+              "text": "BASE_URL.ts defines the backend HTTP base URL. CHAT_URL and WORKER_URL (in BASE_URL.ts) define WebSocket connection URLs.",
+              "originalHeader": "API Client & Environment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph"
+            }
+          },
+          {
+            "id": "rule_88",
+            "type": "rule",
+            "content": {
+              "text": "Core configuration files are in web/src/config/: constants.ts (APP_NAME, VERSION, default zoom, default model, search tuning), models.ts (LLM recommendations), shortcuts.ts (node editor shortcut registry + tooltip helpers), defaultLayouts.ts (Dockview default layout).",
+              "originalHeader": "Directory Overview"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          },
+          {
+            "id": "rule_89",
+            "type": "rule",
+            "content": {
+              "text": "SettingsStore persists user preferences and application settings to localStorage. RemoteSettingStore handles server-side settings synchronization.",
+              "originalHeader": "UI State Management Stores"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

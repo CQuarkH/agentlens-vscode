@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AST Tree View: AzureAD/microsoft-identity-web - AzureAD_microsoft-identity-web.md</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow: hidden;
+        }
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-title { margin: 0; font-size: 1.2rem; }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+        
+        .left-pane {
+            flex: 0 0 40%;
+            overflow-y: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            box-sizing: border-box;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+        
+        .right-pane {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #graph-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #graph-container:active { cursor: grabbing; }
+        
+        .pane-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        #details-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 5;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        #details-panel h3 { margin-top: 0; color: #0f172a; font-size: 1.1rem; }
+        #details-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        #details-panel .close-btn:hover { color: #0f172a; }
+        
+        .node circle {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+        }
+        .node:hover circle {
+            stroke: #334155;
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            pointer-events: none;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #cbd5e1;
+            stroke-width: 1.5px;
+        }
+
+        .legend {
+            display: none; /* Temporarily hidden for testing purposes */
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+        .legend-item { display: flex; align-items: center; margin-bottom: 5px; }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 class="header-title">AzureAD/microsoft-identity-web - AzureAD_microsoft-identity-web.md - Strict Hierarchical Tree V1</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="left-pane" id="markdown-content">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; font-family: sans-serif;">Raw Document (AzureAD_microsoft-identity-web.md)</h2>
+            ---
+repo: &quot;AzureAD/microsoft-identity-web&quot;
+categories: []
+---
+Carefully review the agents.md file in the repository root. This contains your custom instructions for agent automation and development guidelines.
+        </div>
+        
+        <div class="right-pane">
+            <h2 class="pane-title">Hierarchical AST Tree</h2>
+            
+            <div id="graph-container"></div>
+            
+            <div id="details-panel">
+                <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+                <h3>Node Details</h3>
+                <div id="details-content">Click a node to view its structural properties and rules.</div>
+            </div>
+            
+            <div class="legend">
+                <strong>Visual Encoding</strong>
+                <div class="legend-item"><div class="legend-color" style="background: #1e293b;"></div> Root Node</div>
+                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Rule Instruction</div>
+                <br>
+                <strong>Category & Label Encodings</strong>
+                <div class="legend-item" style="margin-bottom: 2px;">📏 <strong>Height:</strong> Sub-items text density (40-120px)</div>
+                <div class="legend-item" style="margin-bottom: 2px;">↔️ <strong>Width:</strong> Number of nested rules (max 200px)</div>
+                <div class="legend-item">🔳 <strong>Border Density:</strong> Code presence multiplier</div>
+                <br>
+                <strong>Category Color = FRE Score</strong>
+                <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> &lt;30 High Load (Complex)</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> 30-50 Med-High Load</div>
+                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> 50-70 Medium Load</div>
+                <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> &gt;70 Low Load (Easy)</div>
+                <br>
+                <small><em>Hint: Click nodes to expand/collapse.</em></small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {"name": "AzureAD/microsoft-identity-web - AzureAD_microsoft-identity-web.md", "group": "root", "width": 220, "height": 60, "color": "#1e293b", "border_width": 2, "details": "Repository Name: AzureAD/microsoft-identity-web - AzureAD_microsoft-identity-web.md", "children": [{"name": "General", "group": "category", "width": 165, "height": 58, "color": "#E41A1C", "border_width": 2.0, "details": "Category: General<br>Total Labels: 1<br>Total Rules: 1<br>Code Ratio: 0.0", "children": [{"name": "System Overview", "group": "label", "width": 147, "height": 50, "color": "#e31a1b", "border_width": 2.0, "fre_score": 32.5, "details": "Label: System Overview<br>Total Rules: 1<br>Code Ratio: 0.0<br>FRE Cognitive Load: 32.5", "children": [{"name": "The document instructs to care...", "group": "rule", "width": 400, "height": 36, "color": "#640b0b", "border_width": 1.5, "raw_text": "The document instructs to carefully review the agents.md file in the repository root, as it contains custom instructions for agent automation and development guidelines.", "details": "\n            The document instructs to carefully review the agents.md file in the repository root, as it contains custom instructions for agent automation and development guidelines.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Root-level agents.md<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}]};
+
+        const container = document.getElementById("graph-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const g = svg.append("g");
+        
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+            
+        svg.call(zoom);
+
+        let root = d3.hierarchy(treeData);
+        let i = 0;
+        
+        // Progressive disclosure: Collapse all labels (depth 1 children) initially
+        root.descendants().forEach(d => {
+            if (d.depth >= 1) { 
+                d._children = d.children;
+                d.children = null;
+            }
+        });
+
+        // Config layout: dx controls base vertical spacing unit, dy controls horizontal depth spread
+        const dx = 1;  
+        const dy = 320; 
+        const treeLayout = d3.tree()
+            .nodeSize([dx, dy])
+            .separation((a, b) => {
+                // Read exact rectangle height defined by the server (or fallback 40px)
+                const hA = a.data.height || 40;
+                const hB = b.data.height || 40;
+                
+                // Keep 30px vertical padding between the borders of the bounding boxes
+                return (hA + hB) / 2 + 30;
+            });
+        
+        // Containers
+        g.append("g").attr("class", "links");
+        g.append("g").attr("class", "nodes");
+        
+        // Base center
+        g.attr("transform", `translate(${dy / 2},${height / 2})`);
+
+        function update(source) {
+            treeLayout(root);
+            
+            const nodes = root.descendants();
+            const links = root.links();
+            
+            // LINKS
+            const link = g.select(".links").selectAll("path.link")
+                .data(links, d => d.target.id || (d.target.id = ++i));
+                
+            const linkEnter = link.enter().append("path")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0 || source.x, y: source.y0 || source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                });
+                
+            link.merge(linkEnter).transition().duration(400)
+                .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                
+            link.exit().transition().duration(400)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                }).remove();
+                
+            // NODES
+            const node = g.select(".nodes").selectAll("g.node")
+                .data(nodes, d => d.id || (d.id = ++i));
+                
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0 || source.y},${source.x0 || source.x})`)
+                .on("click", (event, d) => {
+                    showDetails(d.data, event.currentTarget);
+                    if (d.data.group === "rule" && d.data.raw_text) {
+                        highlightTextInLeftPane(d.data.raw_text, d.data.color);
+                    } else {
+                        clearHighlightInLeftPane();
+                    }
+                    
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else if (d._children) {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    if (d.data.group !== "rule") {
+                        update(d);
+                    }
+                });
+                
+            // Rectangles (For Categories, Labels, Rules)
+            nodeEnter.filter(d => d.data.group !== "root").append("rect")
+                .attr("class", "main-rect")
+                .attr("width", d => d.data.width || 120)
+                .attr("height", d => d.data.height || 40)
+                .attr("y", d => -(d.data.height || 40) / 2)
+                .attr("rx", 6).attr("ry", 6)
+                .attr("fill", d => d.data.color)
+                .attr("stroke-width", d => d.data.border_width || 2)
+                .attr("stroke", "#0f172a");
+                
+            // Markdown Icon (Only for Root node)
+            nodeEnter.filter(d => d.data.group === "root")
+                .append("image")
+                .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
+                .attr("width", 32)
+                .attr("height", 32)
+                .attr("x", -16)
+                .attr("y", -16);
+                
+            // White Pill Background for Text (Only for Categories and Labels with color conflict issues)
+            nodeEnter.append("rect")
+                .attr("class", "text-bg")
+                .attr("fill", "rgba(255, 255, 255, 0.70)")
+                .attr("rx", 3).attr("ry", 3)
+                .style("pointer-events", "none");
+                
+            // Text inside Nodes
+            nodeEnter.append("text")
+                .attr("class", "node-label")
+                .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
+                .attr("x", d => d.data.group === "root" ? 0 : 12)
+                .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
+                .text(d => d.data.name)
+                .style("fill", d => d.data.group === "rule" ? "#ffffff" : "#0f172a")
+                .style("font-weight", "500");
+                
+            // Transitions
+            const nodeUpdate = nodeEnter.merge(node);
+            
+            // Adjust Background Pill dynamically based on Typography Bounding Box 
+            nodeUpdate.each(function(d) {
+                const textNode = d3.select(this).select(".node-label").node();
+                if (textNode && textNode.getBBox) {
+                    const bbox = textNode.getBBox();
+                    if (d.data.group === "category" || d.data.group === "label") {
+                        d3.select(this).select(".text-bg")
+                            .attr("x", bbox.x - 4)
+                            .attr("y", bbox.y - 2)
+                            .attr("width", bbox.width + 8)
+                            .attr("height", bbox.height + 4);
+                    } else {
+                        // Roots and Rules don't need the white pill (rules are yellow, root is dark)
+                        d3.select(this).select(".text-bg")
+                            .attr("width", 0).attr("height", 0);
+                    }
+                }
+            });
+            
+            nodeUpdate.transition().duration(400)
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+                
+            nodeUpdate.select("rect").transition().duration(400)
+                .attr("stroke", "#0f172a");
+                
+            node.exit().transition().duration(400)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .style("opacity", 0)
+                .remove();
+                
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+        
+        root.x0 = height / 2;
+        root.y0 = 0;
+        update(root);
+
+        function showDetails(nodeData, nodeElement) {
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            
+            let html = `<strong>${nodeData.group.toUpperCase()}</strong><br>`;
+            html += nodeData.details;
+            
+            content.innerHTML = html;
+            panel.style.display = "block";
+            
+            // Optionally we could add a CSS class for active states here without mutating the raw stroke color
+        }
+
+        window.addEventListener("resize", () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            svg.attr("width", newWidth).attr("height", newHeight);
+        });
+
+        // Guarda el texto plano original del left pane (una sola vez)
+        const leftPaneEl = document.getElementById("markdown-content");
+        const originalLeftHtml = leftPaneEl.innerHTML;
+
+        function escapeRegex(s) {
+            return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function highlightTextInLeftPane(searchText, highlightColor) {
+            // 1. Restaurar HTML limpio
+            leftPaneEl.innerHTML = originalLeftHtml;
+
+            if (!searchText || searchText.trim() === "") return;
+
+            try {
+                // 2. Extraer solo palabras alfanuméricas del raw_text
+                const words = searchText.match(/[A-Za-z0-9À-ſ]+/g);
+                if (!words || words.length === 0) return;
+
+                // Limitar palabras para evitar bloqueo en reglas largas
+                const searchWords = words.length > 20 ? [...words.slice(0, 10), ...words.slice(-5)] : words;
+
+                // 3. Escapar cada palabra como literal de regex y unirlas con
+                //    [\s\S]{0,80}? para permitir cualquier carácter entre ellas
+                //    (incluyendo tags HTML, entidades, saltos de línea, símbolos markdown)
+                const parts = searchWords.map(w => escapeRegex(w));
+                const fuzzyPattern = parts.join('[\\s\\S]{0,80}?');
+                const regex = new RegExp('(' + fuzzyPattern + ')', 'gi');
+
+                let matchFound = false;
+
+                // 4. Aplicar resaltado directamente sobre el innerHTML
+                leftPaneEl.innerHTML = originalLeftHtml.replace(regex, (match) => {
+                    matchFound = true;
+                    return `<mark style="background-color:${highlightColor};color:#ffffff;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${highlightColor};">` + match + '</mark>';
+                });
+
+                // 5. Autoscroll al primer match
+                if (matchFound) {
+                    const mark = leftPaneEl.querySelector("mark");
+                    if (mark) mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    console.warn("[highlight] No match found for:", searchText);
+                }
+            } catch (e) {
+                console.error("[highlight] Failed:", e);
+            }
+        }
+
+        function clearHighlightInLeftPane() {
+            leftPaneEl.innerHTML = originalLeftHtml;
+        }
+    </script>
+</body>
+</html>
+    

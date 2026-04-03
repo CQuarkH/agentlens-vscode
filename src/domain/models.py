@@ -183,9 +183,9 @@ class RuleLabel(BaseModel):
 
     @property
     def tree_width(self) -> int:
-        """Width = 80 + fre_score. Capped between 80px and 180px."""
-        width = 80 + self.computed_fre_score
-        return max(80, min(180, width))
+        """Width inverted to FRE: Harder readability (Low FRE) = Wider Block."""
+        width = 180 - self.computed_fre_score
+        return int(max(80, min(180, width)))
         
     @property
     def tree_height(self) -> int:

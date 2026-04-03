@@ -1,0 +1,2012 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AST Tree View: nodetool-ai/nodetool - nodetool-ai_nodetool.md</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow: hidden;
+        }
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-title { margin: 0; font-size: 1.2rem; }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+        
+        .left-pane {
+            flex: 0 0 40%;
+            overflow-y: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            box-sizing: border-box;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+        
+        .right-pane {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #graph-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #graph-container:active { cursor: grabbing; }
+        
+        .pane-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        #details-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 5;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        #details-panel h3 { margin-top: 0; color: #0f172a; font-size: 1.1rem; }
+        #details-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        #details-panel .close-btn:hover { color: #0f172a; }
+        
+        .node circle {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+        }
+        .node:hover circle {
+            stroke: #334155;
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            pointer-events: none;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #cbd5e1;
+            stroke-width: 1.5px;
+        }
+
+        .legend {
+            display: none; /* Temporarily hidden for testing purposes */
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+        .legend-item { display: flex; align-items: center; margin-bottom: 5px; }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 class="header-title">nodetool-ai/nodetool - nodetool-ai_nodetool.md - Strict Hierarchical Tree V1</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="left-pane" id="markdown-content">
+            <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; font-family: sans-serif;">Raw Document (nodetool-ai_nodetool.md)</h2>
+            ---
+repo: &quot;nodetool-ai/nodetool&quot;
+categories: [&quot;System Overview&quot;, &quot;Architecture&quot;, &quot;Configuration &amp; Environment&quot;, &quot;Build &amp; Run&quot;, &quot;Test&quot;, &quot;Development Process&quot;, &quot;Implementation Details&quot;, &quot;UI/UX&quot;, &quot;Maintanability&quot;]
+---
+# AGENT RULES
+
+This file provides guidance to Agents when working with code in this repository.
+
+## Quick Navigation
+
+### Web Application (`/web/src/`)
+- **[Web UI Overview](web/src/AGENTS.md)** - React application structure and patterns
+- **[Components](web/src/components/AGENTS.md)** - UI component architecture and best practices  
+- **[Stores](web/src/stores/AGENTS.md)** - Zustand state management patterns
+- **[Contexts](web/src/contexts/AGENTS.md)** - React context integration with stores
+- **[Hooks](web/src/hooks/AGENTS.md)** - Custom React hooks and patterns
+- **[Utils](web/src/utils/AGENTS.md)** - Utility functions and helpers
+- **[ServerState](web/src/serverState/AGENTS.md)** - TanStack Query and API integration
+- **[Lib](web/src/lib/AGENTS.md)** - Third-party library integrations (WebSocket, Supabase, Frontend Tools)
+- **[Config](web/src/config/AGENTS.md)** - Configuration management and constants
+
+### Desktop Application
+- **[Electron](electron/src/AGENTS.md)** - Electron desktop app, IPC, and system integration
+
+### Mobile Application
+- **[Mobile README](mobile/README.md)** - React Native/Expo mobile app setup and usage
+- **[Mobile Quick Start](mobile/QUICKSTART.md)** - Step-by-step guide to run the mobile app
+- **[Mobile Architecture](mobile/ARCHITECTURE.md)** - Architecture and implementation details
+
+### Documentation &amp; Build
+- **[Documentation](docs/AGENTS.md)** - Documentation structure and writing guidelines
+- **[Scripts](scripts/AGENTS.md)** - Build and release scripts
+- **[Workflow Runner](workflow_runner/AGENTS.md)** - Standalone workflow execution app
+
+### Additional Resources
+- **[GitHub Copilot Instructions](.github/copilot-instructions.md)** - GitHub Copilot-specific patterns and examples
+
+---
+
+## Project Overview
+
+NodeTool is an open-source, privacy-first, no-code platform for rapidly building and automating AI workflows. It enables users to create sophisticated AI solutions visually through a drag-and-drop interface with no coding required.
+
+## Architecture
+
+NodeTool follows a client-server architecture with multiple components:
+
+1. **Frontend Components:**
+
+   - Web UI (React/TypeScript): Visual editor for building AI workflows
+   - Electron Wrapper: Packages the web UI into a desktop application
+   - Mobile App (React Native/Expo): Browse and run Mini Apps on iOS/Android
+
+2. **Backend Components:**
+
+   - API Server: HTTP endpoints for workflow management
+   - WebSocket Runner: Real-time communication during workflow execution
+   - Backend is not part of this repository
+
+3. **Data Flow:**
+   - User creates workflows in the editor
+   - Workflows are executed through the WebSocket Runner
+   - Workers process the workflow nodes (local or cloud)
+   - Results are streamed back to the UI in real-time
+
+## Key Directories
+
+- `/web`: Main React web application (editor UI)
+- `/electron`: Electron desktop app wrapper
+- `/mobile`: React Native mobile app (Mini Apps viewer)
+- `/docs`: Documentation files
+- `/scripts`: Build and release scripts
+
+## Important Commands
+
+### Development Setup
+
+1. **Environment Activation (Local Development Only):**
+   When running Python commands locally, use conda:
+
+   ```bash
+   conda activate nodetool
+   ```
+
+   **Note:** GitHub CI and Copilot Agent use a different setup via `.github/workflows/copilot-setup-steps.yml` - no conda needed there.
+
+2. **Web UI Development:**
+
+   ```bash
+   cd web
+   npm install
+   npm start
+   ```
+
+   - Access at &lt;http://localhost:3000&gt;
+
+3. **Electron App Development:**
+
+   ```bash
+   # Build the web UI first
+   cd web
+   npm install
+   npm run build
+   cd ..
+
+   # Run with Electron
+   cd electron
+   npm install
+   npm start
+   ```
+
+4. **E2E Testing Setup:**
+
+   E2E tests require both Python backend and Node.js frontend:
+
+   ```bash
+   # 1. Create Python environment (first time only)
+   conda env create -f environment.yml -n nodetool
+
+   # 2. Activate and install packages
+   conda activate nodetool
+   uv pip install git+https://github.com/nodetool-ai/nodetool-core git+https://github.com/nodetool-ai/nodetool-base
+
+   # 3. Verify nodetool installation
+   nodetool --help
+
+   # 4. Install web dependencies and Playwright browsers
+   cd web
+   npm install
+   npx playwright install chromium
+
+   # 5. Run e2e tests (automatically starts servers)
+   npm run test:e2e
+   ```
+
+   **NodeTool Server Details:**
+   
+   The server provides:
+   - REST API endpoints at `http://localhost:7777/api/`
+   - Health check at `http://localhost:7777/health`
+   - WebSocket connections for workflow execution
+   - Models API for managing AI models
+
+   **Manual Testing** (for debugging):
+   ```bash
+   # Terminal 1: Start backend
+   conda activate nodetool
+   nodetool serve --port 7777
+
+   # Terminal 2: Start frontend
+   cd web
+   npm start
+
+   # Terminal 3: Run tests
+   cd web
+   npx playwright test
+   ```
+
+### Build Commands
+
+1. **Web UI Build:**
+
+   ```bash
+   cd web
+   npm run build
+   ```
+
+2. **Electron App Build:**
+
+   ```bash
+   cd electron
+   npm run build
+   ```
+
+### Linting &amp; Type Checking
+
+1. **Using Make (Recommended):**
+
+   ```bash
+   make typecheck        # Type check all packages
+   make lint             # Lint all packages
+   make lint-fix         # Auto-fix linting issues
+   ```
+
+2. **Web UI:**
+
+   ```bash
+   cd web
+   npm run lint        # Run ESLint
+   npm run lint:fix    # Fix linting issues
+   npm run typecheck   # Check TypeScript types
+   ```
+
+3. **Electron App:**
+
+   ```bash
+   cd electron
+   npm run lint
+   npm run lint:fix
+   npm run typecheck
+   ```
+
+### Testing
+
+1. **Web UI Tests (Unit/Integration):**
+
+   ```bash
+   cd web
+   npm test                    # Run all tests
+   npm run test:watch          # Watch mode for development
+   npm run test:coverage       # Generate coverage report
+   npm run test:summary        # Summary output only
+   ```
+
+2. **E2E Tests (End-to-End):**
+
+   ```bash
+   cd web
+   npm run test:e2e           # Run all e2e tests
+   npm run test:e2e:ui        # Interactive UI mode
+   npm run test:e2e:headed    # Run in headed mode (see browser)
+   ```
+
+3. **Test Documentation:**
+   - See `/web/TESTING.md` for comprehensive testing guide
+   - See `/web/TEST_HELPERS.md` for test utilities and patterns
+   - See `.github/copilot-instructions.md` for AI-specific guidelines
+
+4. **Test Structure:**
+   - Component tests: `src/components/__tests__/`
+   - Store tests: `src/stores/__tests__/`
+   - Hook tests: `src/hooks/__tests__/`
+   - Utility tests: `src/utils/__tests__/`
+   - E2E tests: `tests/e2e/`
+
+5. **Testing Frameworks:**
+   - **Unit/Integration**: Jest 29.7 with ts-jest for TypeScript support
+   - **Component Testing**: React Testing Library 16.1
+   - **User Interactions**: @testing-library/user-event
+   - **DOM Matchers**: @testing-library/jest-dom
+   - **E2E Testing**: Playwright 1.57
+
+6. **Key Testing Principles:**
+   - Test behavior, not implementation details
+   - Use accessible queries (getByRole, getByLabelText)
+   - Use userEvent for realistic user interactions
+   - Mock external dependencies and API calls
+   - Keep tests independent and isolated
+   - Follow existing test patterns in the codebase
+
+## Mandatory Post-Change Verification
+
+After making any code changes, you MUST run the following commands to ensure code quality:
+
+```bash
+make typecheck  # Type check all packages
+make lint       # Lint all packages
+make test       # Run all tests
+```
+
+**Keep it green** - All three commands must pass with exit code 0 before considering the task complete.
+
+If any of these commands fail:
+1. Fix the errors reported
+2. Re-run the failing command(s)
+3. Continue until all three pass
+
+This ensures:
+- Type safety across the codebase
+- Consistent code style and patterns
+- No regressions in existing functionality
+
+---
+
+## Development Workflow
+
+When working on this codebase:
+
+1. Respect the component architecture in the frontend
+2. Keep UI changes consistent with the existing design system
+3. Use TypeScript for all new code
+4. Run linting and type checking before submitting changes
+
+## React Best Practices
+
+### Hooks Guidelines
+
+1. **Custom Hooks:**
+
+   - Prefix with `use` (e.g., `useWorkflow`, `useNodeSelection`)
+   - Extract reusable logic into custom hooks
+   - Keep hooks focused on single responsibilities
+   - Use TypeScript for all hook parameters and return types
+
+2. **Built-in Hooks:**
+
+   #### useEffect
+
+   **Use when:**
+   - You need to synchronize React with the outside world.
+   - Side effects: network requests, subscriptions, timers, DOM mutations, logging.
+   - Something must run after render.
+
+   **Do not use when:**
+   - You only derive data from props or state.
+   - You want to &quot;react&quot; to state changes inside render logic.
+   - You try to fix re-render performance.
+
+   **Rules:**
+   - Effects are for effects, not data flow.
+   - If you can compute it during render, do it there.
+   - Every value used inside must be in the dependency array or intentionally stable.
+
+   **Pattern:**
+
+   ```typescript
+   useEffect(() =&gt; {
+     fetchData(id)
+   }, [id])
+   ```
+
+   **Smell:**
+
+   ```typescript
+   useEffect(() =&gt; setValue(a + b), [a, b]) // should be plain const value = a + b
+   ```
+
+   #### useMemo
+
+   **Use when:**
+   - Computation is expensive.
+   - Result is reused across renders.
+   - Referential stability matters for child props or dependency arrays.
+
+   **Do not use when:**
+   - Computation is cheap.
+   - You are trying to prevent re-renders.
+   - You are guessing about performance.
+
+   **Rule:**
+   useMemo caches values, not renders.
+
+   **Pattern:**
+
+   ```typescript
+   const filtered = useMemo(() =&gt; heavyFilter(data), [data])
+   ```
+
+   **Smell:**
+
+   ```typescript
+   const sum = useMemo(() =&gt; a + b, [a, b]) // pointless
+   ```
+
+   #### useCallback
+
+   **Use when:**
+   - Passing functions to memoized children.
+   - Function is a dependency of useEffect or useMemo.
+   - You need stable function identity.
+
+   **Do not use when:**
+   - Function is only used locally.
+   - Child is not memoized.
+   - You are trying to speed things up blindly.
+
+   **Rule:**
+   useCallback is just useMemo for functions.
+
+   **Pattern:**
+
+   ```typescript
+   const onClick = useCallback(() =&gt; {
+     doSomething(id)
+   }, [id])
+   ```
+
+   **Smell:**
+
+   ```typescript
+   const onClick = useCallback(() =&gt; setOpen(true), []) // unnecessary unless passed down
+   ```
+
+   #### React.memo
+
+   **Use when:**
+   - Component is pure.
+   - It receives stable props.
+   - It renders often.
+   - Rendering is expensive.
+
+   **Do not use when:**
+   - Props change every render.
+   - Component is small or cheap.
+   - You need internal state updates to trigger render.
+
+   **Rule:**
+   Memoization only works if props are referentially stable.
+
+   **Pattern:**
+
+   ```typescript
+   const Item = React.memo(function Item({ data, onSelect }) {
+     ...
+   })
+   ```
+
+   **Smell:**
+
+   ```typescript
+   &lt;Item data={{ x: 1 }} /&gt; // new object every render breaks memo
+   ```
+
+   **Combined rules:**
+   - `useEffect` → external world
+   - `useMemo` → expensive values
+   - `useCallback` → stable functions
+   - `React.memo` → stable components
+
+   **Never:**
+   - Add these &quot;just in case&quot;
+   - Add them without measuring or clear reasoning
+   - Use them to patch design problems
+
+   **If performance is fine:**
+   Do nothing.
+
+### Existing Custom Hooks Reference
+
+The project includes many specialized hooks organized by functionality:
+
+#### Model Management Hooks
+
+- **`useLoraModels`**: Manages LoRA (Low-Rank Adaptation) model data
+- **`useModelBasePaths`**: Provides base cache directories for HuggingFace Hub and Ollama models
+- **`useModelsWithSize`**: Fetches model data with size information for storage planning
+- **`useOllamaModels`**: Manages Ollama model integration and caching
+- **`useRecommendedModels`**: Provides curated model recommendations based on use cases
+- **`useModelInfo`**: Detailed model metadata and specifications
+
+_Usage: Import these hooks in components that need AI model selection, configuration, or display._
+
+#### Node Editor Hooks
+
+- **`useNodeEditorShortcuts`**: Comprehensive keyboard shortcuts for the visual editor (copy, paste, delete, etc.)
+- **`useCreateNode`**: Factory hook for creating new nodes with proper metadata and positioning
+- **`useFitView`**: Handles viewport fitting and auto-centering of node graphs
+- **`useProcessedEdges`**: Processes and validates connections between nodes
+- **`useAlignNodes`**: Provides node alignment and grid snapping functionality
+- **`useDuplicate`**: Handles node and edge duplication with proper ID generation
+- **`useFocusPan`**: Manages camera focus and panning to specific nodes or areas
+
+_Usage: These hooks are essential for the visual workflow editor interface._
+
+#### Workflow Management Hooks
+
+- **`useWorkflowGraphUpdater`**: Syncs workflow updates from GlobalChatStore with React context
+- **`useNamespaceTree`**: Manages hierarchical organization of workflow components
+
+_Usage: Import in components that manage workflow state and synchronization._
+
+#### UI Interaction Hooks
+
+- **`useNumberInput`**: Advanced number input with drag-to-change, constraints, and decimal precision
+- **`useRenderLogger`**: Debug hook for tracking component re-render triggers (development only)
+- **`useDelayedHover`**: Implements hover delays for tooltips and popover triggers
+- **`useCollectionDragAndDrop`**: Handles drag-and-drop operations for asset collections
+
+_Usage: These hooks enhance user interaction patterns and provide debugging capabilities._
+
+#### File &amp; Asset Management Hooks
+
+- **`useFileDrop`** (in `/handlers/`): Handles file drag-and-drop with type validation and asset uploading
+- **`useDropHandler`**: Manages dropping files onto the canvas to create nodes
+- **`useCopyPaste`**: Implements copy/paste functionality for nodes and edges
+- **`useAssetUpload`**: Handles asset upload with progress tracking and error handling
+- **`addNodeFromAsset`**: Creates appropriate nodes from uploaded assets
+
+_Usage: Import these for file handling, asset management, and node creation from assets._
+
+#### Browser &amp; Hardware Hooks
+
+- **`useWaveRecorder`**: Audio recording functionality using Web Audio API
+- **`useIpcRenderer`**: Electron IPC communication for desktop app features
+
+_Usage: These hooks provide browser API access and desktop app integration._
+
+#### Connection &amp; Context Hooks
+
+- **`useConnectionHandlers`**: Manages node connections, validation, and connection logic
+- **`useResizePanel`**: Handles resizable panel behavior for sidebars and drawers
+- **Context menu hooks**: Various hooks for right-click context menus
+
+_Usage: These hooks manage graph connections and UI panel behaviors._
+
+#### Hook Usage Patterns
+
+1. **Model Hooks**: Use React Query patterns with proper cache keys and stale times
+
+   ```typescript
+   const { data: models, isLoading, error } = useHuggingFaceModels();
+   ```
+
+2. **Editor Hooks**: Often return handler functions and state
+
+   ```typescript
+   const { handleCopy, handlePaste, selectedNodes } = useCopyPaste();
+   ```
+
+3. **UI Hooks**: Return event handlers and state for component interaction
+
+   ```typescript
+   const { handleMouseEnter, handleMouseLeave } = useDelayedHover(
+     callback,
+     300
+   );
+   ```
+
+4. **File Hooks**: Handle complex file operations with loading states
+
+   ```typescript
+   const { onDragOver, onDrop, uploading, filename } = useFileDrop({
+     type: &quot;image&quot;,
+     uploadAsset: true,
+     onChangeAsset: handleAssetChange,
+   });
+   ```
+
+### Zustand State Management
+
+1. **Store Structure:**
+
+   - Keep stores focused on specific domains (e.g., `workflowStore`, `nodeStore`)
+   - Use TypeScript interfaces for store state
+   - Implement actions as methods within the store
+
+2. **State Updates:**
+
+   - Use Immer for complex state updates via `immer` middleware
+   - Keep state updates immutable when not using Immer
+   - Use shallow comparison for selectors when possible
+
+3. **Store Organization:**
+
+   ```typescript
+   interface WorkflowState {
+     workflows: Workflow[];
+     activeWorkflow: Workflow | null;
+     actions: {
+       addWorkflow: (workflow: Workflow) =&gt; void;
+       setActiveWorkflow: (id: string) =&gt; void;
+     };
+   }
+   ```
+
+### Existing Zustand Stores Reference
+
+The application uses Zustand for state management with stores organized by domain:
+
+#### Core Infrastructure Stores
+
+- **`ApiClient.ts`**: HTTP client for backend API communication with authentication
+- **`ApiTypes.ts`**: TypeScript definitions for all API data structures and responses
+- **`useAuth.ts`**: Authentication store managing Supabase sessions and user state
+
+_Usage: These form the foundation for all API interactions and type safety._
+
+#### UI State Management Stores
+
+- **`AppHeaderStore.ts`**: Application header state (help dialogs, navigation)
+- **`PanelStore.ts`**: Resizable panel dimensions, visibility, and dragging state
+- **`RightPanelStore.ts`**: Right panel view state (inspector, assistant)
+- **`ContextMenuStore.ts`**: Context menu positioning and visibility
+- **`KeyPressedStore.ts`**: Keyboard state tracking and combo handling
+- **`NotificationStore.ts`**: Toast notifications and alert system
+- **`SettingsStore.ts`**: User preferences and application settings (persisted)
+- **`RemoteSettingStore.ts`**: Server-side settings synchronization
+
+_Usage: Import these stores in UI components that need to manage interface state._
+
+#### Asset &amp; File Management Stores
+
+- **`AssetStore.ts`**: Central asset management (upload, delete, search, organization)
+- **`AssetGridStore.ts`**: Asset grid view state (size, filters, selection, dialogs)
+- **`FileStore.ts`**: File system operations and directory tree management
+- **`CollectionStore.ts`**: Asset collection management and organization
+
+_Usage: Use these stores in components dealing with file uploads, asset browsers, and media management._
+
+#### Node &amp; Workflow Management Stores
+
+- **`NodeStore.ts`**: Core node graph state (35KB - largest store)
+
+  - Manages nodes, edges, selection, and connections
+  - Handles workflow serialization and auto-layout
+  - Provides undo/redo via temporal state (zundo)
+  - Integrates with ReactFlow for visual editing
+
+- **`NodeMenuStore.ts`**: Node selection menu (search, filtering, documentation)
+- **`ConnectableNodesStore.ts`**: Node connection validation and possibilities
+- **`ConnectionStore.ts`**: Active connection state and edge management
+- **`WorkflowRunner.ts`**: Workflow execution control and WebSocket communication
+
+_Usage: These stores power the visual node editor and workflow execution engine._
+
+#### AI Model Management Stores
+
+- **`ModelStore.ts`**: AI model definitions and metadata
+- **`ModelDownloadStore.ts`**: Model download progress and queue management
+- **`ModelManagerStore.ts`**: Model source management (downloaded vs recommended)
+- **`MetadataStore.ts`**: Node metadata and model recommendations
+
+_Usage: Import these in components that handle AI model selection, downloading, and configuration._
+
+#### Execution &amp; Results Stores
+
+- **`ResultsStore.ts`**: Node execution results, progress, and output chunks
+- **`StatusStore.ts`**: Node execution status tracking
+- **`ErrorStore.ts`**: Error handling and reporting across workflows
+- **`LogStore.ts`**: Application logging and debug information
+
+_Usage: These stores handle workflow execution state and results display._
+
+#### Real-time Communication Stores
+
+- **`GlobalChatStore.ts`**: Global chat interface with WebSocket integration (24KB)
+
+  - Manages chat messages and streaming
+  - Handles tool calls and planning updates
+  - Integrates with Supabase for persistence
+  - Manages WebSocket connections
+
+- **`WebSocketUpdatesStore.ts`**: System stats and real-time updates
+- **`SessionStateStore.ts`**: Session-level state (clipboard, temporary data)
+
+_Usage: These stores handle real-time communication and global chat functionality._
+
+#### Utility &amp; Helper Files
+
+- **`customEquality.ts`**: Custom equality functions for Zustand state updates
+- **`formatNodeDocumentation.ts`**: Node documentation formatting utilities
+- **`fuseOptions.ts`**: Fuse.js configuration for fuzzy search
+- **`uuidv4.ts`**: UUID generation utility
+- **`workflowUpdates.ts`**: Workflow update operations and sync
+
+#### ReactFlow Integration Utilities
+
+- **`graphNodeToReactFlowNode.ts`**: Converts backend graph nodes to ReactFlow format
+- **`reactFlowNodeToGraphNode.ts`**: Converts ReactFlow nodes to backend format
+- **`graphEdgeToReactFlowEdge.ts`**: Converts backend edges to ReactFlow format
+- **`reactFlowEdgeToGraphEdge.ts`**: Converts ReactFlow edges to backend format
+
+_Usage: These utilities handle data transformation between backend API and ReactFlow._
+
+#### Store Usage Patterns
+
+1. **Basic Store Usage:**
+
+   ```typescript
+   // Select specific state with selectors
+   const nodes = useNodeStore((state) =&gt; state.nodes);
+   const addNode = useNodeStore((state) =&gt; state.addNode);
+
+   // Use shallow equality for objects
+   const { selectedAssets, searchTerm } = useAssetGridStore(
+     (state) =&gt; ({
+       selectedAssets: state.selectedAssets,
+       searchTerm: state.searchTerm,
+     }),
+     shallow
+   );
+   ```
+
+2. **Persisted Store Pattern:**
+
+   ```typescript
+   // Settings store uses persistence
+   const useSettingsStore = create&lt;SettingsState&gt;()(
+     persist(
+       (set) =&gt; ({
+         gridSnap: 20,
+         updateGridSnap: (value) =&gt; set({ gridSnap: value }),
+       }),
+       { name: &quot;settings&quot; }
+     )
+   );
+   ```
+
+3. **Temporal Store Pattern (Undo/Redo):**
+
+   ```typescript
+   // NodeStore uses temporal middleware
+   const useNodeStore = create&lt;NodeState&gt;()(
+     temporal(
+       (set, get) =&gt; ({
+         nodes: [],
+         undo: () =&gt; get().temporal.undo(),
+         redo: () =&gt; get().temporal.redo(),
+       }),
+       { limit: 100 }
+     )
+   );
+   ```
+
+4. **Store with Computed Values:**
+
+   ```typescript
+   // Use selectors for derived state
+   const selectedNodes = useNodeStore((state) =&gt;
+     state.nodes.filter((node) =&gt; node.selected)
+   );
+   ```
+
+#### Store Architecture Best Practices
+
+1. **Domain Separation**: Each store focuses on a specific domain (assets, nodes, UI)
+2. **Action Collocation**: Actions are defined within the store alongside state
+3. **Selector Optimization**: Use selectors to prevent unnecessary re-renders
+4. **Persistence**: Settings and preferences are persisted to localStorage
+5. **Real-time Sync**: WebSocket stores handle real-time updates
+6. **Error Handling**: Dedicated error stores for centralized error management
+
+### Material-UI (MUI) Guidelines
+
+1. **Component Usage:**
+
+   - Use MUI components over custom HTML elements when available
+   - Leverage MUI&#x27;s built-in accessibility features
+   - Use `sx` prop for component-specific styling
+   - Prefer composition over deep prop drilling
+
+2. **Theming:**
+
+   - Define custom theme extensions in theme configuration
+   - Use theme breakpoints for responsive design
+   - Leverage theme palette for consistent colors
+   - Use theme typography variants for consistent text styling
+
+3. **Performance:**
+   - Use `styled()` utility for reusable styled components
+   - Avoid inline styles and sx props for frequently re-rendering components
+   - Use MUI&#x27;s `unstable_useEnhancedEffect` for server-side rendering compatibility
+
+### TanStack Query (React Query)
+
+1. **Query Keys:**
+
+   - Use hierarchical query keys: `[&#x27;workflows&#x27;, &#x27;list&#x27;]` or `[&#x27;workflow&#x27;, workflowId]`
+   - Create query key factories for consistency
+   - Use TypeScript for query key types
+
+2. **Query Configuration:**
+
+   - Set appropriate `staleTime` and `cacheTime` values
+   - Use `enabled` option for conditional queries
+   - Implement proper error handling with `onError` callbacks
+   - Use `refetchOnWindowFocus` judiciously
+
+3. **Mutations:**
+   - Use optimistic updates for better UX
+   - Implement proper rollback on mutation failures
+   - Invalidate related queries after successful mutations
+   - Use `useMutation` hooks for side effects
+
+### TanStack Router
+
+1. **Route Definition:**
+
+   - Use TypeScript for route parameters and search params
+   - Implement proper route guards and authentication
+   - Use nested routing for hierarchical UI structures
+   - Define route-specific data loading
+
+2. **Navigation:**
+
+   - Use `useNavigate` for programmatic navigation
+   - Implement proper loading states during route transitions
+   - Use route-based code splitting for performance
+   - Handle navigation errors gracefully
+
+3. **Route Data:**
+   - Use route loaders for data fetching
+   - Implement proper error boundaries for route-level errors
+   - Use route context for sharing data between route components
+
+### MUI Theming Best Practices
+
+1. **Theme Structure:**
+
+   ```typescript
+   const theme = createTheme({
+     palette: {
+       primary: { main: &quot;#1976d2&quot; },
+       secondary: { main: &quot;#dc004e&quot; },
+       background: { default: &quot;#f5f5f5&quot; },
+     },
+     typography: {
+       fontFamily: &quot;Inter, sans-serif&quot;,
+       h1: { fontWeight: 600 },
+     },
+     components: {
+       MuiButton: {
+         styleOverrides: {
+           root: { textTransform: &quot;none&quot; },
+         },
+       },
+     },
+   });
+   ```
+
+2. **Custom Theme Extensions:**
+
+   - Extend theme interface for custom properties
+   - Use module augmentation for TypeScript support
+   - Create semantic color tokens (e.g., `success`, `warning`)
+   - Define consistent spacing and sizing scales
+
+3. **Dark Mode Support:**
+   - Use `useMediaQuery` to detect system preference
+   - Implement theme switching with proper state management
+   - Test components in both light and dark modes
+   - Use theme-aware colors throughout the application
+
+### Emotion CSS Guidelines
+
+1. **Styled Components:**
+
+   - Use `styled()` for reusable component styling
+   - Implement theme-aware styled components
+   - Use props for dynamic styling logic
+   - Keep styled components co-located with their usage
+
+2. **CSS-in-JS Patterns:**
+
+   ```typescript
+   const StyledButton = styled(Button)(({ theme, variant }) =&gt; ({
+     borderRadius: theme.spacing(1),
+     padding: theme.spacing(1, 2),
+     ...(variant === &quot;primary&quot; &amp;&amp; {
+       backgroundColor: theme.vars.palette.primary.main,
+       color: theme.vars.palette.primary.contrastText,
+     }),
+   }));
+   ```
+
+3. **Performance Considerations:**
+   - Use CSS prop sparingly for one-off styles
+   - Prefer `sx` prop for MUI components
+   - Use `css` helper for shared style objects
+   - Avoid recreating style objects on every render
+
+### Component Architecture
+
+1. **Component Organization:**
+
+   - Keep components focused on single responsibilities
+   - Use composition over inheritance
+   - Implement proper prop interfaces with TypeScript
+   - Use `React.memo` for performance optimization when needed
+
+2. **File Structure:**
+
+   - Co-locate related files (component, styles, tests)
+   - Use index files for clean imports
+   - Separate presentation and container components
+   - Keep components tree-shakeable
+
+3. **Error Handling:**
+   - Implement error boundaries for component trees
+   - Use proper TypeScript error types
+   - Provide meaningful error messages to users
+   - Log errors appropriately for debugging
+
+## Technologies Used
+
+Technologies in `web/package.json`:
+
+- **React 18**: UI framework with TypeScript
+- **Vite 6**: Build tool and dev server (`web/vite.config.ts`)
+- **Material UI + Emotion**: Theming and component library (`web/src/components/themes/ThemeNodetool.tsx`)
+- **React Router v7**: Client-side routing (`react-router-dom`)
+- **XYFlow** (`@xyflow/react`): Visual node graph editor
+- **Zustand**: Client state management
+- **TanStack React Query** (`@tanstack/react-query`): Server state management
+- **Supabase** (`@supabase/supabase-js`): Authentication and persistence
+- **Dockview**: Dashboard layout system
+- **Lexical**: Rich text editing
+- **Xterm.js**: Terminal emulation
+- **Wavesurfer.js**: Audio waveform visualization
+- **Plotly**: Data visualization and charts
+- **ELK.js** (`elkjs`): Graph auto-layout algorithm
+
+Backend:
+
+- **Python**: Core language
+- **FastAPI**: API framework
+- **WebSockets**: Real-time communication
+- **AI Integration**: Supports Hugging Face, Ollama, OpenAI, Anthropic, and more
+
+Desktop:
+
+- **Electron**: Desktop app wrapper
+
+---
+
+## Application Entry Point &amp; Routing
+
+### Entry Point
+
+`web/src/index.tsx` is the SPA entry point that:
+
+- Imports global styles and polyfills:
+  - XYFlow styles, various CSS files (`vars.css`, `index.css`, `mobile.css`, dockview styles, etc.)
+  - Prism global highlighting (`prismGlobal.ts`)
+- Initializes the React tree with providers:
+  - `QueryClient` + `QueryClientProvider` for React Query
+  - `ThemeProvider` with custom theme (`ThemeNodetool`)
+  - `MobileClassProvider` for mobile-specific CSS classes
+  - `MenuProvider` for app-wide menu state
+  - `WorkflowManagerProvider` (Zustand-backed workflow context)
+  - `KeyboardProvider` for global keyboard handling
+  - `RouterProvider` for React Router
+  - `DownloadManagerDialog` for model downloads
+
+On boot, it:
+
+- Calls `useAuth.getState().initialize()` to set up Supabase auth / local dev login
+- Calls `initKeyListeners()` (keyboard tracking store)
+- Calls `loadMetadata()` to fetch node metadata from `/api/nodes/metadata` before rendering routes; shows a `CircularProgress` or error message while loading
+
+### Routes
+
+Routes are created via `createBrowserRouter(getRoutes())`:
+
+- `/` – `NavigateToStart`:
+  - In localhost mode, goes to `/dashboard`
+  - Otherwise decides between `/dashboard` or `/login` based on auth state
+
+- `/dashboard` – main workspace:
+  - Renders `Dashboard` (`web/src/components/dashboard/Dashboard.tsx`)
+  - Inside `Dashboard`, Dockview panels host workflows list, templates, recent chats, and chat panel
+
+- `/login` – login page:
+  - `Login` component uses Supabase OAuth via `useAuth`
+
+- `/chat/:thread_id?` – full-screen global assistant chat:
+  - Wrapped in `ProtectedRoute`
+  - Layout: `AppHeader` at top, `PanelLeft`, `GlobalChat`, `PanelBottom`
+  - `GlobalChat` (`web/src/components/chat/containers/GlobalChat.tsx`) orchestrates threads, messages, and tool use
+
+- `/editor` – redirects to root start logic (no editor loaded)
+
+- `/assets` – asset explorer:
+  - Protected; layout: `PanelLeft` + `AssetExplorer`
+  - `AssetExplorer` (`web/src/components/assets/AssetExplorer.tsx`) wraps `AssetGrid` with header and context menus
+
+- `/collections` – collections explorer:
+  - Protected; shows `CollectionsExplorer` for asset/workflow collections
+
+- `/templates` – template / example workflows:
+  - Protected; `PanelLeft + TemplateGrid`
+
+- `/editor/:workflow` – main node editor:
+  - Protected; wrapped in `FetchCurrentWorkflow` so proper workflow is loaded/activated
+  - Layout:
+    - `AppHeader` (fixed top)
+    - Main area: `PanelLeft`, `TabsNodeEditor`, `PanelRight`, `PanelBottom`, `Alert`
+  - `TabsNodeEditor` manages multiple editor tabs; contains `NodeEditor` instances for workflows
+
+- `/models` – model manager:
+  - Protected; routes to `ModelListIndex` (Hugging Face / local models listing) with download and filter UI
+
+- `/layouttest` – dev-only experimental layout page (only when `isLocalhost` is true)
+
+All routes attach a shared `ErrorBoundary`.
+
+---
+
+## Global Data &amp; State Layer
+
+### API Client &amp; Environment
+
+- `ApiClient.ts` (`web/src/stores/ApiClient.ts`) uses `openapi-fetch` and types generated to `web/src/api.ts` from `/openapi.json`
+- Determines `isLocalhost` based on host or overrides (`VITE_FORCE_LOCALHOST`, query, localStorage)
+- For non-localhost:
+  - Fetches current Supabase session and attaches `Authorization: Bearer &lt;token&gt;` and `apikey` headers via middleware
+  - Exposes `client` for typed HTTP calls (e.g., `client.GET(&quot;/api/workflows/&quot;)`)
+
+Base URLs:
+
+- `BASE_URL.ts` – backend HTTP base URL
+- `CHAT_URL` and `WORKER_URL` (in `BASE_URL.ts`) – WebSocket connection URLs
+
+Supabase:
+
+- `supabaseClient.ts` (`web/src/lib/supabaseClient.ts`) configures the client using `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, with local fallbacks in dev
+
+Auth store:
+
+- `useAuth.ts` (`web/src/stores/useAuth.ts`) is a Zustand store that:
+  - Tracks `session`, `user`, `state` (`init`/`loading`/`error`/`logged_in`/`logged_out`)
+  - In localhost mode, fakes a logged-in user with id `&quot;1&quot;` and skips Supabase
+  - Provides `signInWithProvider` and `signOut` using Supabase OAuth
+
+### Additional Store Details
+
+The following stores have been expanded with implementation details:
+
+#### Node &amp; Workflow Management Stores (Expanded)
+
+- **`NodeStore.ts`** (`web/src/stores/NodeStore.ts`):
+  - Holds `nodes`, `edges`, workflow metadata, selection, viewport, hover, etc.
+  - Uses XYFlow node/edge types
+  - Validates edges (`isValidEdge`), sanitizes the graph when metadata changes, and ensures parent relationships are valid
+  - Provides extensive helpers:
+    - Selection: `getSelection`, `getSelectedNodes`, `selectNodesByType`, `setSelectedNodes`, `selectAllNodes`
+    - Graph operations: `addNode`, `updateNode`, `updateNodeData`, `deleteNode`, `addEdge`, `deleteEdge`, `onConnect`, `onNodesChange`, `onEdgesChange`
+    - Layout: `autoLayout` via `core/graph.ts`, `setShouldAutoLayout`, `setShouldFitToScreen`, `fitViewTargetNodeIds`
+    - Serialization: `workflowJSON`, `getWorkflow`, `setWorkflowDirty`
+    - ID generation: `generateNodeId(s)`, `generateEdgeId`
+    - Missing models tracking to drive UI prompts
+  - Uses `zundo` temporal middleware for undo/redo on `nodes/edges/workflow`
+
+- **`WorkflowRunner.ts`** (`web/src/stores/WorkflowRunner.ts`):
+  - Manages WebSocket job execution for a workflow
+  - State includes `workflow`, `nodes`, `edges`, `job_id`, `state` (`idle`, `connecting`, `connected`, `running`, `error`, `cancelled`), and `statusMessage`
+  - Methods:
+    - `ensureConnection` – uses `globalWebSocketManager` to establish a WebSocket connection shared across workflows
+    - `run` – sends a `run_job` command over WebSocket with:
+      - `graph` converted from XYFlow to backend graph using `reactFlowNodeToGraphNode` and `reactFlowEdgeToGraphEdge`
+      - `resource_limits` and auth token where needed
+    - `reconnect`, `reconnectWithWorkflow` – reconnect to an ongoing job by job id
+    - `streamInput` / `endInputStream` – send streaming inputs (for audio/etc.)
+    - `cancel` – send `cancel_job` and clear local statuses/progress
+    - `addNotification` – passes notifications to `NotificationStore`
+  - `getWorkflowRunnerStore` lazily creates one store per workflow ID
+  - `useWebsocketRunner` returns a selected slice of the runner store based on the current workflow in `WorkflowManagerContext`
+  - Integrates with `workflowUpdates.ts` to process job updates into `StatusStore`, `ResultsStore`, etc.
+
+#### Real-time Communication Stores (Expanded)
+
+- **`GlobalChatStore.ts`** (`web/src/stores/GlobalChatStore.ts`):
+  - Holds chat connection status (`status`, `statusMessage`, `progress`)
+  - Thread state: `threads`, `currentThreadId`, `lastUsedThreadId`, `threadsLoaded`
+  - Message caches per thread (`messageCache` + cursors)
+  - Agent mode toggle (`agentMode`)
+  - Selection state: `selectedModel`, `selectedTools`, `selectedCollections`
+  - Planning &amp; task updates: `currentPlanningUpdate`, `currentTaskUpdate`
+  - Workflow graph updates: `lastWorkflowGraphUpdate` for pushing graph changes to open editors
+  - Chat WebSocket management:
+    - Creates a `WebSocketManager` with URL `CHAT_URL`, optionally including a Supabase `api_key`
+    - Listens for varied message types (`Message`, `JobUpdate`, `NodeUpdate`, `ToolCallUpdate`, `PlanningUpdate`, `WorkflowCreatedUpdate`, etc.) and merges them into local state
+  - Threads operations: `fetchThreads`, `createNewThread`, `switchThread`, `deleteThread`, `updateThreadTitle`, `summarizeThread`, `getAgentExecutionMessages`
+  - Message operations: `sendMessage`, `resetMessages`, `stopGeneration`, `addMessageToCache`, `clearMessageCache`
+  - Integrates with `FrontendToolRegistry` to expose UI tools to the backend assistant as callable &quot;frontend tools&quot;
+
+---
+
+## Contexts &amp; Providers
+
+### WorkflowManagerContext
+
+`WorkflowManagerContext.tsx` (`web/src/contexts/WorkflowManagerContext.tsx`) creates a React context backed by a Zustand store:
+
+- State: `nodeStores: Record&lt;string, NodeStore&gt;`, `currentWorkflowId`, `openWorkflows`, `systemStats`, `queryClient`
+- LocalStorage persistence:
+  - Current workflow id under `&quot;currentWorkflowId&quot;`
+  - List of open workflow ids under `&quot;openWorkflows&quot;`
+- Methods:
+  - Creation: `newWorkflow`, `createNew`, `create`, `copy`
+  - Loading: `load`, `loadIDs`, `loadPublic`, `loadTemplates`, `searchTemplates`
+  - Saving: `saveWorkflow` (PUT via API), and `saveExample` (save as example/workflow pack)
+  - Deletion: `delete`
+  - Workflow retrieval: `getWorkflow`, `getCurrentWorkflow`, `setCurrentWorkflowId`
+  - Node store management: `addWorkflow` (creates `NodeStore` with `createNodeStore` and adds to `nodeStores`), `removeWorkflow`, `reorderWorkflows`
+  - Validation helpers: `validateAllEdges`
+- `useWorkflowManager` hook reads slices of this store inside components
+
+`FetchCurrentWorkflow` is a helper component that ties the URL parameter `:workflow` to the active workflow in this context.
+
+### NodeContext
+
+`NodeContext.tsx`:
+
+- Provides a per-workflow `NodeStore` via a React context
+- Exposes:
+  - `useNodes(selector)` hook that subscribes to part of a NodeStore state with custom equality
+  - `useTemporalNodes` for accessing the zundo temporal state (undo/redo stack) of that NodeStore
+- Used heavily by `NodeEditor`, properties panel, etc.
+
+### Other Providers
+
+- `MenuProvider.tsx`: manages app menus and command palette context
+- `ContextMenuProvider.tsx`: wraps parts of the UI to give them shared context menu behavior
+- `ConnectableNodesProvider.tsx`: computes and provides connectable node information for the editor
+- `KeyboardProvider.tsx`: enables keyboard shortcut handling within the app tree (interacts with `KeyPressedStore`)
+
+---
+
+## Core Graph &amp; Layout Logic
+
+`web/src/core/graph.ts` contains graph utilities:
+
+- **`topologicalSort(edges, nodes)`**:
+  - Kahn&#x27;s algorithm variant, returns a list of node layers; each layer can be processed in parallel
+  - Logs a warning if there are cycles
+
+- **`subgraph(edges, nodes, startNode, stopNode?)`**:
+  - DFS-based subgraph extraction from a starting node, optionally stopping at a node
+
+- **`autoLayout(edges, nodes)`**:
+  - Uses ELK (`elkjs`) to layout the graph:
+    - Filters out comment nodes
+    - Groups nodes by `parentId` (e.g., group nodes)
+    - Creates ELK graphs and calculates positions
+    - Updates node positions to match ELK output
+    - Adjusts parent group node sizes to fit contained nodes
+  - Returns new node positions, preserving comment nodes
+  - Used by `NodeStore.autoLayout` and by tooling after workflow graph updates (e.g., `useWorkflowGraphUpdater`)
+
+---
+
+## Detailed Hooks Overview
+
+Hooks are organized under `web/src/hooks` and `web/src/serverState`. Major categories:
+
+### Node Editor &amp; Workflow Hooks (Expanded)
+
+- **`useNodeEditorShortcuts.ts`**:
+  - Registers keyboard combos (from `config/shortcuts.ts`) via `KeyPressedStore`
+  - Handles:
+    - Copy, cut, paste using `useCopyPaste`
+    - Node alignment (`useAlignNodes`)
+    - Duplicate selection (horizontal/vertical)
+    - Grouping (`useSurroundWithGroup`)
+    - View controls (zoom, fit view)
+    - Save, save as example, close workflow, create new workflow, navigation
+    - Opening the node menu at mouse position
+  - Uses `useWorkflowManager`, `useNodes`, `useTemporalNodes`, `useReactFlow`, notifications, right panel toggling
+
+- **`useFitView.ts`**, **`useFitNodeEvent.ts`**, **`useAlignNodes.ts`**, **`useDuplicate.ts`**, **`useFocusPan.ts`**, **`useProcessedEdges.ts`**:
+  - Convenience wrappers around XYFlow APIs and NodeStore to align, fit, duplicate, and sanitize edges
+
+- **`useWorkflowGraphUpdater.ts`**:
+  - Subscribes to `GlobalChatStore`&#x27;s `lastWorkflowGraphUpdate`
+  - When an assistant modifies a workflow graph, converts the updated graph to XYFlow nodes/edges and updates the corresponding NodeStore, then triggers `autoLayout` and marks the workflow as not dirty
+
+- **`useWorkflowActions.ts`**, **`useDashboardData.ts`**:
+  - `useDashboardData` (seen in `Dashboard.tsx`) loads:
+    - Workflows from `/api/workflows/`
+    - Templates via `useWorkflowManager.loadTemplates`
+    - Derives sorted workflows and &quot;start templates&quot; subset
+  - `useWorkflowActions` bundles actions like creating, opening, and clicking templates/workflows for the dashboard UI
+
+### Chat &amp; Job Hooks
+
+- **`useChatService.ts`**:
+  - Combines `GlobalChatStore` operations into a cohesive interface for the dashboard chat panel:
+    - `status`, `sendMessage`, `progress`, `statusMessage`, planning &amp; task updates
+    - Thread operations (`onNewThread`, `onSelectThread`, `deleteThread`, `getThreadPreview`)
+
+- **`useEnsureChatConnected.ts`**:
+  - Ensures the global chat WebSocket is connected while certain components (dashboard or global chat page) are mounted
+
+- **`useJobReconnection.ts`**:
+  - On app load, checks for running jobs and reconnects to them via `WorkflowRunner` and `GlobalWebSocketManager`
+
+- **`useRunningJobs.ts`**: provides state and helpers for currently running workflows
+
+### Model, Provider, and Metadata Hooks
+
+- **`useHuggingFaceModels.ts`**, **`useLoraModels.ts`**, **`useOllamaModels.ts`**, **`useModelsByProvider.ts`**, **`useRecommendedModels.ts`**, **`useRecommendedTaskModels.ts`**, **`useModelInfo.ts`**:
+  - Use React Query to fetch model lists from the backend and derive recommended subsets
+
+- **`useProviders.ts`**, **`useProviderApiKeyValidation.ts`**, **`useApiKeyValidation.ts`**, **`useSecrets.ts`**:
+  - Manage provider lists and validation of API keys stored in `SecretsStore`
+
+### UI &amp; UX Hooks (Expanded)
+
+- **`useNumberInput.ts`**:
+  - Provides sophisticated number input behavior (drag-to-change, clamping, decimal precision)
+
+- **`useDelayedHover.ts`**:
+  - Introduces delayed hover logic for tooltips and menus
+
+- **`useRenderLogger.tsx`**:
+  - Debugging hook to log re-render causes
+
+- **`useCollectionDragAndDrop.ts`**:
+  - Drag-and-drop in collections UI
+
+- **`useIsDarkMode.ts`**: uses media queries / settings to choose theme
+
+### Browser &amp; Desktop Hooks
+
+- **`useIpcRenderer.ts`**:
+  - Handles Electron IPC (if `window.api` is available) for desktop integrations (e.g., menus, OS level actions)
+
+- **`useRealtimeAudioStream.ts`**, **`useInputStream.ts`**, **`useWaveRecorder`** (via audio components):
+  - Manage audio recording &amp; streaming to backend nodes
+
+### ServerState Hooks
+
+Under `web/src/serverState`:
+
+- **`useMetadata.ts`** + **`loadMetadata`**:
+  - Fetches node metadata, registers BaseNode, builds connectability matrix
+  - Calls `client.GET(&quot;/api/nodes/metadata&quot;)`
+  - Builds:
+    - `nodeTypes: NodeTypes` mapping `node_type → BaseNode`
+    - `metadataByType: Record&lt;string, NodeMetadata&gt;` seeded from `defaultMetadata` (contains at least `Preview` node)
+    - `recommendedModels: UnifiedModel[]` from all nodes; deduplicated by `(type, repo_id, path)`
+  - Stores node types + metadata in `MetadataStore`
+  - Calls `createConnectabilityMatrix` with all metadata, precomputing which output types can connect to which inputs
+
+- **Asset hooks**: `useAssets.ts`, `useAssetUpload.ts`, `useAssetDeletion.ts`, `useAssetUpdate.ts`, `useAssetSearch.ts`, `useAsset.ts`
+  - Provide TanStack Query wrappers around `/api/assets` endpoints and integrate with `AssetStore`
+
+- **Workflow hooks**: `useWorkflow.ts`, `useWorkflowTools.ts`
+  - Fetch a single workflow by id and related &quot;workflow tools&quot; for the assistant
+
+- **`checkHfCache.ts`**, **`tryCacheFiles.tsx`**: check local Hugging Face cache or prefetch files
+
+---
+
+## Feature Domains &amp; UI Components
+
+### Dashboard
+
+`Dashboard.tsx` (`web/src/components/dashboard/Dashboard.tsx`) builds a Dockview-based workspace:
+
+- Layout:
+  - `AppHeader` pinned at top inside the dashboard
+  - `DockviewReact` container with panels defined by `PANEL_CONFIG`
+  - Default layout from `config/defaultLayouts.ts` pre-configures splits:
+    - A &quot;Workflows&quot; panel
+    - A &quot;Recent chats&quot; panel
+
+- Panels &amp; content:
+  - Uses `createPanelComponents` to map IDs to React components:
+    - `welcome` – welcome / getting started content
+    - `setup` – setup panel (providers, local environment)
+    - `templates` – &quot;start templates&quot; from `useDashboardData`
+    - `workflows` – list/sorting of workflows
+    - `recent-chats` – `Thread` list using `GlobalChatStore`
+    - `chat` – embedded chat UI
+  - `AddPanelDropdown` and `LayoutMenu` allow adding panels and saving/restoring layouts via `LayoutStore` and Dockview&#x27;s JSON export/import
+
+- Behavior:
+  - Uses `useDashboardData` to populate workflows and templates
+  - Uses `useChatService` + `useEnsureChatConnected` to integrate chat into the dashboard
+  - Ensures &quot;welcome&quot; and &quot;setup&quot; panels are automatically shown on startup depending on `SettingsStore`
+  - Persists and restores panel layouts through `LayoutStore` and Dockview&#x27;s JSON export/import
+
+### Workflow Editor
+
+Core files:
+
+- `NodeEditor.tsx` (`web/src/components/node_editor/NodeEditor.tsx`)
+- `TabsNodeEditor.tsx` (`web/src/components/editor/TabsNodeEditor.tsx`)
+- `ReactFlowWrapper.tsx` (`web/src/components/node/ReactFlowWrapper.tsx`)
+- Node detail components in `web/src/components/node` and `web/src/components/node_types`
+
+Behavior:
+
+- `TabsNodeEditor` manages multiple open workflows as tabs, each tab embedding a `NodeContext` + `NodeEditor`
+- `NodeEditor`:
+  - Uses styles from multiple CSS files (`base.css`, `nodes.css`, `properties.css`, etc.) and `node_styles/node-styles.ts`
+  - Wires to `NodeStore` via `useNodes` / `useTemporalNodes`
+  - Uses `useWebsocketRunner` to keep track of workflow run state (connecting, running, etc.)
+  - Uses `useAssetUpload` for drag-and-drop / file uploads into the editor
+  - Integrates `NodeMenu` for node search and insertion
+  - Shows node help documentation via `DraggableNodeDocumentation` and `KeyboardShortcutsView`
+  - Configures keyboard shortcuts via `useNodeEditorShortcuts` and `KeyPressedStore`
+  - Has a `CommandMenu` (command palette) triggered by `meta+k` / `ctrl+k`
+  - Keeps track of missing models (prompting downloads if needed)
+
+- Node rendering:
+  - `BaseNode.tsx` is the generic node component for the majority of node types, driven by metadata
+  - `PlaceholderNode.tsx` is used for unknown or not-yet-loaded node types (to keep graphs stable)
+  - Node inputs/outputs, labels, handles, and property forms are rendered using:
+    - `NodeContent`, `NodeInputs`, `NodeOutputs`, `NodePropertyForm`, `OutputRenderer`
+  - Node connections are drawn with custom `ConnectionLine.tsx` and `EdgeGradientDefinitions.tsx`
+
+- Node types:
+  - Backend metadata defines node types (logically in Python). On the frontend, `loadMetadata` registers all `node_type → BaseNode` mappings
+  - `NodeTypeMapping.ts` maps MIME types and internal type names (e.g., `text`, `image`, `audio`) to input/output node classes (e.g., `nodetool.input.ImageInput`, `nodetool.output.Output`) and constants
+
+### Global Chat &amp; Agent Tools
+
+Components:
+
+- `GlobalChat.tsx` (`web/src/components/chat/containers/GlobalChat.tsx`)
+- Child structures under `chat/composer`, `chat/message`, `chat/thread`, `chat/controls`
+
+Features:
+
+- Thread-centric chat, where each thread:
+  - Is persisted on the backend (`Thread` in `ApiTypes`)
+  - Can be loaded, deleted, and summarized
+  - Has `Message` history cached locally with pagination
+- Chat connection:
+  - `GlobalChatStore.connect()` creates a `WebSocketManager` with `CHAT_URL`, optionally with a Supabase token in the query string
+  - Uses TanStack Query (`useThreadsQuery`) to load thread metadata
+  - `useEnsureChatConnected` automatically connects while the chat UI is present
+- Agent features:
+  - `agentMode` toggle: messages flagged as agent mode may trigger more &quot;planning&quot; and tool call behavior
+  - Planning and task updates:
+    - AI agent can send `PlanningUpdate` and `TaskUpdate` messages
+    - The UI surfaces them in the dashboard panels and chat view
+  - Frontend tools:
+    - `FrontendToolRegistry` (`web/src/lib/tools/frontendTools.ts`) defines tools starting with `ui_` that can be invoked by the backend agent (e.g., `ui_add_node`, `ui_align_nodes`, etc.)
+    - Built-in tools are defined in `web/src/lib/tools/builtin/*.ts` and are registered from `index.tsx` imports
+    - Tools operate on the `FrontendToolState` provided by `GlobalChatStore` and `WorkflowManagerContext` (e.g., `getWorkflow()`, `createNew()`, `saveWorkflow()`)
+  - Workflow graph updates:
+    - The assistant can emit `workflow_created` / `workflow_updated` messages with a graph payload
+    - `GlobalChatStore` stores the last such update in `lastWorkflowGraphUpdate`
+    - `useWorkflowGraphUpdater` picks this up, converts to XYFlow nodes/edges, updates the NodeStore, and triggers auto layout
+
+### Assets &amp; Asset Viewer
+
+Components:
+
+- `AssetExplorer.tsx` (`web/src/components/assets/AssetExplorer.tsx`)
+- `AssetGrid.tsx`, `AssetGridRow.tsx`, `AssetListView.tsx`, `AssetTable.tsx`
+- `FolderTree.tsx`, `FolderList.tsx`, `FolderItem.tsx`
+- Confirm dialogs (delete, move, rename), upload overlays
+
+Asset viewers:
+
+- `asset_viewer/AudioViewer.tsx`, `ImageViewer.tsx`, `PDFViewer.tsx`, `TextViewer.tsx`, `VideoViewer.tsx` handle previewing different asset types, using appropriate viewers (e.g., `react-pdf`, video tags, etc.)
+
+Behavior:
+
+- `AssetExplorer`:
+  - Wraps the main asset UI with `AppHeader` and `ContextMenuProvider`
+  - Uses `useAssets()` (serverState hook) to fetch assets grouped by folder
+  - Passes assets into `AssetGrid` with layout parameters
+- `AssetStore` / `AssetGridStore` manage:
+  - Sorting, filtering, size of tiles
+  - Selected asset(s)
+  - Infinite scroll and virtualization in the grid
+
+### Models &amp; Hugging Face Integration
+
+Components:
+
+- `hugging_face/ModelListIndex.tsx` – main models page
+- `HuggingFaceModelSearch.tsx` – search interface
+- `ModelsManager.tsx` – high-level model manager UI
+- `ModelDownloadDialog.tsx`, `ModelDownloadList.tsx`, `OverallDownloadProgress.tsx`, `DownloadManagerDialog.tsx`
+- `RecommendedModels.tsx` + `RecommendedModelsDialog.tsx` – recommended models overlay
+- `RequiredModelsDialog.tsx` – shows missing models required by workflows
+
+Configuration:
+
+- `config/models.ts` defines pre-curated `UnifiedModel` entries, including:
+  - Local/GGUF models (`gpt-oss:20b`, various `llama3.*`, `deepseek-r1:*`, etc.)
+  - Other categories like &quot;Granite&quot; and &quot;MiniCPM-V&quot;
+
+Model stores:
+
+- `ModelStore`, `ModelDownloadStore`, `ModelManagerStore`, `ModelFiltersStore`, `ModelPreferencesStore`
+- Combined with hooks (`useHuggingFaceModels`, `useLoraModels`, `useOllamaModels`, `useRecommendedModels`) to build the UI
+
+### Mini-Apps
+
+`MiniAppPage.tsx` (`web/src/components/miniapps/MiniAppPage.tsx`) exposes workflows as simpler &quot;apps&quot;:
+
+- Loads the workflow via `useWorkflowManager.fetchWorkflow` + React Query
+- Derives input definitions and current values with `useMiniAppInputs(workflow)`
+- Builds a React form (`MiniAppInputsForm`) for the workflow&#x27;s inputs
+- On submit:
+  - Clamps numeric values to min/max from metadata via `clampNumber`
+  - Runs the workflow via `useMiniAppRunner`
+  - Converts the saved graph to XYFlow nodes/edges via `graphNodeToReactFlowNode` / `graphEdgeToReactFlowEdge`
+- Displays:
+  - Status message with animated status text if running
+  - Progress bar
+  - `MiniAppResults` for outputs
+- Has &quot;Open in Editor&quot; button to jump to `/editor/&lt;workflow.id&gt;`
+
+### Workflows &amp; Workspaces
+
+Workflow list &amp; templates:
+
+- `workflows/WorkflowList.tsx`, `WorkflowListView.tsx`, `WorkflowTile.tsx`, `WorkflowToolbar.tsx`, `WorkflowForm.tsx`, `WorkflowFormModal.tsx`, `WorkflowDeleteDialog.tsx`
+- `ExampleGrid.tsx` – grid of example workflows (templates) with search &amp; tags filters
+
+Workspace tree:
+
+- `workspaces/WorkspaceTree.tsx` – organizes multiple workspaces or remote connections (e.g., local vs remote runtimes / groups of workflows)
+
+### Text Editor, Terminal, Audio
+
+Text editor:
+
+- `textEditor/` directory includes Lexical integration:
+  - `LexicalEditor.tsx`, `EditorToolbar.tsx`, `EditorStatusBar.tsx`, `FindReplaceBar.tsx`
+  - Plugins like `CodeHighlightPlugin.tsx`, `MarkdownPastePlugin.tsx`, `FloatingTextFormatToolbar.tsx`, `HorizontalRulePlugin.tsx`
+  - Supports markdown export (`exportMarkdown.ts`) and syntax highlighting with Prism
+
+Terminal:
+
+- `terminal/Terminal.tsx` – xterm.js integration for running commands or showing logs (wired via WebSockets or NodeTool backend)
+
+Audio:
+
+- `audio/AudioControls.tsx`, `AudioPlayer.tsx`, `WaveRecorder.tsx`
+  - Waveform display &amp; audio playback via `wavesurfer.js`
+  - `WaveRecorder` integrates with Web Audio for recording, used in nodes or chat attachments
+
+---
+
+## Server-Provided Metadata &amp; Search
+
+### Node Metadata &amp; Node Types
+
+`useMetadata.ts` (`web/src/serverState/useMetadata.ts`) + `loadMetadata()`:
+
+- Calls `client.GET(&quot;/api/nodes/metadata&quot;)`
+- Builds:
+  - `nodeTypes: NodeTypes` mapping `node_type → BaseNode`
+  - `metadataByType: Record&lt;string, NodeMetadata&gt;` seeded from `defaultMetadata` (contains at least `Preview` node)
+  - `recommendedModels: UnifiedModel[]` from all nodes; deduplicated by `(type, repo_id, path)`
+- Stores:
+  - Node types + metadata in `MetadataStore`
+  - Recommended models for UI lists
+- Calls `createConnectabilityMatrix` with all metadata, precomputing which output types can connect to which inputs, used by node search and connection validation
+
+### Search &amp; Filtering Utilities
+
+Under `web/src/utils`:
+
+- `workflowSearch.ts` – search workflows by name/tags
+- `nodeSearch.ts` – fuzzy search node types, used in `NodeMenu`
+- `modelFilters.ts` – filter models by provider, capabilities, etc.
+- `highlightText.ts` – highlight search matches
+- `formatDateAndTime.ts` / `groupByDate.ts` – grouping workflows or assets by date
+- `providerDisplay.ts`, `modelFormatting.tsx` – present models/providers nicely
+- `workflowUpdates.ts` – unify job update messages into store updates
+- `dockviewLayout.ts` – safe apply of Dockview layout JSON
+
+---
+
+## WebSockets &amp; Real-Time Execution
+
+### Global WebSocket Manager (Workflows)
+
+`GlobalWebSocketManager.ts` (`web/src/lib/websocket/GlobalWebSocketManager.ts`):
+
+- Singleton that owns a single `WebSocketManager` for `WORKER_URL`
+- Ensures only one connection and tracks `isConnected`/`isConnecting`
+- Methods:
+  - `ensureConnection()` – establishes or waits for the connection
+  - `subscribe(key, handler)` – register message handler for a workflow id or job id
+  - `send(message)` – send message via underlying WebSocket
+  - `disconnect()` – close connection and reset flags
+- `WorkflowRunner` uses this to:
+  - Subscribe to updates for a workflow id and job id
+  - Send commands: `run_job`, `reconnect_job`, `stream_input`, `end_input_stream`, `cancel_job`
+
+### Chat WebSocket Manager
+
+`WebSocketManager.ts` (in `lib/websocket`) is a generic WebSocket wrapper used by:
+
+- `GlobalChatStore` for chat WebSocket
+- `GlobalWebSocketManager` for workflow WebSocket
+
+It supports:
+
+- Auto reconnect with backoff
+- Event listeners for `open`, `message`, `error`, `close`, `reconnecting`
+
+---
+
+## Theming &amp; Styling
+
+`ThemeNodetool.tsx` (`web/src/components/themes/ThemeNodetool.tsx`):
+
+- Creates a MUI CSS-vars-based theme with light and dark `palette`s (`paletteLight`, `paletteDark`)
+- Configures:
+  - Font families (`Inter`, `JetBrains Mono`)
+  - Custom font size tokens (`fontSizeGiant`, etc.)
+  - Rounded corners for dialogs, nodes, buttons
+  - Z-index layers for appBar, modals, command menu, popovers, autocomplete, etc.
+- Overrides:
+  - `MuiTypography`, `MuiButton`, `MuiFormLabel`, `MuiFormControl`, `MuiPopover`, `MuiModal`, etc., to match NodeTool&#x27;s visual identity
+- Global CSS:
+  - `styles/vars.css`, `styles/index.css`, `styles/nodes.css`, etc., define CSS variables, node shape styling, micro-tooltips, and mobile adaptations
+
+---
+
+## Directory Overview
+
+At `web/src`:
+
+- `components/AGENTS.md` – detailed per-component guidance for agents
+- `components/` – React components organized by domain:
+  - `asset_viewer`, `assets`, `audio`, `chat`, `collections`, `content`, `context_menus`, `dialogs`, `editor`, `hugging_face`, `inputs`, `menus`, `miniapps`, `node`, `node_editor`, `node_menu`, `node_types`, `panels`, `properties`, `search`, `terminal`, `textEditor`, `themes`, `ui`, `workflows`, `workspaces`, etc.
+- `config/` – core configuration:
+  - `constants.ts` (APP_NAME, VERSION, default zoom, default model, search tuning)
+  - `models.ts` (LLM recommendations)
+  - `shortcuts.ts` (node editor shortcut registry + tooltip helpers)
+  - `defaultLayouts.ts` (Dockview default layout)
+- `constants/` – colors &amp; data type configurations used across the UI
+- `contexts/` – `NodeContext.tsx`, `WorkflowManagerContext.tsx`, `EditorInsertionContext.tsx`
+- `core/` – graph utilities (`graph.ts`)
+- `hooks/` – cross-cutting hooks; many listed above
+- `icons/` – SVG icons
+- `lib/` – Supabase client, WebSocket helpers, frontend tools, tests
+- `node_styles/` – themeable node CSS settings
+- `serverState/` – React Query hooks for server-backed state (assets, workflows, metadata)
+- `stores/` – Zustand stores (UI, assets, nodes, workflows, models, chat, etc.)
+- `styles/` – CSS for global layout, nodes, interactions, tooltips, command menu, dockview, mobile
+- `types/`, `*.d.ts` – TS declaration augmentations for MUI, Emotion, window, etc.
+
+### When to Use Which Guide
+
+- **Starting a new feature?** → Check the root AGENTS.md Quick Navigation
+- **Working on UI components?** → `/web/src/components/AGENTS.md`
+- **Adding state management?** → `/web/src/stores/AGENTS.md`
+- **Creating custom hooks?** → `/web/src/hooks/AGENTS.md`
+- **Writing utilities?** → `/web/src/utils/AGENTS.md`
+- **API integration?** → `/web/src/serverState/AGENTS.md`
+- **Third-party library?** → `/web/src/lib/AGENTS.md`
+- **Configuration changes?** → `/web/src/config/AGENTS.md`
+- **Electron features?** → `/electron/src/AGENTS.md`
+- **Documentation updates?** → `/docs/AGENTS.md`
+- **Build scripts?** → `/scripts/AGENTS.md`
+
+### Contributing to AGENTS.md Files
+
+When adding new sections or directories:
+
+1. Create an `AGENTS.md` file in the new directory
+2. Add breadcrumb navigation at the top
+3. Include cross-references to related guides
+4. Follow the established structure and patterns
+5. Update this root file&#x27;s Quick Navigation section
+6. Keep content focused on what AI agents need to know
+7. Include practical examples and code patterns
+
+### Documentation Maintenance
+
+Keeping AGENTS.md files up to date is essential:
+
+1. **Update When Making Changes**: When modifying core functionality, update the relevant AGENTS.md
+2. **Review Periodically**: Check documentation monthly for stale content or broken links
+3. **Test Examples**: Verify all code examples still work
+4. **Sync with Codebase**: Ensure docs reflect current implementation
+5. **Version Tagging**: For major changes, consider adding version notes
+
+**Last Updated**: January 2026
+
+---
+
+        </div>
+        
+        <div class="right-pane">
+            <h2 class="pane-title">Hierarchical AST Tree</h2>
+            
+            <div id="graph-container"></div>
+            
+            <div id="details-panel">
+                <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+                <h3>Node Details</h3>
+                <div id="details-content">Click a node to view its structural properties and rules.</div>
+            </div>
+            
+            <div class="legend">
+                <strong>Visual Encoding</strong>
+                <div class="legend-item"><div class="legend-color" style="background: #1e293b;"></div> Root Node</div>
+                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Rule Instruction</div>
+                <br>
+                <strong>Category & Label Encodings</strong>
+                <div class="legend-item" style="margin-bottom: 2px;">📏 <strong>Height:</strong> Sub-items text density (40-120px)</div>
+                <div class="legend-item" style="margin-bottom: 2px;">↔️ <strong>Width:</strong> Number of nested rules (max 200px)</div>
+                <div class="legend-item">🔳 <strong>Border Density:</strong> Code presence multiplier</div>
+                <br>
+                <strong>Category Color = FRE Score</strong>
+                <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> &lt;30 High Load (Complex)</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> 30-50 Med-High Load</div>
+                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> 50-70 Medium Load</div>
+                <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> &gt;70 Low Load (Easy)</div>
+                <br>
+                <small><em>Hint: Click nodes to expand/collapse.</em></small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {"name": "nodetool-ai/nodetool - nodetool-ai_nodetool.md", "group": "root", "width": 220, "height": 60, "color": "#1e293b", "border_width": 2, "details": "Repository Name: nodetool-ai/nodetool - nodetool-ai_nodetool.md", "children": [{"name": "General", "group": "category", "width": 165, "height": 98, "color": "#E41A1C", "border_width": 2.6666666666666665, "details": "Category: General<br>Total Labels: 1<br>Total Rules: 6<br>Code Ratio: 0.17", "children": [{"name": "System Overview", "group": "label", "width": 149, "height": 100, "color": "#e31a1b", "border_width": 2.6666666666666665, "fre_score": 30.0, "details": "Label: System Overview<br>Total Rules: 6<br>Code Ratio: 0.17<br>FRE Cognitive Load: 30.0", "children": [{"name": "NodeTool is an open-source, pr...", "group": "rule", "width": 400, "height": 66, "color": "#640b0b", "border_width": 1.5, "raw_text": "NodeTool is an open-source, privacy-first, no-code platform for rapidly building and automating AI workflows. It enables users to create sophisticated AI solutions visually through a drag-and-drop interface with no coding required.", "details": "\n            NodeTool is an open-source, privacy-first, no-code platform for rapidly building and automating AI workflows. It enables users to create sophisticated AI solutions visually through a drag-and-drop interface with no coding required.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Project Overview<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "NodeTool follows a client-serv...", "group": "rule", "width": 400, "height": 84, "color": "#640b0b", "border_width": 1.5, "raw_text": "NodeTool follows a client-server architecture with multiple components: Web UI (React/TypeScript), Electron Wrapper, Mobile App (React Native/Expo), API Server, and WebSocket Runner for real-time communication during workflow execution.", "details": "\n            NodeTool follows a client-server architecture with multiple components: Web UI (React/TypeScript), Electron Wrapper, Mobile App (React Native/Expo), API Server, and WebSocket Runner for real-time communication during workflow execution.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Architecture<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_2\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Key directories are: /web (Mai...", "group": "rule", "width": 400, "height": 120, "color": "#640b0b", "border_width": 1.5, "raw_text": "Key directories are: /web (Main React web application), /electron (Electron desktop app wrapper), /mobile (React Native mobile app), /docs (Documentation files), /scripts (Build and release scripts).", "details": "\n            Key directories are: /web (Main React web application), /electron (Electron desktop app wrapper), /mobile (React Native mobile app), /docs (Documentation files), /scripts (Build and release scripts).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Directories<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_3\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "The data flow is: User creates...", "group": "rule", "width": 400, "height": 54, "color": "#640b0b", "border_width": 1.5, "raw_text": "The data flow is: User creates workflows in the editor \u2192 Workflows are executed through the WebSocket Runner \u2192 Workers process the workflow nodes (local or cloud) \u2192 Results are streamed back to the UI in real-time.", "details": "\n            The data flow is: User creates workflows in the editor \u2192 Workflows are executed through the WebSocket Runner \u2192 Workers process the workflow nodes (local or cloud) \u2192 Results are streamed back to the UI in real-time.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Architecture<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_4\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Technologies used in web/packa...", "group": "rule", "width": 400, "height": 72, "color": "#640b0b", "border_width": 1.5, "raw_text": "Technologies used in web/package.json include: React 18, Vite 6, Material UI + Emotion, React Router v7, XYFlow (@xyflow/react), Zustand, TanStack React Query, Supabase, Dockview, Lexical, Xterm.js, Wavesurfer.js, Plotly, and ELK.js. Backend uses Python, FastAPI, and WebSockets.", "details": "\n            Technologies used in web/package.json include: React 18, Vite 6, Material UI + Emotion, React Router v7, XYFlow (@xyflow/react), Zustand, TanStack React Query, Supabase, Dockview, Lexical, Xterm.js, Wavesurfer.js, Plotly, and ELK.js. Backend uses Python, FastAPI, and WebSockets.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Technologies Used<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_5\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "The backend is not part of thi...", "group": "rule", "width": 400, "height": 78, "color": "#640b0b", "border_width": 1.5, "raw_text": "The backend is not part of this repository. The server provides REST API endpoints at http://localhost:7777/api/, health check at http://localhost:7777/health, WebSocket connections for workflow execution, and Models API for managing AI models.", "details": "\n            The backend is not part of this repository. The server provides REST API endpoints at http://localhost:7777/api/, health check at http://localhost:7777/health, WebSocket connections for workflow execution, and Models API for managing AI models.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> E2E Testing Setup<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_6\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Implementation", "group": "category", "width": 190, "height": 150, "color": "#984EA3", "border_width": 3.5, "details": "Category: Implementation<br>Total Labels: 2<br>Total Rules: 40<br>Code Ratio: 0.38", "children": [{"name": "Architecture", "group": "label", "width": 163, "height": 120, "color": "#984ea3", "border_width": 5.2, "fre_score": 16.3, "details": "Label: Architecture<br>Total Rules: 10<br>Code Ratio: 0.8<br>FRE Cognitive Load: 16.3", "children": [{"name": "The application entry point is...", "group": "rule", "width": 400, "height": 108, "color": "#46244b", "border_width": 1.5, "raw_text": "The application entry point is web/src/index.tsx, which is the SPA entry point that imports global styles, initializes the React tree with providers (QueryClientProvider, ThemeProvider, MobileClassProvider, MenuProvider, WorkflowManagerProvider, KeyboardProvider, RouterProvider, DownloadManagerDialog), and on boot calls useAuth.getState().initialize(), initKeyListeners(), and loadMetadata().", "details": "\n            The application entry point is web/src/index.tsx, which is the SPA entry point that imports global styles, initializes the React tree with providers (QueryClientProvider, ThemeProvider, MobileClassProvider, MenuProvider, WorkflowManagerProvider, KeyboardProvider, RouterProvider, DownloadManagerDialog), and on boot calls useAuth.getState().initialize(), initKeyListeners(), and loadMetadata().<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Application Entry Point & Routing<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_7\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Routes are created via createB...", "group": "rule", "width": 400, "height": 120, "color": "#46244b", "border_width": 1.5, "raw_text": "Routes are created via createBrowserRouter(getRoutes()) and include: / (NavigateToStart), /dashboard (main workspace with Dockview panels), /login (Supabase OAuth), /chat/:thread_id? (full-screen global assistant chat), /editor (redirects to root), /assets (asset explorer), /collections, /templates, /editor/:workflow (main node editor), /models (model manager), and /layouttest (dev-only).", "details": "\n            Routes are created via createBrowserRouter(getRoutes()) and include: / (NavigateToStart), /dashboard (main workspace with Dockview panels), /login (Supabase OAuth), /chat/:thread_id? (full-screen global assistant chat), /editor (redirects to root), /assets (asset explorer), /collections, /templates, /editor/:workflow (main node editor), /models (model manager), and /layouttest (dev-only).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Routes<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_8\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "ApiClient.ts uses openapi-fetc...", "group": "rule", "width": 400, "height": 90, "color": "#46244b", "border_width": 1.5, "raw_text": "ApiClient.ts uses openapi-fetch with types generated to web/src/api.ts from /openapi.json. It determines isLocalhost based on host or overrides (VITE_FORCE_LOCALHOST, query, localStorage). For non-localhost, it fetches the current Supabase session and attaches Authorization and apikey headers via middleware.", "details": "\n            ApiClient.ts uses openapi-fetch with types generated to web/src/api.ts from /openapi.json. It determines isLocalhost based on host or overrides (VITE_FORCE_LOCALHOST, query, localStorage). For non-localhost, it fetches the current Supabase session and attaches Authorization and apikey headers via middleware.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> API Client & Environment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_9\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "WorkflowManagerContext creates...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "WorkflowManagerContext creates a React context backed by a Zustand store with state for nodeStores, currentWorkflowId, openWorkflows, systemStats, and queryClient. It persists currentWorkflowId and openWorkflows to localStorage.", "details": "\n            WorkflowManagerContext creates a React context backed by a Zustand store with state for nodeStores, currentWorkflowId, openWorkflows, systemStats, and queryClient. It persists currentWorkflowId and openWorkflows to localStorage.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> WorkflowManagerContext<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_10\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "NodeContext provides a per-wor...", "group": "rule", "width": 400, "height": 72, "color": "#46244b", "border_width": 1.5, "raw_text": "NodeContext provides a per-workflow NodeStore via a React context, exposing useNodes(selector) hook and useTemporalNodes for accessing the zundo temporal state (undo/redo stack). It is used heavily by NodeEditor, properties panel, etc.", "details": "\n            NodeContext provides a per-workflow NodeStore via a React context, exposing useNodes(selector) hook and useTemporalNodes for accessing the zundo temporal state (undo/redo stack). It is used heavily by NodeEditor, properties panel, etc.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> NodeContext<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_11\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "web/src/core/graph.ts contains...", "group": "rule", "width": 400, "height": 102, "color": "#46244b", "border_width": 1.5, "raw_text": "web/src/core/graph.ts contains graph utilities: topologicalSort (Kahn's algorithm, returns node layers), subgraph (DFS-based extraction), and autoLayout (uses ELK/elkjs to layout the graph, filtering comment nodes, grouping by parentId, and adjusting parent group node sizes).", "details": "\n            web/src/core/graph.ts contains graph utilities: topologicalSort (Kahn's algorithm, returns node layers), subgraph (DFS-based extraction), and autoLayout (uses ELK/elkjs to layout the graph, filtering comment nodes, grouping by parentId, and adjusting parent group node sizes).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Core Graph & Layout Logic<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_12\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "GlobalWebSocketManager.ts is a...", "group": "rule", "width": 400, "height": 84, "color": "#46244b", "border_width": 1.5, "raw_text": "GlobalWebSocketManager.ts is a singleton that owns a single WebSocketManager for WORKER_URL, ensures only one connection, and tracks isConnected/isConnecting. WorkflowRunner uses this to subscribe to updates and send commands: run_job, reconnect_job, stream_input, end_input_stream, cancel_job.", "details": "\n            GlobalWebSocketManager.ts is a singleton that owns a single WebSocketManager for WORKER_URL, ensures only one connection, and tracks isConnected/isConnecting. WorkflowRunner uses this to subscribe to updates and send commands: run_job, reconnect_job, stream_input, end_input_stream, cancel_job.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Global WebSocket Manager (Workflows)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_13\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "WebSocketManager.ts is a gener...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "WebSocketManager.ts is a generic WebSocket wrapper used by GlobalChatStore and GlobalWebSocketManager. It supports auto reconnect with backoff and event listeners for open, message, error, close, and reconnecting.", "details": "\n            WebSocketManager.ts is a generic WebSocket wrapper used by GlobalChatStore and GlobalWebSocketManager. It supports auto reconnect with backoff and event listeners for open, message, error, close, and reconnecting.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Chat WebSocket Manager<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_14\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "loadMetadata() calls client.GE...", "group": "rule", "width": 400, "height": 84, "color": "#46244b", "border_width": 1.5, "raw_text": "loadMetadata() calls client.GET('/api/nodes/metadata'), builds nodeTypes mapping node_type to BaseNode, metadataByType record, and recommendedModels list. It stores node types and metadata in MetadataStore and calls createConnectabilityMatrix to precompute which output types can connect to which inputs.", "details": "\n            loadMetadata() calls client.GET('/api/nodes/metadata'), builds nodeTypes mapping node_type to BaseNode, metadataByType record, and recommendedModels list. It stores node types and metadata in MetadataStore and calls createConnectabilityMatrix to precompute which output types can connect to which inputs.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Node Metadata & Node Types<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_15\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "ThemeNodetool.tsx creates a MU...", "group": "rule", "width": 400, "height": 66, "color": "#46244b", "border_width": 1.5, "raw_text": "ThemeNodetool.tsx creates a MUI CSS-vars-based theme with light and dark palettes, configures font families (Inter, JetBrains Mono), custom font size tokens, rounded corners, and z-index layers. It overrides MUI components to match NodeTool's visual identity.", "details": "\n            ThemeNodetool.tsx creates a MUI CSS-vars-based theme with light and dark palettes, configures font families (Inter, JetBrains Mono), custom font size tokens, rounded corners, and z-index layers. It overrides MUI components to match NodeTool's visual identity.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Theming & Styling<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_16\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}, {"name": "Implementation Details", "group": "label", "width": 149, "height": 120, "color": "#dabcdf", "border_width": 2.9333333333333336, "fre_score": 30.4, "details": "Label: Implementation Details<br>Total Rules: 30<br>Code Ratio: 0.23<br>FRE Cognitive Load: 30.4", "children": [{"name": "Custom hooks must be prefixed ...", "group": "rule", "width": 400, "height": 48, "color": "#46244b", "border_width": 1.5, "raw_text": "Custom hooks must be prefixed with 'use' (e.g., useWorkflow, useNodeSelection), extract reusable logic, keep hooks focused on single responsibilities, and use TypeScript for all hook parameters and return types.", "details": "\n            Custom hooks must be prefixed with 'use' (e.g., useWorkflow, useNodeSelection), extract reusable logic, keep hooks focused on single responsibilities, and use TypeScript for all hook parameters and return types.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Hooks Guidelines<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_40\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use useEffect when you need to...", "group": "rule", "width": 400, "height": 60, "color": "#46244b", "border_width": 1.5, "raw_text": "Use useEffect when you need to synchronize React with the outside world (side effects: network requests, subscriptions, timers, DOM mutations, logging, something that must run after render). Do NOT use useEffect to derive data from props/state, react to state changes inside render logic, or fix re-render performance.", "details": "\n            Use useEffect when you need to synchronize React with the outside world (side effects: network requests, subscriptions, timers, DOM mutations, logging, something that must run after render). Do NOT use useEffect to derive data from props/state, react to state changes inside render logic, or fix re-render performance.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> useEffect<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_41\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Every value used inside useEff...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Every value used inside useEffect must be in the dependency array or intentionally stable. If you can compute it during render, do it there instead of using useEffect.", "details": "\n            Every value used inside useEffect must be in the dependency array or intentionally stable. If you can compute it during render, do it there instead of using useEffect.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> useEffect<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_42\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use useMemo when computation i...", "group": "rule", "width": 400, "height": 42, "color": "#46244b", "border_width": 1.5, "raw_text": "Use useMemo when computation is expensive, result is reused across renders, or referential stability matters for child props or dependency arrays. Do NOT use useMemo when computation is cheap, to prevent re-renders, or when guessing about performance. useMemo caches values, not renders.", "details": "\n            Use useMemo when computation is expensive, result is reused across renders, or referential stability matters for child props or dependency arrays. Do NOT use useMemo when computation is cheap, to prevent re-renders, or when guessing about performance. useMemo caches values, not renders.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> useMemo<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_43\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use useCallback when passing f...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Use useCallback when passing functions to memoized children, when a function is a dependency of useEffect or useMemo, or when you need stable function identity. Do NOT use useCallback when the function is only used locally, the child is not memoized, or you are trying to speed things up blindly.", "details": "\n            Use useCallback when passing functions to memoized children, when a function is a dependency of useEffect or useMemo, or when you need stable function identity. Do NOT use useCallback when the function is only used locally, the child is not memoized, or you are trying to speed things up blindly.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> useCallback<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_44\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use React.memo when a componen...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Use React.memo when a component is pure, receives stable props, renders often, and rendering is expensive. Do NOT use React.memo when props change every render, the component is small or cheap, or you need internal state updates to trigger render. Memoization only works if props are referentially stable.", "details": "\n            Use React.memo when a component is pure, receives stable props, renders often, and rendering is expensive. Do NOT use React.memo when props change every render, the component is small or cheap, or you need internal state updates to trigger render. Memoization only works if props are referentially stable.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> React.memo<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_45\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Never add useEffect, useMemo, ...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Never add useEffect, useMemo, useCallback, or React.memo 'just in case', without measuring or clear reasoning, or to patch design problems. If performance is fine, do nothing.", "details": "\n            Never add useEffect, useMemo, useCallback, or React.memo 'just in case', without measuring or clear reasoning, or to patch design problems. If performance is fine, do nothing.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> React.memo<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_46\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Keep Zustand stores focused on...", "group": "rule", "width": 400, "height": 48, "color": "#46244b", "border_width": 1.5, "raw_text": "Keep Zustand stores focused on specific domains (e.g., workflowStore, nodeStore), use TypeScript interfaces for store state, and implement actions as methods within the store.", "details": "\n            Keep Zustand stores focused on specific domains (e.g., workflowStore, nodeStore), use TypeScript interfaces for store state, and implement actions as methods within the store.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Zustand State Management<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_47\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use Immer for complex state up...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Use Immer for complex state updates via immer middleware. Keep state updates immutable when not using Immer. Use shallow comparison for selectors when possible.", "details": "\n            Use Immer for complex state updates via immer middleware. Keep state updates immutable when not using Immer. Use shallow comparison for selectors when possible.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Zustand State Management<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_48\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Store architecture best practi...", "group": "rule", "width": 400, "height": 120, "color": "#46244b", "border_width": 1.5, "raw_text": "Store architecture best practices: Domain Separation (each store focuses on a specific domain), Action Collocation (actions defined within the store alongside state), Selector Optimization (use selectors to prevent unnecessary re-renders), Persistence (settings and preferences persisted to localStorage), Real-time Sync (WebSocket stores handle real-time updates), Error Handling (dedicated error stores for centralized error management).", "details": "\n            Store architecture best practices: Domain Separation (each store focuses on a specific domain), Action Collocation (actions defined within the store alongside state), Selector Optimization (use selectors to prevent unnecessary re-renders), Persistence (settings and preferences persisted to localStorage), Real-time Sync (WebSocket stores handle real-time updates), Error Handling (dedicated error stores for centralized error management).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Store Architecture Best Practices<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_49\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Use MUI components over custom...", "group": "rule", "width": 400, "height": 48, "color": "#46244b", "border_width": 1.5, "raw_text": "Use MUI components over custom HTML elements when available. Leverage MUI's built-in accessibility features. Use the sx prop for component-specific styling. Prefer composition over deep prop drilling.", "details": "\n            Use MUI components over custom HTML elements when available. Leverage MUI's built-in accessibility features. Use the sx prop for component-specific styling. Prefer composition over deep prop drilling.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Material-UI (MUI) Guidelines<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_50\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For MUI theming: define custom...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "For MUI theming: define custom theme extensions in theme configuration, use module augmentation for TypeScript support, use theme breakpoints for responsive design, leverage theme palette for consistent colors, and use theme typography variants for consistent text styling.", "details": "\n            For MUI theming: define custom theme extensions in theme configuration, use module augmentation for TypeScript support, use theme breakpoints for responsive design, leverage theme palette for consistent colors, and use theme typography variants for consistent text styling.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Theming<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_51\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For MUI performance: use style...", "group": "rule", "width": 400, "height": 66, "color": "#46244b", "border_width": 1.5, "raw_text": "For MUI performance: use styled() utility for reusable styled components, avoid inline styles and sx props for frequently re-rendering components, and use MUI's unstable_useEnhancedEffect for server-side rendering compatibility.", "details": "\n            For MUI performance: use styled() utility for reusable styled components, avoid inline styles and sx props for frequently re-rendering components, and use MUI's unstable_useEnhancedEffect for server-side rendering compatibility.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Performance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_52\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For TanStack Query, use hierar...", "group": "rule", "width": 400, "height": 72, "color": "#46244b", "border_width": 1.5, "raw_text": "For TanStack Query, use hierarchical query keys (e.g., ['workflows', 'list'] or ['workflow', workflowId]), create query key factories for consistency, and use TypeScript for query key types.", "details": "\n            For TanStack Query, use hierarchical query keys (e.g., ['workflows', 'list'] or ['workflow', workflowId]), create query key factories for consistency, and use TypeScript for query key types.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> TanStack Query (React Query)<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_53\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For TanStack Query configurati...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "For TanStack Query configuration: set appropriate staleTime and cacheTime values, use the enabled option for conditional queries, implement proper error handling with onError callbacks, and use refetchOnWindowFocus judiciously.", "details": "\n            For TanStack Query configuration: set appropriate staleTime and cacheTime values, use the enabled option for conditional queries, implement proper error handling with onError callbacks, and use refetchOnWindowFocus judiciously.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> TanStack Query (React Query)<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_54\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For TanStack Query mutations: ...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "For TanStack Query mutations: use optimistic updates for better UX, implement proper rollback on mutation failures, invalidate related queries after successful mutations, and use useMutation hooks for side effects.", "details": "\n            For TanStack Query mutations: use optimistic updates for better UX, implement proper rollback on mutation failures, invalidate related queries after successful mutations, and use useMutation hooks for side effects.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> TanStack Query (React Query)<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_55\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For TanStack Router: use TypeS...", "group": "rule", "width": 400, "height": 42, "color": "#46244b", "border_width": 1.5, "raw_text": "For TanStack Router: use TypeScript for route parameters and search params, implement proper route guards and authentication, use nested routing for hierarchical UI structures, and define route-specific data loading.", "details": "\n            For TanStack Router: use TypeScript for route parameters and search params, implement proper route guards and authentication, use nested routing for hierarchical UI structures, and define route-specific data loading.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> TanStack Router<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_56\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For Emotion styled components:...", "group": "rule", "width": 400, "height": 60, "color": "#46244b", "border_width": 1.5, "raw_text": "For Emotion styled components: use styled() for reusable component styling, implement theme-aware styled components, use props for dynamic styling logic, and keep styled components co-located with their usage.", "details": "\n            For Emotion styled components: use styled() for reusable component styling, implement theme-aware styled components, use props for dynamic styling logic, and keep styled components co-located with their usage.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Emotion CSS Guidelines<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_57\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For Emotion performance: use C...", "group": "rule", "width": 400, "height": 42, "color": "#46244b", "border_width": 1.5, "raw_text": "For Emotion performance: use CSS prop sparingly for one-off styles, prefer sx prop for MUI components, use css helper for shared style objects, and avoid recreating style objects on every render.", "details": "\n            For Emotion performance: use CSS prop sparingly for one-off styles, prefer sx prop for MUI components, use css helper for shared style objects, and avoid recreating style objects on every render.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Emotion CSS Guidelines<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_58\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Keep components focused on sin...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Keep components focused on single responsibilities, use composition over inheritance, implement proper prop interfaces with TypeScript, and use React.memo for performance optimization when needed.", "details": "\n            Keep components focused on single responsibilities, use composition over inheritance, implement proper prop interfaces with TypeScript, and use React.memo for performance optimization when needed.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Component Architecture<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_59\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For component file structure: ...", "group": "rule", "width": 400, "height": 60, "color": "#46244b", "border_width": 1.5, "raw_text": "For component file structure: co-locate related files (component, styles, tests), use index files for clean imports, separate presentation and container components, and keep components tree-shakeable.", "details": "\n            For component file structure: co-locate related files (component, styles, tests), use index files for clean imports, separate presentation and container components, and keep components tree-shakeable.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Component Architecture<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_60\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For component error handling: ...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "For component error handling: implement error boundaries for component trees, use proper TypeScript error types, provide meaningful error messages to users, and log errors appropriately for debugging.", "details": "\n            For component error handling: implement error boundaries for component trees, use proper TypeScript error types, provide meaningful error messages to users, and log errors appropriately for debugging.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Component Architecture<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_61\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "NodeStore.ts holds nodes, edge...", "group": "rule", "width": 400, "height": 60, "color": "#46244b", "border_width": 1.5, "raw_text": "NodeStore.ts holds nodes, edges, workflow metadata, selection, viewport, hover, etc. It uses XYFlow node/edge types, validates edges, sanitizes the graph when metadata changes, and uses zundo temporal middleware for undo/redo on nodes/edges/workflow.", "details": "\n            NodeStore.ts holds nodes, edges, workflow metadata, selection, viewport, hover, etc. It uses XYFlow node/edge types, validates edges, sanitizes the graph when metadata changes, and uses zundo temporal middleware for undo/redo on nodes/edges/workflow.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Node & Workflow Management Stores (Expanded)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_62\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "WorkflowRunner.ts manages WebS...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "WorkflowRunner.ts manages WebSocket job execution. getWorkflowRunnerStore lazily creates one store per workflow ID. useWebsocketRunner returns a selected slice of the runner store based on the current workflow in WorkflowManagerContext.", "details": "\n            WorkflowRunner.ts manages WebSocket job execution. getWorkflowRunnerStore lazily creates one store per workflow ID. useWebsocketRunner returns a selected slice of the runner store based on the current workflow in WorkflowManagerContext.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Node & Workflow Management Stores (Expanded)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_63\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "BaseNode.tsx is the generic no...", "group": "rule", "width": 400, "height": 48, "color": "#46244b", "border_width": 1.5, "raw_text": "BaseNode.tsx is the generic node component for the majority of node types, driven by metadata. PlaceholderNode.tsx is used for unknown or not-yet-loaded node types to keep graphs stable.", "details": "\n            BaseNode.tsx is the generic node component for the majority of node types, driven by metadata. PlaceholderNode.tsx is used for unknown or not-yet-loaded node types to keep graphs stable.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Workflow Editor<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_64\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "FrontendToolRegistry (web/src/...", "group": "rule", "width": 400, "height": 120, "color": "#46244b", "border_width": 1.5, "raw_text": "FrontendToolRegistry (web/src/lib/tools/frontendTools.ts) defines tools starting with 'ui_' that can be invoked by the backend agent (e.g., ui_add_node, ui_align_nodes). Built-in tools are defined in web/src/lib/tools/builtin/*.ts and registered from index.tsx imports.", "details": "\n            FrontendToolRegistry (web/src/lib/tools/frontendTools.ts) defines tools starting with 'ui_' that can be invoked by the backend agent (e.g., ui_add_node, ui_align_nodes). Built-in tools are defined in web/src/lib/tools/builtin/*.ts and registered from index.tsx imports.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Global Chat & Agent Tools<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_65\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "useWorkflowGraphUpdater subscr...", "group": "rule", "width": 400, "height": 42, "color": "#46244b", "border_width": 1.5, "raw_text": "useWorkflowGraphUpdater subscribes to GlobalChatStore's lastWorkflowGraphUpdate. When an assistant modifies a workflow graph, it converts the updated graph to XYFlow nodes/edges, updates the corresponding NodeStore, triggers autoLayout, and marks the workflow as not dirty.", "details": "\n            useWorkflowGraphUpdater subscribes to GlobalChatStore's lastWorkflowGraphUpdate. When an assistant modifies a workflow graph, it converts the updated graph to XYFlow nodes/edges, updates the corresponding NodeStore, triggers autoLayout, and marks the workflow as not dirty.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Node Editor & Workflow Hooks (Expanded)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_66\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use graphNodeToReactFlowNode, ...", "group": "rule", "width": 400, "height": 36, "color": "#46244b", "border_width": 1.5, "raw_text": "Use graphNodeToReactFlowNode, reactFlowNodeToGraphNode, graphEdgeToReactFlowEdge, and reactFlowEdgeToGraphEdge utilities for data transformation between backend API and ReactFlow formats.", "details": "\n            Use graphNodeToReactFlowNode, reactFlowNodeToGraphNode, graphEdgeToReactFlowEdge, and reactFlowEdgeToGraphEdge utilities for data transformation between backend API and ReactFlow formats.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> ReactFlow Integration Utilities<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_67\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "supabaseClient.ts configures t...", "group": "rule", "width": 400, "height": 72, "color": "#46244b", "border_width": 1.5, "raw_text": "supabaseClient.ts configures the Supabase client using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, with local fallbacks in dev. useAuth.ts is a Zustand store that in localhost mode fakes a logged-in user with id '1' and skips Supabase.", "details": "\n            supabaseClient.ts configures the Supabase client using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, with local fallbacks in dev. useAuth.ts is a Zustand store that in localhost mode fakes a logged-in user with id '1' and skips Supabase.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> API Client & Environment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_68\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For MUI dark mode support: use...", "group": "rule", "width": 400, "height": 42, "color": "#46244b", "border_width": 1.5, "raw_text": "For MUI dark mode support: use useMediaQuery to detect system preference, implement theme switching with proper state management, test components in both light and dark modes, and use theme-aware colors throughout the application.", "details": "\n            For MUI dark mode support: use useMediaQuery to detect system preference, implement theme switching with proper state management, test components in both light and dark modes, and use theme-aware colors throughout the application.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Dark Mode Support<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_69\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Build", "group": "category", "width": 215, "height": 150, "color": "#377EB8", "border_width": 2.761904761904762, "details": "Category: Build<br>Total Labels: 3<br>Total Rules: 21<br>Code Ratio: 0.19", "children": [{"name": "Build & Run", "group": "label", "width": 119, "height": 120, "color": "#b2d0e8", "border_width": 2.0, "fre_score": 60.9, "details": "Label: Build & Run<br>Total Rules: 8<br>Code Ratio: 0.0<br>FRE Cognitive Load: 60.9", "children": [{"name": "For local development, activat...", "group": "rule", "width": 400, "height": 60, "color": "#193b56", "border_width": 1.5, "raw_text": "For local development, activate the conda environment before running Python commands: conda activate nodetool. Note: GitHub CI and Copilot Agent use a different setup via .github/workflows/copilot-setup-steps.yml \u2014 no conda needed there.", "details": "\n            For local development, activate the conda environment before running Python commands: conda activate nodetool. Note: GitHub CI and Copilot Agent use a different setup via .github/workflows/copilot-setup-steps.yml \u2014 no conda needed there.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Setup<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_17\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "To start Web UI development: c...", "group": "rule", "width": 362, "height": 48, "color": "#193b56", "border_width": 1.5, "raw_text": "To start Web UI development: cd web && npm install && npm start. Access at http://localhost:3000.", "details": "\n            To start Web UI development: cd web && npm install && npm start. Access at http://localhost:3000.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Setup<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_18\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "To run the Electron app in dev...", "group": "rule", "width": 400, "height": 60, "color": "#193b56", "border_width": 1.5, "raw_text": "To run the Electron app in development: first build the web UI (cd web && npm install && npm run build), then run the Electron app (cd electron && npm install && npm start).", "details": "\n            To run the Electron app in development: first build the web UI (cd web && npm install && npm run build), then run the Electron app (cd electron && npm install && npm start).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Setup<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_19\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "To build the Web UI: cd web &&...", "group": "rule", "width": 232, "height": 36, "color": "#193b56", "border_width": 1.5, "raw_text": "To build the Web UI: cd web && npm run build.", "details": "\n            To build the Web UI: cd web && npm run build.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Build Commands<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_20\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "To build the Electron app: cd ...", "group": "rule", "width": 260, "height": 36, "color": "#193b56", "border_width": 1.5, "raw_text": "To build the Electron app: cd electron && npm run build.", "details": "\n            To build the Electron app: cd electron && npm run build.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Build Commands<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_21\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use Make for linting and type ...", "group": "rule", "width": 400, "height": 96, "color": "#193b56", "border_width": 1.5, "raw_text": "Use Make for linting and type checking (recommended): make typecheck (type check all packages), make lint (lint all packages), make lint-fix (auto-fix linting issues).", "details": "\n            Use Make for linting and type checking (recommended): make typecheck (type check all packages), make lint (lint all packages), make lint-fix (auto-fix linting issues).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Linting & Type Checking<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_22\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "For Web UI linting and type ch...", "group": "rule", "width": 400, "height": 72, "color": "#193b56", "border_width": 1.5, "raw_text": "For Web UI linting and type checking: cd web && npm run lint (ESLint), npm run lint:fix (fix issues), npm run typecheck (TypeScript types). For Electron: cd electron && npm run lint, npm run lint:fix, npm run typecheck.", "details": "\n            For Web UI linting and type checking: cd web && npm run lint (ESLint), npm run lint:fix (fix issues), npm run typecheck (TypeScript types). For Electron: cd electron && npm run lint, npm run lint:fix, npm run typecheck.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Linting & Type Checking<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_23\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "After making any code changes,...", "group": "rule", "width": 400, "height": 90, "color": "#193b56", "border_width": 1.5, "raw_text": "After making any code changes, you MUST run: make typecheck (type check all packages), make lint (lint all packages), and make test (run all tests). All three commands must pass with exit code 0 before considering the task complete. If any fail: fix the errors, re-run the failing command(s), and continue until all three pass.", "details": "\n            After making any code changes, you MUST run: make typecheck (type check all packages), make lint (lint all packages), and make test (run all tests). All three commands must pass with exit code 0 before considering the task complete. If any fail: fix the errors, re-run the failing command(s), and continue until all three pass.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Mandatory Post-Change Verification<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_24\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Test", "group": "label", "width": 140, "height": 120, "color": "#377eb8", "border_width": 3.0, "fre_score": 39.0, "details": "Label: Test<br>Total Rules: 8<br>Code Ratio: 0.25<br>FRE Cognitive Load: 39.0", "children": [{"name": "Web UI unit/integration tests:...", "group": "rule", "width": 400, "height": 90, "color": "#193b56", "border_width": 1.5, "raw_text": "Web UI unit/integration tests: cd web && npm test (run all), npm run test:watch (watch mode), npm run test:coverage (coverage report), npm run test:summary (summary output only).", "details": "\n            Web UI unit/integration tests: cd web && npm test (run all), npm run test:watch (watch mode), npm run test:coverage (coverage report), npm run test:summary (summary output only).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_25\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "E2E tests: cd web && npm run t...", "group": "rule", "width": 400, "height": 72, "color": "#193b56", "border_width": 1.5, "raw_text": "E2E tests: cd web && npm run test:e2e (run all), npm run test:e2e:ui (interactive UI mode), npm run test:e2e:headed (run in headed mode to see browser).", "details": "\n            E2E tests: cd web && npm run test:e2e (run all), npm run test:e2e:ui (interactive UI mode), npm run test:e2e:headed (run in headed mode to see browser).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_26\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "E2E tests require both Python ...", "group": "rule", "width": 400, "height": 102, "color": "#193b56", "border_width": 1.5, "raw_text": "E2E tests require both Python backend and Node.js frontend. Setup: create Python environment (conda env create -f environment.yml -n nodetool), activate and install packages (conda activate nodetool && uv pip install git+... nodetool-core and nodetool-base), install web dependencies and Playwright browsers (cd web && npm install && npx playwright install chromium), then run npm run test:e2e.", "details": "\n            E2E tests require both Python backend and Node.js frontend. Setup: create Python environment (conda env create -f environment.yml -n nodetool), activate and install packages (conda activate nodetool && uv pip install git+... nodetool-core and nodetool-base), install web dependencies and Playwright browsers (cd web && npm install && npx playwright install chromium), then run npm run test:e2e.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> E2E Testing Setup<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_27\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Test structure: Component test...", "group": "rule", "width": 400, "height": 120, "color": "#193b56", "border_width": 1.5, "raw_text": "Test structure: Component tests in src/components/__tests__/, Store tests in src/stores/__tests__/, Hook tests in src/hooks/__tests__/, Utility tests in src/utils/__tests__/, E2E tests in tests/e2e/.", "details": "\n            Test structure: Component tests in src/components/__tests__/, Store tests in src/stores/__tests__/, Hook tests in src/hooks/__tests__/, Utility tests in src/utils/__tests__/, E2E tests in tests/e2e/.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_28\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Testing frameworks: Unit/Integ...", "group": "rule", "width": 400, "height": 96, "color": "#193b56", "border_width": 1.5, "raw_text": "Testing frameworks: Unit/Integration uses Jest 29.7 with ts-jest for TypeScript support. Component Testing uses React Testing Library 16.1. User Interactions use @testing-library/user-event. DOM Matchers use @testing-library/jest-dom. E2E Testing uses Playwright 1.57.", "details": "\n            Testing frameworks: Unit/Integration uses Jest 29.7 with ts-jest for TypeScript support. Component Testing uses React Testing Library 16.1. User Interactions use @testing-library/user-event. DOM Matchers use @testing-library/jest-dom. E2E Testing uses Playwright 1.57.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_29\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Test behavior, not implementat...", "group": "rule", "width": 225, "height": 36, "color": "#193b56", "border_width": 1.5, "raw_text": "Test behavior, not implementation details.", "details": "\n            Test behavior, not implementation details.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_30\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use accessible queries (getByR...", "group": "rule", "width": 400, "height": 48, "color": "#193b56", "border_width": 1.5, "raw_text": "Use accessible queries (getByRole, getByLabelText), use userEvent for realistic user interactions, mock external dependencies and API calls, and keep tests independent and isolated.", "details": "\n            Use accessible queries (getByRole, getByLabelText), use userEvent for realistic user interactions, mock external dependencies and API calls, and keep tests independent and isolated.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_31\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Follow existing test patterns ...", "group": "rule", "width": 400, "height": 84, "color": "#193b56", "border_width": 1.5, "raw_text": "Follow existing test patterns in the codebase. See /web/TESTING.md for comprehensive testing guide, /web/TEST_HELPERS.md for test utilities and patterns, and .github/copilot-instructions.md for AI-specific guidelines.", "details": "\n            Follow existing test patterns in the codebase. See /web/TESTING.md for comprehensive testing guide, /web/TEST_HELPERS.md for test utilities and patterns, and .github/copilot-instructions.md for AI-specific guidelines.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_32\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}, {"name": "Configuration & Environment", "group": "label", "width": 168, "height": 90, "color": "#86b5db", "border_width": 3.6, "fre_score": 11.2, "details": "Label: Configuration & Environment<br>Total Rules: 5<br>Code Ratio: 0.4<br>FRE Cognitive Load: 11.2", "children": [{"name": "Supabase client is configured ...", "group": "rule", "width": 400, "height": 66, "color": "#193b56", "border_width": 1.5, "raw_text": "Supabase client is configured using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables, with local fallbacks in dev.", "details": "\n            Supabase client is configured using VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables, with local fallbacks in dev.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> API Client & Environment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_85\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "isLocalhost is determined base...", "group": "rule", "width": 400, "height": 48, "color": "#193b56", "border_width": 1.5, "raw_text": "isLocalhost is determined based on host or overrides: VITE_FORCE_LOCALHOST environment variable, query parameter, or localStorage value.", "details": "\n            isLocalhost is determined based on host or overrides: VITE_FORCE_LOCALHOST environment variable, query parameter, or localStorage value.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> API Client & Environment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_86\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "BASE_URL.ts defines the backen...", "group": "rule", "width": 400, "height": 72, "color": "#193b56", "border_width": 1.5, "raw_text": "BASE_URL.ts defines the backend HTTP base URL. CHAT_URL and WORKER_URL (in BASE_URL.ts) define WebSocket connection URLs.", "details": "\n            BASE_URL.ts defines the backend HTTP base URL. CHAT_URL and WORKER_URL (in BASE_URL.ts) define WebSocket connection URLs.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> API Client & Environment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_87\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Core configuration files are i...", "group": "rule", "width": 400, "height": 114, "color": "#193b56", "border_width": 1.5, "raw_text": "Core configuration files are in web/src/config/: constants.ts (APP_NAME, VERSION, default zoom, default model, search tuning), models.ts (LLM recommendations), shortcuts.ts (node editor shortcut registry + tooltip helpers), defaultLayouts.ts (Dockview default layout).", "details": "\n            Core configuration files are in web/src/config/: constants.ts (APP_NAME, VERSION, default zoom, default model, search tuning), models.ts (LLM recommendations), shortcuts.ts (node editor shortcut registry + tooltip helpers), defaultLayouts.ts (Dockview default layout).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Directory Overview<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_88\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "SettingsStore persists user pr...", "group": "rule", "width": 400, "height": 42, "color": "#193b56", "border_width": 1.5, "raw_text": "SettingsStore persists user preferences and application settings to localStorage. RemoteSettingStore handles server-side settings synchronization.", "details": "\n            SettingsStore persists user preferences and application settings to localStorage. RemoteSettingStore handles server-side settings synchronization.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> UI State Management Stores<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_89\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Management", "group": "category", "width": 165, "height": 106, "color": "#FF7F00", "border_width": 2.571428571428571, "details": "Category: Management<br>Total Labels: 1<br>Total Rules: 7<br>Code Ratio: 0.14", "children": [{"name": "Development Process", "group": "label", "width": 129, "height": 110, "color": "#ff7f00", "border_width": 2.571428571428571, "fre_score": 50.3, "details": "Label: Development Process<br>Total Rules: 7<br>Code Ratio: 0.14<br>FRE Cognitive Load: 50.3", "children": [{"name": "Respect the component architec...", "group": "rule", "width": 247, "height": 36, "color": "#703700", "border_width": 1.5, "raw_text": "Respect the component architecture in the frontend.", "details": "\n            Respect the component architecture in the frontend.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Workflow<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_33\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Keep UI changes consistent wit...", "group": "rule", "width": 267, "height": 36, "color": "#703700", "border_width": 1.5, "raw_text": "Keep UI changes consistent with the existing design system.", "details": "\n            Keep UI changes consistent with the existing design system.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Workflow<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_34\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Use TypeScript for all new cod...", "group": "rule", "width": 200, "height": 36, "color": "#703700", "border_width": 1.5, "raw_text": "Use TypeScript for all new code.", "details": "\n            Use TypeScript for all new code.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Workflow<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_35\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Run linting and type checking ...", "group": "rule", "width": 260, "height": 36, "color": "#703700", "border_width": 1.5, "raw_text": "Run linting and type checking before submitting changes.", "details": "\n            Run linting and type checking before submitting changes.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Workflow<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_36\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "When starting a new feature, c...", "group": "rule", "width": 400, "height": 108, "color": "#703700", "border_width": 1.5, "raw_text": "When starting a new feature, check the root AGENTS.md Quick Navigation. When working on UI components, refer to /web/src/components/AGENTS.md. When adding state management, refer to /web/src/stores/AGENTS.md. When creating custom hooks, refer to /web/src/hooks/AGENTS.md.", "details": "\n            When starting a new feature, check the root AGENTS.md Quick Navigation. When working on UI components, refer to /web/src/components/AGENTS.md. When adding state management, refer to /web/src/stores/AGENTS.md. When creating custom hooks, refer to /web/src/hooks/AGENTS.md.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> When to Use Which Guide<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_37\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "When adding new sections or di...", "group": "rule", "width": 400, "height": 42, "color": "#703700", "border_width": 1.5, "raw_text": "When adding new sections or directories: create an AGENTS.md file in the new directory, add breadcrumb navigation at the top, include cross-references to related guides, follow the established structure and patterns, update the root file's Quick Navigation section, keep content focused on what AI agents need to know, and include practical examples and code patterns.", "details": "\n            When adding new sections or directories: create an AGENTS.md file in the new directory, add breadcrumb navigation at the top, include cross-references to related guides, follow the established structure and patterns, update the root file's Quick Navigation section, keep content focused on what AI agents need to know, and include practical examples and code patterns.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Contributing to AGENTS.md Files<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_38\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For manual E2E debugging: Term...", "group": "rule", "width": 400, "height": 84, "color": "#703700", "border_width": 1.5, "raw_text": "For manual E2E debugging: Terminal 1 starts backend (conda activate nodetool && nodetool serve --port 7777), Terminal 2 starts frontend (cd web && npm start), Terminal 3 runs tests (cd web && npx playwright test).", "details": "\n            For manual E2E debugging: Terminal 1 starts backend (conda activate nodetool && nodetool serve --port 7777), Terminal 2 starts frontend (cd web && npm start), Terminal 3 runs tests (cd web && npx playwright test).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> E2E Testing Setup<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_39\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Quality", "group": "category", "width": 190, "height": 150, "color": "#4DAF4A", "border_width": 2.8, "details": "Category: Quality<br>Total Labels: 2<br>Total Rules: 15<br>Code Ratio: 0.2", "children": [{"name": "UI/UX", "group": "label", "width": 159, "height": 120, "color": "#4daf4a", "border_width": 3.5, "fre_score": 20.9, "details": "Label: UI/UX<br>Total Rules: 8<br>Code Ratio: 0.38<br>FRE Cognitive Load: 20.9", "children": [{"name": "Dashboard.tsx builds a Dockvie...", "group": "rule", "width": 400, "height": 72, "color": "#224e21", "border_width": 1.5, "raw_text": "Dashboard.tsx builds a Dockview-based workspace with AppHeader pinned at top, DockviewReact container with panels (welcome, setup, templates, workflows, recent-chats, chat). It uses AddPanelDropdown and LayoutMenu to allow adding panels and saving/restoring layouts via LayoutStore and Dockview's JSON export/import.", "details": "\n            Dashboard.tsx builds a Dockview-based workspace with AppHeader pinned at top, DockviewReact container with panels (welcome, setup, templates, workflows, recent-chats, chat). It uses AddPanelDropdown and LayoutMenu to allow adding panels and saving/restoring layouts via LayoutStore and Dockview's JSON export/import.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Dashboard<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_70\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "TabsNodeEditor manages multipl...", "group": "rule", "width": 400, "height": 48, "color": "#224e21", "border_width": 1.5, "raw_text": "TabsNodeEditor manages multiple open workflows as tabs, each tab embedding a NodeContext + NodeEditor. NodeEditor wires to NodeStore via useNodes/useTemporalNodes, uses useWebsocketRunner for workflow run state, and integrates NodeMenu for node search and insertion.", "details": "\n            TabsNodeEditor manages multiple open workflows as tabs, each tab embedding a NodeContext + NodeEditor. NodeEditor wires to NodeStore via useNodes/useTemporalNodes, uses useWebsocketRunner for workflow run state, and integrates NodeMenu for node search and insertion.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Workflow Editor<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_71\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "NodeEditor has a CommandMenu (...", "group": "rule", "width": 400, "height": 66, "color": "#224e21", "border_width": 1.5, "raw_text": "NodeEditor has a CommandMenu (command palette) triggered by meta+k / ctrl+k and configures keyboard shortcuts via useNodeEditorShortcuts and KeyPressedStore.", "details": "\n            NodeEditor has a CommandMenu (command palette) triggered by meta+k / ctrl+k and configures keyboard shortcuts via useNodeEditorShortcuts and KeyPressedStore.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Workflow Editor<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_72\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "MiniAppPage.tsx exposes workfl...", "group": "rule", "width": 400, "height": 60, "color": "#224e21", "border_width": 1.5, "raw_text": "MiniAppPage.tsx exposes workflows as simpler apps: loads the workflow, derives input definitions, builds a React form for inputs, on submit clamps numeric values and runs the workflow, and displays status message, progress bar, and MiniAppResults for outputs. It has an 'Open in Editor' button to jump to /editor/<workflow.id>.", "details": "\n            MiniAppPage.tsx exposes workflows as simpler apps: loads the workflow, derives input definitions, builds a React form for inputs, on submit clamps numeric values and runs the workflow, and displays status message, progress bar, and MiniAppResults for outputs. It has an 'Open in Editor' button to jump to /editor/<workflow.id>.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Mini-Apps<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_73\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Asset viewers (AudioViewer, Im...", "group": "rule", "width": 400, "height": 66, "color": "#224e21", "border_width": 1.5, "raw_text": "Asset viewers (AudioViewer, ImageViewer, PDFViewer, TextViewer, VideoViewer) handle previewing different asset types using appropriate viewers (e.g., react-pdf, video tags, etc.).", "details": "\n            Asset viewers (AudioViewer, ImageViewer, PDFViewer, TextViewer, VideoViewer) handle previewing different asset types using appropriate viewers (e.g., react-pdf, video tags, etc.).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Assets & Asset Viewer<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_74\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "GlobalChat is thread-centric w...", "group": "rule", "width": 400, "height": 54, "color": "#224e21", "border_width": 1.5, "raw_text": "GlobalChat is thread-centric where each thread is persisted on the backend, can be loaded/deleted/summarized, and has Message history cached locally with pagination. agentMode toggle causes messages to trigger more planning and tool call behavior.", "details": "\n            GlobalChat is thread-centric where each thread is persisted on the backend, can be loaded/deleted/summarized, and has Message history cached locally with pagination. agentMode toggle causes messages to trigger more planning and tool call behavior.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Global Chat & Agent Tools<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_75\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Use useNumberInput hook for so...", "group": "rule", "width": 400, "height": 60, "color": "#224e21", "border_width": 1.5, "raw_text": "Use useNumberInput hook for sophisticated number input behavior (drag-to-change, clamping, decimal precision) and useDelayedHover for delayed hover logic for tooltips and menus.", "details": "\n            Use useNumberInput hook for sophisticated number input behavior (drag-to-change, clamping, decimal precision) and useDelayedHover for delayed hover logic for tooltips and menus.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> UI & UX Hooks (Expanded)<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_76\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "The text editor uses Lexical i...", "group": "rule", "width": 400, "height": 36, "color": "#224e21", "border_width": 1.5, "raw_text": "The text editor uses Lexical integration with LexicalEditor.tsx, EditorToolbar.tsx, EditorStatusBar.tsx, FindReplaceBar.tsx, and plugins for code highlighting, markdown paste, floating text format toolbar, and horizontal rule. It supports markdown export and syntax highlighting with Prism.", "details": "\n            The text editor uses Lexical integration with LexicalEditor.tsx, EditorToolbar.tsx, EditorStatusBar.tsx, FindReplaceBar.tsx, and plugins for code highlighting, markdown paste, floating text format toolbar, and horizontal rule. It supports markdown export and syntax highlighting with Prism.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Text Editor, Terminal, Audio<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>ID:</strong> rule_77\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}, {"name": "Maintanability", "group": "label", "width": 139, "height": 110, "color": "#bce2bb", "border_width": 2.0, "fre_score": 40.6, "details": "Label: Maintanability<br>Total Rules: 7<br>Code Ratio: 0.0<br>FRE Cognitive Load: 40.6", "children": [{"name": "Update AGENTS.md files when ma...", "group": "rule", "width": 392, "height": 36, "color": "#224e21", "border_width": 1.5, "raw_text": "Update AGENTS.md files when making changes: when modifying core functionality, update the relevant AGENTS.md.", "details": "\n            Update AGENTS.md files when making changes: when modifying core functionality, update the relevant AGENTS.md.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation Maintenance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_78\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Review AGENTS.md documentation...", "group": "rule", "width": 340, "height": 48, "color": "#224e21", "border_width": 1.5, "raw_text": "Review AGENTS.md documentation periodically (monthly) for stale content or broken links.", "details": "\n            Review AGENTS.md documentation periodically (monthly) for stale content or broken links.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation Maintenance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_79\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Test all code examples in AGEN...", "group": "rule", "width": 290, "height": 36, "color": "#224e21", "border_width": 1.5, "raw_text": "Test all code examples in AGENTS.md files to verify they still work.", "details": "\n            Test all code examples in AGENTS.md files to verify they still work.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation Maintenance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_80\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "Ensure AGENTS.md docs reflect ...", "group": "rule", "width": 305, "height": 48, "color": "#224e21", "border_width": 1.5, "raw_text": "Ensure AGENTS.md docs reflect current implementation (sync with codebase).", "details": "\n            Ensure AGENTS.md docs reflect current implementation (sync with codebase).<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation Maintenance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_81\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "For major changes, consider ad...", "group": "rule", "width": 290, "height": 36, "color": "#224e21", "border_width": 1.5, "raw_text": "For major changes, consider adding version notes to AGENTS.md files.", "details": "\n            For major changes, consider adding version notes to AGENTS.md files.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation Maintenance<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_82\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Use useRenderLogger debug hook...", "group": "rule", "width": 400, "height": 54, "color": "#224e21", "border_width": 1.5, "raw_text": "Use useRenderLogger debug hook (development only) for tracking component re-render triggers when debugging performance issues.", "details": "\n            Use useRenderLogger debug hook (development only) for tracking component re-render triggers when debugging performance issues.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> UI Interaction Hooks<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_83\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "All routes must attach a share...", "group": "rule", "width": 400, "height": 36, "color": "#224e21", "border_width": 1.5, "raw_text": "All routes must attach a shared ErrorBoundary. Implement error boundaries for component trees and use proper TypeScript error types.", "details": "\n            All routes must attach a shared ErrorBoundary. Implement error boundaries for component trees and use proper TypeScript error types.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Routes<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>ID:</strong> rule_84\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}]};
+
+        const container = document.getElementById("graph-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const g = svg.append("g");
+        
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+            
+        svg.call(zoom);
+
+        let root = d3.hierarchy(treeData);
+        let i = 0;
+        
+        // Progressive disclosure: Collapse all labels (depth 1 children) initially
+        root.descendants().forEach(d => {
+            if (d.depth >= 1) { 
+                d._children = d.children;
+                d.children = null;
+            }
+        });
+
+        // Config layout: dx controls base vertical spacing unit, dy controls horizontal depth spread
+        const dx = 1;  
+        const dy = 320; 
+        const treeLayout = d3.tree()
+            .nodeSize([dx, dy])
+            .separation((a, b) => {
+                // Read exact rectangle height defined by the server (or fallback 40px)
+                const hA = a.data.height || 40;
+                const hB = b.data.height || 40;
+                
+                // Keep 30px vertical padding between the borders of the bounding boxes
+                return (hA + hB) / 2 + 30;
+            });
+        
+        // Containers
+        g.append("g").attr("class", "links");
+        g.append("g").attr("class", "nodes");
+        
+        // Base center
+        g.attr("transform", `translate(${dy / 2},${height / 2})`);
+
+        function update(source) {
+            treeLayout(root);
+            
+            const nodes = root.descendants();
+            const links = root.links();
+            
+            // LINKS
+            const link = g.select(".links").selectAll("path.link")
+                .data(links, d => d.target.id || (d.target.id = ++i));
+                
+            const linkEnter = link.enter().append("path")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0 || source.x, y: source.y0 || source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                });
+                
+            link.merge(linkEnter).transition().duration(400)
+                .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                
+            link.exit().transition().duration(400)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                }).remove();
+                
+            // NODES
+            const node = g.select(".nodes").selectAll("g.node")
+                .data(nodes, d => d.id || (d.id = ++i));
+                
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0 || source.y},${source.x0 || source.x})`)
+                .on("click", (event, d) => {
+                    showDetails(d.data, event.currentTarget);
+                    if (d.data.group === "rule" && d.data.raw_text) {
+                        highlightTextInLeftPane(d.data.raw_text, d.data.color);
+                    } else {
+                        clearHighlightInLeftPane();
+                    }
+                    
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else if (d._children) {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    if (d.data.group !== "rule") {
+                        update(d);
+                    }
+                });
+                
+            // Rectangles (For Categories, Labels, Rules)
+            nodeEnter.filter(d => d.data.group !== "root").append("rect")
+                .attr("class", "main-rect")
+                .attr("width", d => d.data.width || 120)
+                .attr("height", d => d.data.height || 40)
+                .attr("y", d => -(d.data.height || 40) / 2)
+                .attr("rx", 6).attr("ry", 6)
+                .attr("fill", d => d.data.color)
+                .attr("stroke-width", d => d.data.border_width || 2)
+                .attr("stroke", "#0f172a");
+                
+            // Markdown Icon (Only for Root node)
+            nodeEnter.filter(d => d.data.group === "root")
+                .append("image")
+                .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
+                .attr("width", 32)
+                .attr("height", 32)
+                .attr("x", -16)
+                .attr("y", -16);
+                
+            // White Pill Background for Text (Only for Categories and Labels with color conflict issues)
+            nodeEnter.append("rect")
+                .attr("class", "text-bg")
+                .attr("fill", "rgba(255, 255, 255, 0.70)")
+                .attr("rx", 3).attr("ry", 3)
+                .style("pointer-events", "none");
+                
+            // Text inside Nodes
+            nodeEnter.append("text")
+                .attr("class", "node-label")
+                .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
+                .attr("x", d => d.data.group === "root" ? 0 : 12)
+                .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
+                .text(d => d.data.name)
+                .style("fill", d => d.data.group === "rule" ? "#ffffff" : "#0f172a")
+                .style("font-weight", "500");
+                
+            // Transitions
+            const nodeUpdate = nodeEnter.merge(node);
+            
+            // Adjust Background Pill dynamically based on Typography Bounding Box 
+            nodeUpdate.each(function(d) {
+                const textNode = d3.select(this).select(".node-label").node();
+                if (textNode && textNode.getBBox) {
+                    const bbox = textNode.getBBox();
+                    if (d.data.group === "category" || d.data.group === "label") {
+                        d3.select(this).select(".text-bg")
+                            .attr("x", bbox.x - 4)
+                            .attr("y", bbox.y - 2)
+                            .attr("width", bbox.width + 8)
+                            .attr("height", bbox.height + 4);
+                    } else {
+                        // Roots and Rules don't need the white pill (rules are yellow, root is dark)
+                        d3.select(this).select(".text-bg")
+                            .attr("width", 0).attr("height", 0);
+                    }
+                }
+            });
+            
+            nodeUpdate.transition().duration(400)
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+                
+            nodeUpdate.select("rect").transition().duration(400)
+                .attr("stroke", "#0f172a");
+                
+            node.exit().transition().duration(400)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .style("opacity", 0)
+                .remove();
+                
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+        
+        root.x0 = height / 2;
+        root.y0 = 0;
+        update(root);
+
+        function showDetails(nodeData, nodeElement) {
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            
+            let html = `<strong>${nodeData.group.toUpperCase()}</strong><br>`;
+            html += nodeData.details;
+            
+            content.innerHTML = html;
+            panel.style.display = "block";
+            
+            // Optionally we could add a CSS class for active states here without mutating the raw stroke color
+        }
+
+        window.addEventListener("resize", () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            svg.attr("width", newWidth).attr("height", newHeight);
+        });
+
+        // Guarda el texto plano original del left pane (una sola vez)
+        const leftPaneEl = document.getElementById("markdown-content");
+        const originalLeftHtml = leftPaneEl.innerHTML;
+
+        function escapeRegex(s) {
+            return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function highlightTextInLeftPane(searchText, highlightColor) {
+            // 1. Restaurar HTML limpio
+            leftPaneEl.innerHTML = originalLeftHtml;
+
+            if (!searchText || searchText.trim() === "") return;
+
+            try {
+                // 2. Extraer solo palabras alfanuméricas del raw_text
+                const words = searchText.match(/[A-Za-z0-9À-ſ]+/g);
+                if (!words || words.length === 0) return;
+
+                // Limitar palabras para evitar bloqueo en reglas largas
+                const searchWords = words.length > 20 ? [...words.slice(0, 10), ...words.slice(-5)] : words;
+
+                // 3. Escapar cada palabra como literal de regex y unirlas con
+                //    [\s\S]{0,80}? para permitir cualquier carácter entre ellas
+                //    (incluyendo tags HTML, entidades, saltos de línea, símbolos markdown)
+                const parts = searchWords.map(w => escapeRegex(w));
+                const fuzzyPattern = parts.join('[\\s\\S]{0,80}?');
+                const regex = new RegExp('(' + fuzzyPattern + ')', 'gi');
+
+                let matchFound = false;
+
+                // 4. Aplicar resaltado directamente sobre el innerHTML
+                leftPaneEl.innerHTML = originalLeftHtml.replace(regex, (match) => {
+                    matchFound = true;
+                    return `<mark style="background-color:${highlightColor};color:#ffffff;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${highlightColor};">` + match + '</mark>';
+                });
+
+                // 5. Autoscroll al primer match
+                if (matchFound) {
+                    const mark = leftPaneEl.querySelector("mark");
+                    if (mark) mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    console.warn("[highlight] No match found for:", searchText);
+                }
+            } catch (e) {
+                console.error("[highlight] Failed:", e);
+            }
+        }
+
+        function clearHighlightInLeftPane() {
+            leftPaneEl.innerHTML = originalLeftHtml;
+        }
+    </script>
+</body>
+</html>
+    

@@ -20,8 +20,8 @@ def load_mapping() -> dict:
     with open(map_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def migrate_json_file(file_path: Path, label_to_cat: dict):
-    with open(file_path, 'r', encoding='utf-8') as f:
+def migrate_json_file(input_path: Path, output_path: Path, label_to_cat: dict):
+    with open(input_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
         
     # Check if already migrated
@@ -29,15 +29,15 @@ def migrate_json_file(file_path: Path, label_to_cat: dict):
     if not root_children:
         return # Skip empty
         
-    # If the first child's type is "label", or if we detect the new taxonomy, wait.
-    # We assigned type "category" to the new Macro categories. And type "label" to the old ones.
-    # Currently old ones have type "category".
-    
     # Check if it has type "label" anywhere or if we only have 5 macro categories
     macro_cats = {"General", "Implementation", "Build", "Management", "Quality", "Uncategorized"}
     already_migrated = all(child.get("label") in macro_cats for child in root_children)
     if already_migrated:
-        logger.info(f"Skipping {file_path.name}: already migrated.")
+        logger.info(f"Skipping {input_path.name}: already migrated.")
+        if input_path.resolve() != output_path.resolve():
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
         return
 
     # Restructure
@@ -77,10 +77,11 @@ def migrate_json_file(file_path: Path, label_to_cat: dict):
         
     data["rootNode"]["children"] = list(new_children.values())
     
-    with open(file_path, 'w', encoding='utf-8') as f:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2)
         
-    logger.info(f"Migrated {file_path.name}")
+    logger.info(f"Migrated {input_path.name}")
 
 def main():
     mapping = load_mapping()
@@ -91,7 +92,15 @@ def main():
         for label in labels:
             label_to_cat[label] = macro_cat
             
-    # Iterate all json files
+    import sys
+    if len(sys.argv) == 3:
+        in_p = Path(sys.argv[1])
+        out_p = Path(sys.argv[2])
+        if in_p.exists():
+            migrate_json_file(in_p, out_p, label_to_cat)
+        return
+
+    # Iterate all json files (legacy batch mode)
     root = get_project_root()
     search_path = root / "dataset" / "json_trees" / "**" / "*.json"
     
@@ -99,7 +108,8 @@ def main():
     count = 0
     for f in files:
         if "cat_lab_mapping" in f: continue
-        migrate_json_file(Path(f), label_to_cat)
+        p = Path(f)
+        migrate_json_file(p, p, label_to_cat)
         count += 1
         
     logger.info(f"Migration complete! Processed {count} JSON files.")
