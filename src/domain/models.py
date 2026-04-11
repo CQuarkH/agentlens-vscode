@@ -27,6 +27,8 @@ class RuleContent(BaseModel):
 class RuleMetadata(BaseModel):
     strength: Literal["MUST", "SHOULD"]
     format: Literal["ListItem", "Paragraph"]
+    line_start: Optional[int] = None
+    line_end: Optional[int] = None
 
 class AgentRule(BaseModel):
     """Leaf node representing an actionable rule/instruction."""
@@ -108,13 +110,14 @@ class AgentRule(BaseModel):
         
     @property
     def html_details(self) -> str:
+        lines_info = f"<strong>Lines:</strong> {self.metadata.line_start} - {self.metadata.line_end}<br>" if self.metadata.line_start and self.metadata.line_end else ""
         return f"""
             {self.content.text}<br><br>
             <hr>
             <small>
             <strong>Original Header:</strong> {self.content.originalHeader}<br>
             <strong>Format:</strong> {self.metadata.format}<br>
-            <strong>ID:</strong> {self.id}
+            {lines_info}<strong>ID:</strong> {self.id}
             </small>
             """
 

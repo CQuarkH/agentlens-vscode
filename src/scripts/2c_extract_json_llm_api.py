@@ -94,6 +94,10 @@ def main():
 You are a Lead Data Engineer and expert Information Extractor.
 Your task is to extract instructions/rules from the provided markdown document and map them into a strictly defined JSON AST format.
 
+CRITICAL EXTRACTION RULES:
+1. EXACT MATCH: The extracted 'text' for each rule MUST be an absolutely identical, verbatim substring of the original markdown content provided. DO NOT normalize characters, DO NOT rephrase, DO NOT change formatting, indentation, or capitalization. Stay 100% faithful to the source text.
+2. LINE CITATIONS: For each rule, you must find and cite the exact 1-indexed start and end lines of the rule in the markdown document, outputting them in the metadata as 'line_start' and 'line_end'.
+
 Here are the system categories available:
 {json.dumps(CATEGORY_DEFINITIONS, indent=2)}
 
@@ -109,8 +113,8 @@ You MUST follow this exact schema for the output:
         "children": [
           {{
             "id": "rule_<num>", "type": "rule",
-            "content": {{ "text": "<Instrucción completa>", "originalHeader": "<Contexto H2/H3>" }},
-            "metadata": {{ "strength": "<MUST|SHOULD>", "format": "<ListItem|Paragraph>" }}
+            "content": {{ "text": "<Instrucción exacta e identica al markdown>", "originalHeader": "<Contexto H2/H3>" }},
+            "metadata": {{ "strength": "<MUST|SHOULD>", "format": "<ListItem|Paragraph>", "line_start": <inicio_linea>, "line_end": <fin_linea> }}
           }}
         ]
       }}

@@ -28,16 +28,9 @@ def escape(text):
     return html.escape(str(text))
 
 def calculate_category_fre(cat) -> float:
-    """
-    JUSTIFICACIÓN ACADÉMICA: El cálculo de Flesch-Kincaid se aplica a nivel de categoría concatenando sus instrucciones. 
-    No se aplica a nivel de instrucción individual porque las fórmulas de legibilidad pierden validez estadística y generan 
-    ruido en textos cortos (menores a 100 palabras). Concatenar por categoría ofrece una medida real de la densidad 
-    cognitiva de esa sección del documento.
-    """
     if not cat.children:
         return 100.0
     
-    # Flesch-Kincaid evaluates legibility on text length and syllables. So we concatenate the label's sub-rules.
     if not hasattr(cat, 'children') or not cat.children:
         return 100.0
     
@@ -48,14 +41,25 @@ def calculate_category_fre(cat) -> float:
     
     try:
         fre = textstat.flesch_reading_ease(concatenated_text)
-        return max(0.0, fre)  # Dense tech text can be mathematically negative; clamp to 0 for UI bounds
+        return max(0.0, fre)
     except:
         return 50.0
 
 def build_tree_data(doc):
-    """Converts the Domain Model AST into a hierarchical structure expected by d3.hierarchy()"""
-    
-    # Root Node
+    all_rule_lengths = []
+    for cat in doc.rootNode.children:
+        for label in cat.children:
+            for rule in label.children:
+                all_rule_lengths.append(len(rule.content.text) if rule.content.text else 0)
+                
+    min_len = min(all_rule_lengths) if all_rule_lengths else 0
+    max_len = max(all_rule_lengths) if all_rule_lengths else 1
+    if min_len == max_len:
+        max_len = min_len + 1 
+
+    MIN_WIDTH = 120
+    MAX_WIDTH = 350
+
     tree = {
         "name": doc.repo_name,
         "group": "root",
@@ -99,12 +103,15 @@ def build_tree_data(doc):
             }
             
             for rule in label.children:
+                text_len = len(rule.content.text) if rule.content.text else 0
+                normalized_width = MIN_WIDTH + ((text_len - min_len) / (max_len - min_len)) * (MAX_WIDTH - MIN_WIDTH)
+                
                 label_node["children"].append({
                     "name": rule.short_label,
                     "group": "rule",
-                    "width": rule.tree_width,
+                    "width": round(normalized_width),
                     "height": rule.tree_height,
-                    "color": rule.color,
+                    "color": label.color,
                     "border_width": 1.5,
                     "raw_text": rule.content.text, 
                     "details": rule.html_details,
@@ -123,7 +130,6 @@ def generate_html(md_content, doc, output_path):
     md_source = escape(doc.source_file)
     escaped_md = escape(md_content)
     
-    # Transform Domain AST to D3 Hierarchical JSON
     tree_json_str = build_tree_data(doc)
 
     html_content = f"""
@@ -170,11 +176,22 @@ def generate_html(md_content, doc, output_path):
         
         .left-pane {{
             flex: 0 0 40%;
-            overflow-y: auto;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
             background: #ffffff;
             border-right: 2px solid #cbd5e1;
             box-sizing: border-box;
+        }}
+
+        .left-pane-header {{
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }}
+
+        #markdown-content {{
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
             font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
             font-size: 0.85rem;
             line-height: 1.5;
@@ -260,21 +277,6 @@ def generate_html(md_content, doc, output_path):
             stroke: #cbd5e1;
             stroke-width: 1.5px;
         }}
-
-        .legend {{
-            display: none; /* Temporarily hidden for testing purposes */
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.9);
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.8rem;
-            pointer-events: none;
-        }}
-        .legend-item {{ display: flex; align-items: center; margin-bottom: 5px; }}
-        .legend-color {{ width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }}
     </style>
 </head>
 <body>
@@ -283,9 +285,12 @@ def generate_html(md_content, doc, output_path):
     </div>
     
     <div class="split-container">
-        <div class="left-pane" id="markdown-content">
-            <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; font-family: sans-serif;">Raw Document ({md_source})</h2>
-            {escaped_md}
+        <div class="left-pane">
+            <div class="left-pane-header">
+                <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin: 0; font-family: sans-serif;">Raw Document ({md_source})</h2>
+            </div>
+            <!-- Separamos el contenido para no romper el HTML del <h2> con el Regex -->
+            <div id="markdown-content">{escaped_md}</div>
         </div>
         
         <div class="right-pane">
@@ -297,25 +302,6 @@ def generate_html(md_content, doc, output_path):
                 <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
                 <h3>Node Details</h3>
                 <div id="details-content">Click a node to view its structural properties and rules.</div>
-            </div>
-            
-            <div class="legend">
-                <strong>Visual Encoding</strong>
-                <div class="legend-item"><div class="legend-color" style="background: #1e293b;"></div> Root Node</div>
-                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Rule Instruction</div>
-                <br>
-                <strong>Category & Label Encodings</strong>
-                <div class="legend-item" style="margin-bottom: 2px;">📏 <strong>Height:</strong> Sub-items text density (40-120px)</div>
-                <div class="legend-item" style="margin-bottom: 2px;">↔️ <strong>Width:</strong> Number of nested rules (max 200px)</div>
-                <div class="legend-item">🔳 <strong>Border Density:</strong> Code presence multiplier</div>
-                <br>
-                <strong>Category Color = FRE Score</strong>
-                <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> &lt;30 High Load (Complex)</div>
-                <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> 30-50 Med-High Load</div>
-                <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> 50-70 Medium Load</div>
-                <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> &gt;70 Low Load (Easy)</div>
-                <br>
-                <small><em>Hint: Click nodes to expand/collapse.</em></small>
             </div>
         </div>
     </div>
@@ -345,7 +331,6 @@ def generate_html(md_content, doc, output_path):
         let root = d3.hierarchy(treeData);
         let i = 0;
         
-        // Progressive disclosure: Collapse all labels (depth 1 children) initially
         root.descendants().forEach(d => {{
             if (d.depth >= 1) {{ 
                 d._children = d.children;
@@ -353,25 +338,18 @@ def generate_html(md_content, doc, output_path):
             }}
         }});
 
-        // Config layout: dx controls base vertical spacing unit, dy controls horizontal depth spread
         const dx = 1;  
         const dy = 320; 
         const treeLayout = d3.tree()
             .nodeSize([dx, dy])
             .separation((a, b) => {{
-                // Read exact rectangle height defined by the server (or fallback 40px)
                 const hA = a.data.height || 40;
                 const hB = b.data.height || 40;
-                
-                // Keep 30px vertical padding between the borders of the bounding boxes
                 return (hA + hB) / 2 + 30;
             }});
         
-        // Containers
         g.append("g").attr("class", "links");
         g.append("g").attr("class", "nodes");
-        
-        // Base center
         g.attr("transform", `translate(${{dy / 2}},${{height / 2}})`);
 
         function update(source) {{
@@ -427,7 +405,6 @@ def generate_html(md_content, doc, output_path):
                     }}
                 }});
                 
-            // Rectangles (For Categories, Labels, Rules)
             nodeEnter.filter(d => d.data.group !== "root").append("rect")
                 .attr("class", "main-rect")
                 .attr("width", d => d.data.width || 120)
@@ -438,7 +415,6 @@ def generate_html(md_content, doc, output_path):
                 .attr("stroke-width", d => d.data.border_width || 2)
                 .attr("stroke", "#0f172a");
                 
-            // Markdown Icon (Only for Root node)
             nodeEnter.filter(d => d.data.group === "root")
                 .append("image")
                 .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
@@ -447,39 +423,54 @@ def generate_html(md_content, doc, output_path):
                 .attr("x", -16)
                 .attr("y", -16);
                 
-            // White Pill Background for Text (Only for Categories and Labels with color conflict issues)
             nodeEnter.append("rect")
                 .attr("class", "text-bg")
                 .attr("fill", "rgba(255, 255, 255, 0.70)")
                 .attr("rx", 3).attr("ry", 3)
                 .style("pointer-events", "none");
                 
-            // Text inside Nodes
             nodeEnter.append("text")
                 .attr("class", "node-label")
                 .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
                 .attr("x", d => d.data.group === "root" ? 0 : 12)
                 .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
                 .text(d => d.data.name)
-                .style("fill", d => d.data.group === "rule" ? "#ffffff" : "#0f172a")
+                .style("fill", "#0f172a") 
                 .style("font-weight", "500");
                 
-            // Transitions
             const nodeUpdate = nodeEnter.merge(node);
             
-            // Adjust Background Pill dynamically based on Typography Bounding Box 
+            // --- MODIFICACIÓN 3: Truncar texto de Rules con "..." si supera el ancho ---
+            nodeUpdate.select(".node-label").each(function(d) {{
+                if (d.data.group === "rule") {{
+                    const padding = 24; // Espacio seguro izq y der
+                    const maxWidth = (d.data.width || 120) - padding;
+                    let textStr = d.data.name;
+                    this.textContent = textStr; // Reset al texto completo
+                    
+                    if (this.getComputedTextLength() > maxWidth && textStr.length > 3) {{
+                        let i = textStr.length;
+                        while (this.getComputedTextLength() > maxWidth && i > 0) {{
+                            i--;
+                            this.textContent = textStr.slice(0, i) + "...";
+                        }}
+                    }}
+                }}
+            }});
+
+            // --- MODIFICACIÓN 2: Fondo blanco para las Rules también ---
             nodeUpdate.each(function(d) {{
                 const textNode = d3.select(this).select(".node-label").node();
                 if (textNode && textNode.getBBox) {{
                     const bbox = textNode.getBBox();
-                    if (d.data.group === "category" || d.data.group === "label") {{
+                    // Ahora se permite a category, label Y rule tener fondo blanco
+                    if (d.data.group === "category" || d.data.group === "label" || d.data.group === "rule") {{
                         d3.select(this).select(".text-bg")
                             .attr("x", bbox.x - 4)
                             .attr("y", bbox.y - 2)
                             .attr("width", bbox.width + 8)
                             .attr("height", bbox.height + 4);
                     }} else {{
-                        // Roots and Rules don't need the white pill (rules are yellow, root is dark)
                         d3.select(this).select(".text-bg")
                             .attr("width", 0).attr("height", 0);
                     }}
@@ -510,14 +501,10 @@ def generate_html(md_content, doc, output_path):
         function showDetails(nodeData, nodeElement) {{
             const panel = document.getElementById("details-panel");
             const content = document.getElementById("details-content");
-            
             let html = `<strong>${{nodeData.group.toUpperCase()}}</strong><br>`;
             html += nodeData.details;
-            
             content.innerHTML = html;
             panel.style.display = "block";
-            
-            // Optionally we could add a CSS class for active states here without mutating the raw stroke color
         }}
 
         window.addEventListener("resize", () => {{
@@ -526,50 +513,92 @@ def generate_html(md_content, doc, output_path):
             svg.attr("width", newWidth).attr("height", newHeight);
         }});
 
-        // Guarda el texto plano original del left pane (una sola vez)
         const leftPaneEl = document.getElementById("markdown-content");
         const originalLeftHtml = leftPaneEl.innerHTML;
 
-        function escapeRegex(s) {{
-            return s.replace(/[.*+?^${{}}()|[\\]\\\\]/g, '\\\\$&');
+        // Helper: escapa un string para usarlo como literal en un RegExp
+        function escapeRegExp(str) {{
+            return str.replace(/[.*+?^${{}}()|[\\]\\\\]/g, '\\\\$&');
         }}
 
-        function highlightTextInLeftPane(searchText, highlightColor) {{
-            // 1. Restaurar HTML limpio
-            leftPaneEl.innerHTML = originalLeftHtml;
+        // Helper: escapa texto igual que html.escape() de Python, para buscar en innerHTML
+        function htmlEscape(str) {{
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }}
 
+        // --- MODIFICACIÓN 1: Regex robusto que opera sobre el HTML escapado ---
+        function highlightTextInLeftPane(searchText, highlightColor) {{
+            leftPaneEl.innerHTML = originalLeftHtml;
             if (!searchText || searchText.trim() === "") return;
 
             try {{
-                // 2. Extraer solo palabras alfanuméricas del raw_text
-                const words = searchText.match(/[A-Za-z0-9\u00C0-\u017F]+/g);
+                // El originalLeftHtml contiene texto HTML-escapado (ej: & -> &amp;).
+                // Debemos escapar el searchText de la misma forma antes de extraer palabras,
+                // así el regex opera en el mismo espacio de caracteres que el innerHTML.
+                const escapedSearchText = htmlEscape(searchText);
+
+                // Extrae tokens alfanuméricos del texto ya escapado
+                // Incluye también secuencias de entidades HTML como &amp; &lt; etc.
+                const words = escapedSearchText.match(/(?:&[a-z]+;|[A-Za-z0-9À-ÿ]+)/g);
                 if (!words || words.length === 0) return;
 
-                // Limitar palabras para evitar bloqueo en reglas largas
-                const searchWords = words.length > 20 ? [...words.slice(0, 10), ...words.slice(-5)] : words;
+                // El separador permite cero o más caracteres no-alfanuméricos entre tokens
+                // (espacios, saltos de línea, markdown, entidades HTML parciales, etc.)
+                // Usamos *? (cero o más, no-greedy) para no saltar demasiado entre tokens
+                const sep = '[^A-Za-z0-9À-ÿ]*?';
 
-                // 3. Escapar cada palabra como literal de regex y unirlas con
-                //    [\\s\\S]{{0,80}}? para permitir cualquier carácter entre ellas
-                //    (incluyendo tags HTML, entidades, saltos de línea, símbolos markdown)
-                const parts = searchWords.map(w => escapeRegex(w));
-                const fuzzyPattern = parts.join('[\\\\s\\\\S]{{0,80}}?');
-                const regex = new RegExp('(' + fuzzyPattern + ')', 'gi');
+                function buildRegexStr(wordList) {{
+                    return wordList.map(escapeRegExp).join(sep);
+                }}
 
-                let matchFound = false;
+                function tryHighlight(regexStr) {{
+                    const regex = new RegExp('(' + regexStr + ')', 'gi');
+                    let matchFound = false;
+                    const newHtml = originalLeftHtml.replace(regex, (match) => {{
+                        matchFound = true;
+                        return `<mark style="background-color:${{highlightColor}};color:#0f172a;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${{highlightColor}};">` + match + '</mark>';
+                    }});
+                    if (matchFound) {{
+                        leftPaneEl.innerHTML = newHtml;
+                        const mark = leftPaneEl.querySelector("mark");
+                        if (mark) mark.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+                    }}
+                    return matchFound;
+                }}
 
-                // 4. Aplicar resaltado directamente sobre el innerHTML
-                leftPaneEl.innerHTML = originalLeftHtml.replace(regex, (match) => {{
-                    matchFound = true;
-                    return `<mark style="background-color:${{highlightColor}};color:#ffffff;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${{highlightColor}};">` + match + '</mark>';
-                }});
+                let matched = false;
 
-                // 5. Autoscroll al primer match
-                if (matchFound) {{
-                    const mark = leftPaneEl.querySelector("mark");
-                    if (mark) mark.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+                if (words.length <= 15) {{
+                    // Texto corto: busca la secuencia completa de tokens
+                    matched = tryHighlight(buildRegexStr(words));
                 }} else {{
+                    // Texto largo: ancla primeras 8 y últimas 8 palabras con gap flexible en el medio
+                    const startWords = words.slice(0, 8);
+                    const endWords = words.slice(-8);
+                    const regexStr = buildRegexStr(startWords) + '[\\\\s\\\\S]{{0,5000}}?' + buildRegexStr(endWords);
+                    matched = tryHighlight(regexStr);
+                }}
+
+                // FALLBACK 1: Si no hubo match, intenta solo las primeras 8 palabras
+                if (!matched) {{
+                    const fallbackWords = words.slice(0, 8);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }}
+
+                // FALLBACK 2: Si sigue sin match, intenta solo las primeras 4 palabras
+                if (!matched) {{
+                    const fallbackWords = words.slice(0, 4);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }}
+
+                if (!matched) {{
                     console.warn("[highlight] No match found for:", searchText);
                 }}
+
             }} catch (e) {{
                 console.error("[highlight] Failed:", e);
             }}
