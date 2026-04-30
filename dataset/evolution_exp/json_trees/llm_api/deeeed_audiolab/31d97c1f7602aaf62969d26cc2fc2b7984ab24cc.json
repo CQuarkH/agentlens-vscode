@@ -1,0 +1,573 @@
+{
+  "projectInfo": {
+    "repoName": "deeeed/audiolab",
+    "agentsMdSource": "CLAUDE.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "cat_system_overview",
+        "label": "System Overview",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "rule_1",
+            "type": "rule",
+            "content": {
+              "text": "This is a monorepo for audio processing libraries and applications built with React Native and Expo. It contains multiple packages:\n\n- `@siteed/expo-audio-studio` - Comprehensive audio processing library (formerly `@siteed/expo-audio-stream`)\n- `@siteed/expo-audio-ui` - UI components for audio visualization\n- `@siteed/react-native-essentia` - React Native bindings for Essentia audio analysis\n- `@siteed/sherpa-onnx.rn` - React Native wrapper for sherpa-onnx TTS/STT (in development)",
+              "originalHeader": "Repository Overview"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 4,
+              "line_end": 10
+            }
+          },
+          {
+            "id": "rule_2",
+            "type": "rule",
+            "content": {
+              "text": "- Uses Yarn workspaces for dependency management\n- Apps in `/apps` directory consume packages from `/packages`\n- Shared TypeScript configuration at root level\n- Lefthook for Git hooks (configured but not enforced)",
+              "originalHeader": "Monorepo Structure"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 100,
+              "line_end": 103
+            }
+          },
+          {
+            "id": "rule_3",
+            "type": "rule",
+            "content": {
+              "text": "- All packages use TypeScript\n- iOS requires minimum deployment target 13.4\n- Android minimum SDK 24\n- Web support varies by package\n- ONNX models stored with Git LFS\n- Integration tests require device/simulator",
+              "originalHeader": "Key Technical Details"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 131,
+              "line_end": 136
+            }
+          },
+          {
+            "id": "rule_4",
+            "type": "rule",
+            "content": {
+              "text": "You are working on the `fix/compressed-only-output-issue-244` branch which addresses issue #244 - when primary output is disabled and compressed output is enabled, the compression info was not being returned.",
+              "originalHeader": "Current Branch Context"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 142,
+              "line_end": 142
+            }
+          },
+          {
+            "id": "rule_5",
+            "type": "rule",
+            "content": {
+              "text": "#### What the Tests Validate\n- When primary output is disabled and compressed is enabled, compression info is returned\n- The compressed file URI is accessible in the result\n- Different compression formats work correctly (AAC, Opus)\n- File size and metadata are properly reported",
+              "originalHeader": "Testing the Fix for Issue #244"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 168,
+              "line_end": 172
+            }
+          },
+          {
+            "id": "rule_6",
+            "type": "rule",
+            "content": {
+              "text": "**What CANNOT be done from CLI:**\n- Run tests that require iOS simulator\n- Execute code that uses iOS-specific APIs (AVAudioSession, etc.)\n- Run instrumented tests on actual devices\n- Access iOS runtime environment",
+              "originalHeader": "iOS Testing Limitations"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 210,
+              "line_end": 214
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_build_and_run",
+        "label": "Build and Run",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "rule_7",
+            "type": "rule",
+            "content": {
+              "text": "```bash\n# Install dependencies\nyarn install\n\n# Setup Git LFS for ONNX models (required)\n./scripts/setup-lfs.sh\n```",
+              "originalHeader": "Development Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 14,
+              "line_end": 20
+            }
+          },
+          {
+            "id": "rule_8",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd packages/expo-audio-studio\nyarn build          # Build all formats (CJS, ESM, types, plugin)\nyarn build:plugin   # Build Expo plugin only\nyarn build:dev      # Build for development\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn test           # Run all tests\n```",
+              "originalHeader": "expo-audio-studio"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 24,
+              "line_end": 32
+            }
+          },
+          {
+            "id": "rule_9",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd packages/expo-audio-ui\nyarn build          # Build with Rollup\nyarn build:clean    # Clean and build\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn storybook      # Run Storybook development server\n```",
+              "originalHeader": "expo-audio-ui"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 35,
+              "line_end": 42
+            }
+          },
+          {
+            "id": "rule_10",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd packages/react-native-essentia\nyarn prepare        # Build the package\nyarn build:ios      # Build Essentia for iOS\nyarn build:android  # Build Essentia for Android\nyarn build:all      # Build for all platforms\nyarn test           # Run tests\n```",
+              "originalHeader": "react-native-essentia"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 45,
+              "line_end": 52
+            }
+          },
+          {
+            "id": "rule_11",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd apps/playground\nyarn build:deps     # Build all dependencies\nyarn start          # Start Metro bundler (port 7365)\nyarn ios            # Run on iOS device\nyarn android        # Run on Android\nyarn web            # Run on web\n```",
+              "originalHeader": "Audio Playground (main demo app)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 57,
+              "line_end": 64
+            }
+          },
+          {
+            "id": "rule_12",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd apps/minimal\nyarn start          # Start Metro bundler\nyarn ios            # Run on iOS\nyarn android        # Run on Android\nyarn web            # Run on web\n```",
+              "originalHeader": "Minimal Example"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 67,
+              "line_end": 73
+            }
+          },
+          {
+            "id": "rule_13",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd apps/playground\nyarn publish                         # Deploy to web\nyarn build:android:production        # Build production Android\nyarn build:ios:production            # Build production iOS\nyarn ota-update:production           # Over-the-air update for production\n```",
+              "originalHeader": "Playground App Deployment"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 91,
+              "line_end": 97
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_testing",
+        "label": "Testing",
+        "type": "category",
+        "count": 10,
+        "children": [
+          {
+            "id": "rule_14",
+            "type": "rule",
+            "content": {
+              "text": "```bash\ncd packages/expo-audio-studio\n\n# Android tests\nyarn test:android                    # Run all Android tests\nyarn test:android:unit               # Unit tests only\nyarn test:android:instrumented       # Instrumented tests\nyarn test:android:unit:watch         # Watch mode for unit tests\nyarn test:coverage                   # Generate coverage report\n\n# iOS tests\nyarn test:ios                        # Run iOS tests\n```",
+              "originalHeader": "expo-audio-studio Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 77,
+              "line_end": 89
+            }
+          },
+          {
+            "id": "rule_15",
+            "type": "rule",
+            "content": {
+              "text": "1. **Running Tests**: Android integration tests use instrumented tests that run on a real device or emulator:\n   ```bash\n   cd apps/playground/android\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest\n   ```",
+              "originalHeader": "Android Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 181,
+              "line_end": 185
+            }
+          },
+          {
+            "id": "rule_16",
+            "type": "rule",
+            "content": {
+              "text": "2. **Test Results**: Located in `packages/expo-audio-studio/android/build/outputs/androidTest-results/`",
+              "originalHeader": "Android Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 187,
+              "line_end": 187
+            }
+          },
+          {
+            "id": "rule_17",
+            "type": "rule",
+            "content": {
+              "text": "3. **Specific Test Execution**: Run individual test classes:\n   ```bash\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest --tests \"*.CompressedOnlyOutputTest\"\n   ```",
+              "originalHeader": "Android Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 189,
+              "line_end": 192
+            }
+          },
+          {
+            "id": "rule_18",
+            "type": "rule",
+            "content": {
+              "text": "4. **Requirements**:\n   - Connected Android device or running emulator\n   - USB debugging enabled on device\n   - Gradle will automatically install the test APK",
+              "originalHeader": "Android Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 194,
+              "line_end": 197
+            }
+          },
+          {
+            "id": "rule_19",
+            "type": "rule",
+            "content": {
+              "text": "1. **Current Setup**: iOS integration tests are script-based and located in `packages/expo-audio-studio/ios/tests/integration/`",
+              "originalHeader": "iOS Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 201,
+              "line_end": 201
+            }
+          },
+          {
+            "id": "rule_20",
+            "type": "rule",
+            "content": {
+              "text": "4. **Important Note**: The iOS integration test scripts currently simulate behavior rather than testing the actual AudioStreamManager. For real testing, use the unit tests in Xcode.",
+              "originalHeader": "iOS Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 208,
+              "line_end": 208
+            }
+          },
+          {
+            "id": "rule_21",
+            "type": "rule",
+            "content": {
+              "text": "**For actual iOS integration testing:**\n1. Open the project in Xcode\n2. Select a simulator or connected device\n3. Run the test target or app\n4. Manually test the feature or run XCTest unit tests",
+              "originalHeader": "iOS Testing Limitations"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 216,
+              "line_end": 220
+            }
+          },
+          {
+            "id": "rule_22",
+            "type": "rule",
+            "content": {
+              "text": "1. **Always Test on Real Implementation**: Simulated tests can mask real bugs. Android's instrumented tests run actual code, while iOS integration scripts may simulate behavior.",
+              "originalHeader": "Key Learnings"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 225,
+              "line_end": 225
+            }
+          },
+          {
+            "id": "rule_23",
+            "type": "rule",
+            "content": {
+              "text": "5. **Fix Validation Process**:\n   - Write/update tests that demonstrate the bug\n   - Implement the fix\n   - Run tests to confirm fix works\n   - Ensure no regression in existing functionality",
+              "originalHeader": "Key Learnings"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 237,
+              "line_end": 241
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_devops",
+        "label": "DevOps",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "rule_24",
+            "type": "rule",
+            "content": {
+              "text": "```bash\n# expo-audio-studio\ncd packages/expo-audio-studio\nyarn release\n\n# expo-audio-ui\ncd packages/expo-audio-ui\nyarn release\n\n# react-native-essentia\ncd packages/react-native-essentia\nnpm publish\n```",
+              "originalHeader": "Publishing Packages"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 79,
+              "line_end": 91
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_impl_details",
+        "label": "Impl. Details",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_25",
+            "type": "rule",
+            "content": {
+              "text": "- Native modules for iOS (Swift) and Android (Kotlin)\n- Supports dual-stream recording (raw PCM + compressed)\n- Audio device management and selection\n- Background recording capabilities\n- Integration tests for both platforms",
+              "originalHeader": "expo-audio-studio"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 107,
+              "line_end": 111
+            }
+          },
+          {
+            "id": "rule_26",
+            "type": "rule",
+            "content": {
+              "text": "- Built with React Native Skia for visualizations\n- Rollup build system\n- Storybook for component development\n- Peer dependency on expo-audio-studio",
+              "originalHeader": "expo-audio-ui"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 115,
+              "line_end": 118
+            }
+          },
+          {
+            "id": "rule_27",
+            "type": "rule",
+            "content": {
+              "text": "- C++ native implementation using Essentia library\n- Requires building static libraries for iOS/Android\n- Advanced audio analysis algorithms\n- Uses react-native-builder-bob for building",
+              "originalHeader": "react-native-essentia"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 122,
+              "line_end": 125
+            }
+          },
+          {
+            "id": "rule_28",
+            "type": "rule",
+            "content": {
+              "text": "- Wraps sherpa-onnx for speech recognition and synthesis\n- Web support through WASM\n- Model management system\n- Currently in development",
+              "originalHeader": "sherpa-onnx.rn"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 129,
+              "line_end": 132
+            }
+          },
+          {
+            "id": "rule_29",
+            "type": "rule",
+            "content": {
+              "text": "3. **Test Types**:\n   - **Simulation Tests**: Some tests simulate behavior (e.g., `compressed_only_output_test.swift`)\n   - **Real Tests**: Unit tests in `ExpoAudioStudioTests/` test actual implementation",
+              "originalHeader": "iOS Integration Testing"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 205,
+              "line_end": 207
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_maintenance",
+        "label": "Maintenance",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_30",
+            "type": "rule",
+            "content": {
+              "text": "- Always run `yarn build:deps` in playground before development\n- The playground app uses port 7365 by default\n- Git LFS setup is required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in native test scripts\n- Background recording requires special permissions configuration",
+              "originalHeader": "Important Notes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 140,
+              "line_end": 145
+            }
+          },
+          {
+            "id": "rule_31",
+            "type": "rule",
+            "content": {
+              "text": "2. **Platform Differences**:\n   - Android: Gradle-based instrumented tests run on device\n   - iOS: Mix of script-based tests and Xcode unit tests",
+              "originalHeader": "Key Learnings"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 227,
+              "line_end": 229
+            }
+          },
+          {
+            "id": "rule_32",
+            "type": "rule",
+            "content": {
+              "text": "3. **Debugging Failed Tests**:\n   - Check test output logs for detailed error messages\n   - Android: View XML test results in build directory\n   - iOS: Console output from test scripts",
+              "originalHeader": "Key Learnings"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 231,
+              "line_end": 234
+            }
+          },
+          {
+            "id": "rule_33",
+            "type": "rule",
+            "content": {
+              "text": "4. **Test Coverage**:\n   - Test both success and failure scenarios\n   - Verify edge cases (e.g., primary disabled, compressed enabled)\n   - Check platform-specific behavior (e.g., Opus fallback on iOS)",
+              "originalHeader": "Key Learnings"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 235,
+              "line_end": 238
+            }
+          },
+          {
+            "id": "rule_34",
+            "type": "rule",
+            "content": {
+              "text": "When adding new features or fixing bugs:\n\n1. **Create Test First**: Write a test that demonstrates the current bug\n2. **Run Test**: Confirm it fails with the bug\n3. **Implement Fix**: Make the necessary code changes\n4. **Run Test Again**: Confirm it passes with the fix\n5. **Run Full Suite**: Ensure no regressions\n\nThis approach ensures fixes work correctly on real devices and prevents future regressions.",
+              "originalHeader": "Writing Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 261,
+              "line_end": 270
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_conf_env",
+        "label": "Conf.&Env.",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "rule_35",
+            "type": "rule",
+            "content": {
+              "text": "**What can be done from CLI:**\n- Build the iOS project (requires Xcode installed)\n- Run script-based tests that don't require iOS runtime\n- Verify source code implementation\n- Check for compilation errors",
+              "originalHeader": "iOS Testing Limitations"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 204,
+              "line_end": 208
+            }
+          },
+          {
+            "id": "rule_36",
+            "type": "rule",
+            "content": {
+              "text": "This limitation applies to any CLI tool (including Claude) that doesn't have access to macOS GUI and Xcode's simulator runtime.",
+              "originalHeader": "iOS Testing Limitations"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 222,
+              "line_end": 222
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

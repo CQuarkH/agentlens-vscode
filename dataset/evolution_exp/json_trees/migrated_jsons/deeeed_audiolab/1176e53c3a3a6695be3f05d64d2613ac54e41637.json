@@ -1,0 +1,537 @@
+{
+  "projectInfo": {
+    "repoName": "deeeed/audiolab",
+    "agentsMdSource": "CLAUDE.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 12,
+        "children": [
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "**expo-audio-stream** is a comprehensive audio processing monorepo for React Native and Expo applications. It provides real-time audio recording, analysis, visualization, and AI-powered processing capabilities across iOS, Android, and web platforms.",
+                  "originalHeader": "Repository Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 6,
+                  "line_end": 6
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "### Core Packages\n- **`@siteed/expo-audio-studio`** - Main audio processing library with dual-stream recording, device management, and format conversion\n- **`@siteed/expo-audio-ui`** - React Native Skia-based audio visualization components (waveforms, spectrograms)\n- **`@siteed/react-native-essentia`** - Advanced audio analysis using Essentia (feature extraction, classification)\n- **`@siteed/sherpa-onnx.rn`** - Speech-to-text and text-to-speech capabilities (development)",
+                  "originalHeader": "Repository Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 8,
+                  "line_end": 13
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "### Applications\n- **`apps/playground`** - Full-featured demo app showcasing all capabilities\n- **`apps/minimal`** - Simple integration example\n- **`apps/essentia-demo`** - Audio analysis demonstrations",
+                  "originalHeader": "Repository Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 15,
+                  "line_end": 19
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Standard: **iPhone 16 Pro Max** \u2014 use `yarn setup:ios-simulator` for consistent setup.",
+                  "originalHeader": "iOS Simulator"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 79,
+                  "line_end": 79
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_ai_integration",
+            "label": "AI Integration",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "**NEVER IMPLEMENT UNLESS ASKED** - No unsolicited changes",
+                  "originalHeader": "Agent Constraints"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 22,
+                  "line_end": 22
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS VERIFY IN SOURCE CODE** - No hallucinations accepted",
+                  "originalHeader": "Agent Constraints"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 23,
+                  "line_end": 23
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "**MINIMIZE DIFF** - Smallest possible changes",
+                  "originalHeader": "Agent Constraints"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 24,
+                  "line_end": 24
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "**NO WORKAROUNDS** - Fix root causes, not symptoms",
+                  "originalHeader": "Agent Constraints"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 25,
+                  "line_end": 25
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "**REAL TESTING ONLY** - No simulated results accepted",
+                  "originalHeader": "Agent Constraints"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 26,
+                  "line_end": 26
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "- **Agentic workflow**: `apps/playground/docs/AGENT_STARTING_TEMPLATE.md`\n- **CDP bridge details**: `apps/playground/docs/AGENTIC_FEEDBACK_LOOPS.md`\n- **Testing strategy**: `packages/expo-audio-studio/docs/TESTING_STRATEGY.md`",
+                  "originalHeader": "Documentation"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 132,
+                  "line_end": 134
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 15,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "```bash\nyarn install                    # Install dependencies\n./scripts/setup-lfs.sh         # Setup Git LFS for models\ncd apps/playground && yarn build:deps && yarn start  # Run playground app\n\n# Building packages\nyarn workspace @siteed/expo-audio-studio build\nyarn workspace @siteed/expo-audio-ui build\n```",
+                  "originalHeader": "Essential Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 30,
+                  "line_end": 38
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `yarn build:deps` in playground before development",
+                  "originalHeader": "Important Notes"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 72,
+                  "line_end": 72
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Native changes require pod install (iOS) or gradle sync (Android)",
+                  "originalHeader": "Important Notes"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 74,
+                  "line_end": 74
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "- \u2705 `yarn workspace <pkg> build` (~1.5s) for single-package changes\n- \u274c Full monorepo `tsc --noEmit` for single-file changes \u2014 floods output with unrelated errors",
+                  "originalHeader": "Builds / type-checking"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 118,
+                  "line_end": 119
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c `expo prebuild` from monorepo root \u2014 creates spurious `/app.json` and `/eas.json` at root and contaminates the workspace\n- \u2705 All prebuild/build commands run from `apps/playground/` only\n- \u274c `expo prebuild --clean` manually before a local EAS build \u2014 EAS local builds manage their own temp dir; manual prebuild is only for Xcode/screenshots workflows\n- \u2705 Local builds: `yarn build:ios:production:local` / `yarn build:android:production:local` (both run `eas build --local`)\n- \u2705 Switch ios/ variant via setup scripts only: `yarn setup:development` / `yarn setup:production`\n- \u2705 After accidental production prebuild, restore dev workspace: `git checkout -- apps/playground/ios/`\n- ios/ workspace name reveals current variant: `AudioDevPlayground.*` = dev/preview, `AudioPlayground.*` = production",
+                  "originalHeader": "EAS / prebuild \u2014 critical rules"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 122,
+                  "line_end": 128
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "Git LFS setup required for ONNX models",
+                  "originalHeader": "Important Notes"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 73,
+                  "line_end": 73
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "All agent commands run from `apps/playground/`. See `apps/playground/docs/AGENT_STARTING_TEMPLATE.md` for the step-by-step workflow.",
+                  "originalHeader": "Agentic Validation (CDP Bridge)"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 41,
+                  "line_end": 41
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Each returns `{ op, status: 'pending' }` immediately. Poll `getLastResult()` for `status: 'success'` or `status: 'error'`. Always check `native-logs.sh android` for Kotlin bridge crashes after running these.",
+                  "originalHeader": "Native Module Validation (fire-and-store pattern)"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 69,
+                  "line_end": 69
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c Assume iOS and Android will behave identically \u2014 handle platform-specific timing\n- \u2705 Test on BOTH platforms for any UI or navigation changes",
+                  "originalHeader": "Cross-platform"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 96,
+                  "line_end": 97
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "\u2705 Validate all features via CDP bridge before claiming completion",
+                  "originalHeader": "CDP bridge"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 93,
+                  "line_end": 93
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_conf_env",
+            "label": "Conf.&Env.",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "Background recording requires special permissions configuration",
+                  "originalHeader": "Important Notes"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 75,
+                  "line_end": 75
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "**VPN Interference**: Disconnect VPNs during iOS E2E tests; Android uses ADB port forwarding (VPN-resistant)",
+                  "originalHeader": "Important Notes"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 76,
+                  "line_end": 76
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c Use `IOS_SIMULATOR` or `ANDROID_DEVICE` env vars (removed)\n- \u2705 Use `--device <name>` flag when multiple devices are connected\n- \u274c Silently fall through to a different platform when a device filter fails \u2014 fail loudly",
+                  "originalHeader": "Device targeting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 85,
+                  "line_end": 87
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_devops",
+            "label": "DevOps",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c `adb reverse tcp:8081 tcp:7365` \u2014 conflicts with other RN apps\n- \u2705 `adb reverse tcp:7365 tcp:7365`\n- \u2705 Plain `adb shell am start <package>/.MainActivity` to relaunch after force-stop",
+                  "originalHeader": "Android ADB port mapping"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 114,
+                  "line_end": 116
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "All scripts accept `--device <name>` for multi-device targeting.",
+                  "originalHeader": "Agentic Validation (CDP Bridge)"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 51,
+                  "line_end": 51
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c Break `__AGENTIC__` API without updating all callers\n- \u2705 Validate all features via CDP bridge before claiming completion",
+                  "originalHeader": "CDP bridge"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 92,
+                  "line_end": 93
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "**Protected files \u2014 never modify without extreme caution:**\n- `apps/playground/scripts/agentic/cdp-bridge.mjs` \u2014 unified CDP bridge\n- `apps/playground/scripts/agentic/web-browser.mjs` \u2014 web browser lifecycle\n- `apps/playground/.detoxrc.js` \u2014 device configs\n- `/index.js` (monorepo root) \u2014 Storybook module resolution\n- Before touching any: verify CDP bridge still works (`app-state.sh state`)",
+                  "originalHeader": "Protected files \u2014 never modify without extreme caution:"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 99,
+                  "line_end": 104
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c Change simulator without updating `.detoxrc.js`, `scripts/setup-simulators.sh`, `scripts/generate-screenshots.sh`",
+                  "originalHeader": "iOS Simulator"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 81,
+                  "line_end": 81
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "- \u274c Pass `logger`, `ArrayBuffer`, functions, or class instances to Expo native modules \u2014 causes `\"Cannot convert '[object Object]' to a Kotlin type\"` on Android\n- \u2705 Only pass plain objects with primitive values, arrays, and nested plain objects\n- \u2705 Use `native-logs.sh android|ios` to check native-side errors on any native crash",
+                  "originalHeader": "Native modules"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 107,
+                  "line_end": 109
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "The agentic bridge exposes test methods for validating native module calls on-device. Since CDP uses `awaitPromise: false`, async results are stored and polled via `getLastResult()`.",
+                  "originalHeader": "Native Module Validation (fire-and-store pattern)"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 54,
+                  "line_end": 54
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

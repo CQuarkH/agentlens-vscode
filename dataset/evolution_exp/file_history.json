@@ -1,0 +1,154 @@
+{
+  "cartography-cncf/cartography": {
+    "repoName": "cartography-cncf/cartography",
+    "filePath": "AGENTS.md",
+    "commits": [
+      {
+        "sha": "fd9137b8945ebfd9be931e98eda86cc91a7402ed",
+        "date": "2026-01-28T00:05:01Z",
+        "message": "doc: split AGENTS.md into separate procedures (#2281)",
+        "changes": 2174,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/fd9137b8945ebfd9be931e98eda86cc91a7402ed/AGENTS.md"
+      },
+      {
+        "sha": "ae808c54e4367ab2b7222ffc147b794e3e3150ee",
+        "date": "2026-01-27T19:46:51Z",
+        "message": "feat(rules): Add Asset Compliance Metrics to Cartography Rules (#2261)",
+        "changes": 8,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/ae808c54e4367ab2b7222ffc147b794e3e3150ee/AGENTS.md"
+      },
+      {
+        "sha": "ccee83c8ddf77db59ed2dc29134725fecd95d9d0",
+        "date": "2026-01-16T19:41:58Z",
+        "message": "feat(core): add BufferError retry handling to Neo4j transactions (#2236)",
+        "changes": 26,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/ccee83c8ddf77db59ed2dc29134725fecd95d9d0/AGENTS.md"
+      },
+      {
+        "sha": "f1040506cfe274c9e56ceb8273ddf800ef6e8e5b",
+        "date": "2025-11-24T19:33:56Z",
+        "message": "feat: ontology for inactive users + fix github mapping + inactive rule (#2076)",
+        "changes": 528,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/f1040506cfe274c9e56ceb8273ddf800ef6e8e5b/AGENTS.md"
+      },
+      {
+        "sha": "070c2a3391d81f64e482c0305bde3ec2abae0a23",
+        "date": "2025-11-19T00:24:04Z",
+        "message": "feat: ontology improvement (fields for semantic labels) (#2059)",
+        "changes": 236,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/070c2a3391d81f64e482c0305bde3ec2abae0a23/AGENTS.md"
+      },
+      {
+        "sha": "c79e1ce3f763001cf7145614b5cc069c15bfb550",
+        "date": "2025-10-30T18:31:20Z",
+        "message": "feat(ontology): enable Ontology users for AWS and Okta (#2036)",
+        "changes": 24,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/c79e1ce3f763001cf7145614b5cc069c15bfb550/AGENTS.md"
+      },
+      {
+        "sha": "8b3daf9eb09c44c21d0e3208b072513b8e13c863",
+        "date": "2025-10-29T16:46:52Z",
+        "message": "fix: improve ontology with multiple sources of truth (#2031)",
+        "changes": 95,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/8b3daf9eb09c44c21d0e3208b072513b8e13c863/AGENTS.md"
+      },
+      {
+        "sha": "9d110b0cb607234e1f9bdd59fa7ae42f3bfa1293",
+        "date": "2025-10-28T22:55:41Z",
+        "message": "feat: Ontology - Phase 1 - Users & Devices (#1633)",
+        "changes": 331,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/9d110b0cb607234e1f9bdd59fa7ae42f3bfa1293/AGENTS.md"
+      },
+      {
+        "sha": "b7b70aa8c9c59a8524544603d61be9819a2141c9",
+        "date": "2025-09-22T16:59:42Z",
+        "message": "Document fail-loud error handling expectations (#1933)",
+        "changes": 29,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/b7b70aa8c9c59a8524544603d61be9819a2141c9/AGENTS.md"
+      },
+      {
+        "sha": "cf90f98fda52e41134da33002ca782437b676c02",
+        "date": "2025-09-03T00:14:52Z",
+        "message": "docs: teach agents how to refactor modules (#1873)",
+        "changes": 251,
+        "raw_url": "https://raw.githubusercontent.com/cartography-cncf/cartography/cf90f98fda52e41134da33002ca782437b676c02/AGENTS.md"
+      }
+    ]
+  },
+  "deeeed/audiolab": {
+    "repoName": "deeeed/audiolab",
+    "filePath": "CLAUDE.md",
+    "commits": [
+      {
+        "sha": "1176e53c3a3a6695be3f05d64d2613ac54e41637",
+        "date": "2026-02-23T01:47:11Z",
+        "message": "feat(playground): add native module validation tests to agentic bridge",
+        "changes": 28,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/1176e53c3a3a6695be3f05d64d2613ac54e41637/CLAUDE.md"
+      },
+      {
+        "sha": "a097650f27d89d0ea30ab73b61d40274222a224e",
+        "date": "2026-02-22T12:11:20Z",
+        "message": "docs: add EAS/prebuild critical rules to CLAUDE.md",
+        "changes": 9,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/a097650f27d89d0ea30ab73b61d40274222a224e/CLAUDE.md"
+      },
+      {
+        "sha": "48d7dda2b017c9b9029c716ea1c0b4dc18a135c9",
+        "date": "2026-02-21T13:13:00Z",
+        "message": "feat(playground): CDP agentic bridge for multi-platform automation",
+        "changes": 377,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/48d7dda2b017c9b9029c716ea1c0b4dc18a135c9/CLAUDE.md"
+      },
+      {
+        "sha": "95e943a48879310211eddc992c53e35bef700729",
+        "date": "2025-07-15T07:14:28Z",
+        "message": "feat(playground): enhance Storybook integration and configuration (#281)",
+        "changes": 11,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/95e943a48879310211eddc992c53e35bef700729/CLAUDE.md"
+      },
+      {
+        "sha": "d2182a5398ad7fd2ab5f3f781dfdfe72045e93af",
+        "date": "2025-06-13T04:40:37Z",
+        "message": "feat: implement comprehensive Storybook setup for React Native and Web",
+        "changes": 52,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/d2182a5398ad7fd2ab5f3f781dfdfe72045e93af/CLAUDE.md"
+      },
+      {
+        "sha": "027eff782181435a860abc13b6c28063084f8827",
+        "date": "2025-06-13T01:04:43Z",
+        "message": "docs: add mandatory TypeScript validation to agent memory system",
+        "changes": 15,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/027eff782181435a860abc13b6c28063084f8827/CLAUDE.md"
+      },
+      {
+        "sha": "84bd3077ebebd914430abe74e8feb62abfe0f5aa",
+        "date": "2025-06-13T01:00:06Z",
+        "message": "docs: add AI agent memory system to prevent implementation mistakes",
+        "changes": 190,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/84bd3077ebebd914430abe74e8feb62abfe0f5aa/CLAUDE.md"
+      },
+      {
+        "sha": "e7937e0268f54f85ea2e0171b221f7ef29cc6248",
+        "date": "2025-06-07T11:32:02Z",
+        "message": "feat(playground): implement agent validation framework and enhance testing capabilities (#266)",
+        "changes": 415,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/e7937e0268f54f85ea2e0171b221f7ef29cc6248/CLAUDE.md"
+      },
+      {
+        "sha": "c9faeb01cd5dcd7407f73a0f7e6d5822adb862a4",
+        "date": "2025-06-04T06:47:49Z",
+        "message": "feat\\!: Add M4A support with preferRawStream option (#261)",
+        "changes": 9,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/c9faeb01cd5dcd7407f73a0f7e6d5822adb862a4/CLAUDE.md"
+      },
+      {
+        "sha": "31d97c1f7602aaf62969d26cc2fc2b7984ab24cc",
+        "date": "2025-06-02T11:11:09Z",
+        "message": "fix: return compression info when primary output is disabled (issue #244) (#249)",
+        "changes": 343,
+        "raw_url": "https://raw.githubusercontent.com/deeeed/audiolab/31d97c1f7602aaf62969d26cc2fc2b7984ab24cc/CLAUDE.md"
+      }
+    ]
+  }
+}

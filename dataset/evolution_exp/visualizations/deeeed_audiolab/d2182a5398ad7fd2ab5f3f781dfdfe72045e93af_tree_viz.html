@@ -1,0 +1,864 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AST Tree View: deeeed/audiolab - CLAUDE.md</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow: hidden;
+        }
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-title { margin: 0; font-size: 1.2rem; }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+        
+        .left-pane {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+
+        .left-pane-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        #markdown-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+        
+        .right-pane {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #graph-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #graph-container:active { cursor: grabbing; }
+        
+        .pane-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        #details-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 5;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        #details-panel h3 { margin-top: 0; color: #0f172a; font-size: 1.1rem; }
+        #details-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        #details-panel .close-btn:hover { color: #0f172a; }
+        
+        .node circle {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+        }
+        .node:hover circle {
+            stroke: #334155;
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            pointer-events: none;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #cbd5e1;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 class="header-title">deeeed/audiolab - CLAUDE.md - Evolution AST View</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="left-pane">
+            <div class="left-pane-header">
+                <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin: 0; font-family: sans-serif;">Raw Document (d2182a5398ad7fd2ab5f3f781dfdfe72045e93af.md)</h2>
+            </div>
+            <!-- Separamos el contenido para no romper el HTML del <h2> con el Regex -->
+            <div id="markdown-content"># CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Repository Overview
+
+**expo-audio-stream** is a comprehensive audio processing monorepo for React Native and Expo applications. It provides real-time audio recording, analysis, visualization, and AI-powered processing capabilities across iOS, Android, and web platforms.
+
+### Core Packages
+- **`@siteed/expo-audio-studio`** - Main audio processing library with dual-stream recording, device management, and format conversion
+- **`@siteed/expo-audio-ui`** - React Native Skia-based audio visualization components (waveforms, spectrograms)  
+- **`@siteed/react-native-essentia`** - Advanced audio analysis using Essentia (feature extraction, classification)
+- **`@siteed/sherpa-onnx.rn`** - Speech-to-text and text-to-speech capabilities (development)
+
+### Applications
+- **`apps/playground`** - Full-featured demo app showcasing all capabilities (102 E2E tests)
+- **`apps/minimal`** - Simple integration example
+- **`apps/essentia-demo`** - Audio analysis demonstrations
+
+## Agentic Framework Requirements
+
+**10x Engineering with Automated Feedback Loops**: This repository implements a proven agentic framework for fast, reliable development.
+
+### Core Philosophy
+- **Build automated feedback loops** - the absolute key to unlock automated improvements
+- **Quality over speed** - Protect your team from AI mistakes  
+- **Real testing over mocked** - Validate actual functionality works
+- **Fast iteration** - &lt; 2 minutes to prove features work
+
+### Agent Validation System
+
+#### Development Validation (&lt; 2 minutes) - MANDATORY
+**Usage**: `yarn agent:dev &lt;feature&gt; [platform]`
+- **Purpose**: Prove feature functionality works on real devices
+- **Method**: Uses agent-validation.tsx page with deep links  
+- **Validation**: Tests actual expo-audio-studio API behavior
+- **Result**: Immediate feedback on success/failure
+- **Requirement**: **MANDATORY for ALL agent work**
+
+#### Full Validation (5-10 minutes) - OPTIONAL  
+**Usage**: `yarn agent:full [platform]`
+- **Purpose**: Comprehensive testing (102 tests)
+- **When**: Manual choice or CI pipeline
+- **Requirement**: **NOT required for agent completion**
+
+### Agent Constraints (Prevent Costly Mistakes)
+1. **NEVER IMPLEMENT UNLESS ASKED** - No unsolicited changes
+2. **ALWAYS VERIFY IN SOURCE CODE** - No hallucinations accepted
+3. **MINIMIZE DIFF** - Smallest possible changes
+4. **NO WORKAROUNDS** - Fix root causes, not symptoms
+5. **REAL TESTING ONLY** - No simulated results accepted
+
+### Quick Commands
+```bash
+cd apps/playground
+yarn agent:setup                # Device setup (first time)
+yarn agent:dev compression      # Validate compression feature (REQUIRED)
+yarn agent:full                 # Optional comprehensive testing
+yarn agent:cleanup              # Clean dev artifacts
+```
+
+### Device Setup (Required for Validation)
+
+#### Quick Setup Commands
+```bash
+cd apps/playground
+yarn agent:setup               # Check and setup devices
+yarn setup:ios-simulator       # Auto-setup iOS simulator (macOS only)
+```
+
+#### Manual Setup
+```bash
+# Android: Connect device or start emulator
+adb devices                     # Check connected devices
+
+# iOS (macOS only): Boot simulator  
+xcrun simctl boot &quot;iPhone 15&quot;  # Or any available iPhone
+```
+
+### Success Criteria
+- ✅ Development validation passes in &lt; 2 minutes
+- ✅ Feature functionality confirmed working
+- ✅ Include actual command output in response
+- ✅ Real device/simulator testing completed
+- ✅ Optional: Full validation available if desired
+
+**📖 Complete Workflow**: See `docs/AGENT_WORKFLOW.md` for detailed usage, log management, and troubleshooting
+
+## Essential Commands
+
+### Quick Start
+```bash
+yarn install                    # Install dependencies
+./scripts/setup-lfs.sh         # Setup Git LFS for models
+cd apps/playground &amp;&amp; yarn build:deps &amp;&amp; yarn start  # Run playground app
+```
+
+### Development
+```bash
+# Building packages
+yarn workspace @siteed/expo-audio-studio build
+yarn workspace @siteed/expo-audio-ui build
+
+# Testing
+cd packages/expo-audio-studio
+yarn test:android               # Android tests (36/36) 
+yarn test:ios                   # iOS compilation check
+
+# E2E Testing
+cd apps/playground
+yarn e2e:android:record         # Recording workflow
+yarn e2e:android:import         # Import workflow
+yarn e2e:android:screenshots    # Visual validation
+
+# Storybook Development
+yarn storybook                  # Native Storybook (metro bundler)
+yarn storybook:ios              # iOS native Storybook
+yarn storybook:android          # Android native Storybook
+yarn storybook:web              # Web Storybook (vite bundler)
+yarn agent:storybook:ios        # iOS validation with screenshots
+yarn agent:storybook:android    # Android validation with screenshots
+yarn e2e:android:storybook      # Storybook E2E validation (Android)
+yarn e2e:ios:storybook          # Storybook E2E validation (iOS)
+```
+
+## Current Branch Context
+
+You are working on the `main` branch which includes the newly implemented agentic framework validation system and React Native Storybook v8/v9 setup.
+
+### Key Features
+- **Agentic validation tab** (DEV_ONLY) in playground app with 102 comprehensive tests
+- **React Native Storybook v9** for native mobile (iOS/Android) development
+- **Web Storybook v8** for browser-based component development 
+- **Detox E2E integration** for Storybook validation with screenshot capture
+- **Cross-platform validation** requirements with real device testing enforcement
+- **Dual Storybook environments** supporting both native and web development workflows
+
+### Storybook Documentation
+- **📖 Complete Guide**: `docs/STORYBOOK.md` - Architecture, commands, validation workflow
+- **📖 Migration Guide**: `docs/STORYBOOK_MIGRATION_GUIDE.md` - Step-by-step component migration
+
+## Important Notes
+
+- Always run `yarn build:deps` in playground before development
+- Git LFS setup required for ONNX models
+- Native changes require pod install (iOS) or gradle sync (Android)
+- Use absolute paths in test scripts
+- Background recording requires special permissions configuration
+- **VPN Interference**: Disconnect VPNs during iOS E2E tests; Android uses ADB port forwarding (VPN-resistant)
+- **Storybook Dual Setup**: Native (v9) uses Metro bundler; Web (v8) uses Vite bundler for React Native Web compatibility
+- **Story Sources**: Stories include playground app components and expo-audio-ui package components (AudioVisualizer, Waveform, etc.)
+
+## iOS Simulator Configuration
+
+### Default Simulator Setup
+The agentic framework uses **iPhone 16 Pro Max** as the standard iOS simulator for consistency across all tests and validations.
+
+### Simulator Selection Commands
+```bash
+# List all available simulators
+xcrun simctl list devices
+
+# Check currently booted simulators  
+xcrun simctl list devices | grep Booted
+
+# Boot specific simulator (iPhone 16 Pro Max)
+xcrun simctl boot &quot;iPhone 16 Pro Max&quot;
+
+# Shutdown specific simulator
+xcrun simctl shutdown &quot;iPhone 15 Pro&quot;
+
+# Auto-setup standard simulator for agents
+yarn setup:ios-simulator
+```
+
+### Detox Configuration
+Simulator selection is controlled in `.detoxrc.js`:
+- **Primary**: `ios.sim.debug` → iPhone 16 Pro Max
+- **Alternative**: `ios.iPadPro.debug` → iPad Pro 13-inch (M4)
+
+### Agent Commands with Simulator Support
+```bash
+# Setup standard simulator for all agent workflows
+yarn setup:ios-simulator
+
+# Agentic framework commands (all use iPhone 16 Pro Max)
+yarn agent:dev compression ios    # Development validation  
+yarn agent:full ios              # Full validation (102 tests)
+yarn agent:storybook:ios         # Storybook validation
+
+# Manual E2E testing with different simulators
+yarn detox test -c ios.sim.debug -o e2e/agent-validation.test.ts
+yarn detox test -c ios.iPadPro.debug -o e2e/record.test.ts
+
+# Force specific simulator in Detox config
+# Edit .detoxrc.js devices.simulator.device.type
+```
+
+### Troubleshooting Multiple Simulators
+If multiple simulators are running:
+1. **Identify target**: Detox will use the first matching device type
+2. **Explicit shutdown**: Close unwanted simulators for consistency  
+3. **Check logs**: Detox output shows which simulator was selected
+
+### Consistency Notes
+- All screenshot scripts use iPhone 16 Pro Max (6.9&quot; display)
+- App Store preparation uses same simulator
+- Agent validation maintains cross-platform consistency
+
+### Key Benefits of Agentic Framework
+
+- **10x Productivity**: Automated feedback loops unlock massive productivity gains
+- **Fast Development**: &lt; 2 minutes to prove functionality works on real devices
+- **Quality Assurance**: Real device testing prevents regressions reaching team
+- **Feature-Focused**: Tests only what&#x27;s relevant, no test maintenance overhead
+- **Simple Workflow**: Single command validation replaces complex test setups
+- **Scalable**: From development iteration to comprehensive CI validation
+
+## AI Agent Memory &amp; Learning
+
+### 🧠 Quick Reference for Future AI Agents
+
+**BEFORE making ANY changes, ask yourself:**
+1. &quot;Does this already exist?&quot; → Use `grep -r &quot;feature_name&quot; .`
+2. &quot;Will this break existing agent commands?&quot; → Test `yarn agent:dev compression ios`
+3. &quot;Is this a protected file?&quot; → Check the protected files list below
+4. &quot;Did I test both platforms?&quot; → Run Android AND iOS validation
+5. &quot;Are there TypeScript/lint errors?&quot; → ALWAYS run `yarn typecheck &amp;&amp; yarn lint:fix`
+
+**✅ SAFE TO MODIFY**: New files in `src/`, new stories, new E2E tests
+**🚨 DANGER ZONE**: Anything in `scripts/`, `.detoxrc.js`, root `/index.js`, package.json agent scripts
+
+---
+
+### Critical Implementation Lessons (MUST READ FOR ALL AI AGENTS)
+
+**🚨 MANDATORY: Read this section before ANY modifications to prevent repeating mistakes**
+
+#### **Lesson 1: Storybook v9 Integration Complexities**
+**Issue**: React Native Storybook v9 has significant module resolution issues in monorepo setups
+**Solution Applied**: 
+- Created `/index.js` redirect at monorepo root pointing to `apps/playground/src/index.tsx`
+- Fixed `storybook.requires.ts` with proper require.context paths
+- Added missing dependencies: `@react-native-community/datetimepicker`, `@react-native-community/slider`
+
+**❌ NEVER**: Delete or modify the monorepo root `/index.js` file - it&#x27;s critical for Storybook
+**✅ ALWAYS**: Use `yarn build:deps` before any Storybook development
+
+#### **Lesson 2: Device Configuration Consistency**
+**Issue**: Multiple simulators running causes inconsistent test results
+**Solution Applied**: 
+- iPhone 16 Pro Max standardized across ALL agentic workflows
+- Documented simulator selection in `.detoxrc.js` configuration  
+- Created `yarn setup:ios-simulator` for consistent setup
+
+**❌ NEVER**: Change simulator selection without updating ALL references in:
+  - `.detoxrc.js`
+  - `scripts/setup-simulators.sh`
+  - `scripts/generate-screenshots.sh` 
+**✅ ALWAYS**: Use existing `yarn setup:ios-simulator` command for simulator management
+
+#### **Lesson 3: Agentic Framework Integration**
+**Issue**: New features must integrate with existing agentic structure without breaking changes
+**Current Structure**: `scripts/agent.sh` handles ALL agent commands with consistent patterns
+**Solution Applied**:
+- Added Storybook validation as NEW commands: `yarn agent:storybook:ios/android`
+- Integrated with existing validation timeouts and screenshot systems
+- Maintained existing log file structure in `logs/` directories
+
+**❌ NEVER**: Modify core `scripts/agent.sh` without understanding full validation flow
+**✅ ALWAYS**: Add new agent commands as separate scripts that integrate with existing patterns
+
+#### **Lesson 4: Cross-Platform Test Differences**  
+**Issue**: iOS and Android Storybook behavior differs in navigation timing
+**Solution Applied**:
+- Created platform-specific test adaptations in `e2e/storybook-validation.test.ts`
+- Used try/catch blocks for timing-sensitive elements
+- Maintained consistent screenshot capture across platforms
+
+**❌ NEVER**: Assume cross-platform tests will work identically
+**✅ ALWAYS**: Test on BOTH platforms and handle platform-specific timing differences
+
+#### **Lesson 5: Documentation vs Implementation Gaps**
+**Issue**: Making changes without verifying existing system integration points
+**Solution Applied**:
+- Analyzed existing `agent.sh`, `package.json`, `.detoxrc.js` before changes
+- Added documentation AFTER confirming integration works
+- Verified no duplicate functionality was created
+
+**❌ NEVER**: Add new functionality without checking for existing implementations
+**✅ ALWAYS**: Use `grep -r` to find existing patterns before implementing new features
+
+#### **Lesson 6: TypeScript Jest Configuration**
+**Issue**: New E2E test files show &quot;Cannot find name &#x27;describe&#x27;&quot; TypeScript errors
+**Solution Applied**: 
+- Import Jest globals from `@jest/globals`: `import { beforeAll, afterAll, describe, it, expect as jestExpected } from &#x27;@jest/globals&#x27;`
+- Import Detox separately: `import { by, element, expect as detoxExpected, device, waitFor } from &#x27;detox&#x27;`
+- Follow exact pattern from existing `e2e/agent-validation.test.ts`
+
+**❌ NEVER**: Create E2E test files without proper Jest imports
+**✅ ALWAYS**: Copy import structure from existing working E2E tests
+**🚨 MANDATORY**: Run `yarn typecheck &amp;&amp; yarn lint:fix` after creating any new test files
+
+#### **Lesson 7: Cross-Platform Component Architecture**
+**Issue**: Need to support components in both React Native and Web Storybook
+**Solution Applied**: 
+- Created `ui-components/` folder at playground root for cross-platform components
+- Kept `src/stories-web/` for web-only stories
+- Both locations are auto-discovered by Storybook configurations
+
+**❌ NEVER**: Mix platform-specific code in ui-components folder
+**✅ ALWAYS**: Test components in both native and web Storybook before marking complete
+**🚨 IMPORTANT**: The `storybook:both` command was removed for clarity - use separate commands
+
+#### **Lesson 8: Critical Files - DO NOT MODIFY**
+**Files that are critical to system function and should NEVER be changed without extreme caution:**
+
+**🔒 PROTECTED FILES:**
+- `/index.js` (monorepo root) - Critical for Storybook module resolution
+- `apps/playground/.rnstorybook/storybook.requires.ts` - Auto-generated, only update via `sb-rn-get-stories`
+- `apps/playground/.detoxrc.js` - Device configurations used across ALL tests
+- `apps/playground/scripts/agent.sh` - Core agentic framework script
+
+**🔒 PROTECTED PATTERNS:**
+- Any script that starts with `yarn agent:` in package.json
+- Simulator device names in any configuration files
+- Metro/bundler configuration related to Storybook
+- E2E test timeout values and screenshot configurations
+
+**🚨 BEFORE MODIFYING PROTECTED FILES:**
+1. Create backup: `cp file.js file.js.backup`
+2. Test change on single platform first
+3. Verify ALL existing agent commands still work
+4. Test both Android and iOS platforms
+5. Check that screenshots still capture properly
+6. **MANDATORY**: Run `yarn typecheck &amp;&amp; yarn lint:fix` after ANY code changes
+
+### **Verification Commands for Future Agents**
+Before making ANY changes, run these commands to understand current state:
+```bash
+# Check existing agent structure
+cat scripts/agent.sh | grep -A 5 -B 5 &quot;ios\|android&quot;
+
+# Verify simulator configuration  
+cat .detoxrc.js | grep -A 10 &quot;devices\|configurations&quot;
+
+# Check existing package.json scripts
+cat package.json | grep -A 1 -B 1 &quot;agent:\|setup:\|e2e:&quot;
+
+# Find integration points for new features
+grep -r &quot;yarn.*agent&quot; scripts/
+```
+
+### **✅ COMPLETED IMPLEMENTATIONS (DO NOT DUPLICATE)**
+
+**Storybook Integration - COMPLETE (January 2025):**
+- ✅ React Native Storybook v9 fully working on Android &amp; iOS
+- ✅ Web Storybook v9 in playground app for cross-platform development
+- ✅ Cross-platform E2E validation with screenshots  
+- ✅ Agent commands: `yarn agent:storybook:android` &amp; `yarn agent:storybook:ios`
+- ✅ Module resolution fixed with monorepo root redirect
+- ✅ Missing dependencies added (@react-native-community/datetimepicker, slider)
+- ✅ NEW: `ui-components/` folder for cross-platform components
+- ✅ NEW: Separate web stories in `src/stories-web/`
+- ✅ NEW: Triple Storybook setup (Native, Web, UI Library)
+
+**Simulator Management - COMPLETE:**
+- ✅ iPhone 16 Pro Max standardized across all workflows
+- ✅ `yarn setup:ios-simulator` integrated with `scripts/agent.sh`
+- ✅ Cross-platform consistency documented and enforced
+
+**Validation Framework - COMPLETE:**
+- ✅ &lt; 2 minute validation cycles working
+- ✅ Real device testing with screenshot capture  
+- ✅ Technical + E2E validation pipeline
+- ✅ Log management and error reporting
+
+**DO NOT RE-IMPLEMENT THESE FEATURES - THEY WORK PERFECTLY**
+
+### Documentation
+
+**📖 Complete Guide**: `docs/AGENT_WORKFLOW.md` - Comprehensive usage, features, setup, and troubleshooting
+**📖 Testing Strategy**: `packages/expo-audio-studio/docs/TESTING_STRATEGY.md` - Agentic validation approach
+**📖 Storybook Quick Start**: `docs/AGENT_STORYBOOK_QUICKSTART.md` - Commands and workflow for Storybook development
+**📖 Storybook Status**: `docs/AGENT_STORYBOOK_STATUS.md` - Current implementation status and capabilities
+**📖 Storybook Plan**: `docs/AGENT_STORYBOOK_UPGRADE_PLAN.md` - Architecture decisions and lessons learned</div>
+        </div>
+        
+        <div class="right-pane">
+            <h2 class="pane-title">Hierarchical AST Tree</h2>
+            
+            <div id="graph-container"></div>
+            
+            <div id="details-panel">
+                <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+                <h3>Node Details</h3>
+                <div id="details-content">Click a node to view its structural properties and rules.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {"name": "deeeed/audiolab - CLAUDE.md", "group": "root", "width": 220, "height": 60, "color": "#1e293b", "border_width": 2, "details": "Repository Name: deeeed/audiolab - CLAUDE.md", "children": [{"name": "General", "group": "category", "width": 215, "height": 150, "color": "#E41A1C", "border_width": 5.2, "details": "Category: General<br>Total Labels: 3<br>Total Rules: 25<br>Code Ratio: 0.8", "children": [{"name": "System Overview", "group": "label", "width": 180, "height": 100, "color": "#e51c1e", "border_width": 4.666666666666666, "fre_score": 0.0, "details": "Label: System Overview<br>Total Rules: 6<br>Code Ratio: 0.67<br>FRE Cognitive Load: 0.0", "children": [{"name": "**expo-audio-stream** is a com...", "group": "rule", "width": 195, "height": 84, "color": "#e51c1e", "border_width": 1.5, "raw_text": "**expo-audio-stream** is a comprehensive audio processing monorepo for React Native and Expo applications. It provides real-time audio recording, analysis, visualization, and AI-powered processing capabilities across iOS, Android, and web platforms.", "details": "\n            **expo-audio-stream** is a comprehensive audio processing monorepo for React Native and Expo applications. It provides real-time audio recording, analysis, visualization, and AI-powered processing capabilities across iOS, Android, and web platforms.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Repository Overview<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 5 - 5<br><strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- **`@siteed/expo-audio-studio...", "group": "rule", "width": 278, "height": 120, "color": "#e51c1e", "border_width": 1.5, "raw_text": "- **`@siteed/expo-audio-studio`** - Main audio processing library with dual-stream recording, device management, and format conversion\n- **`@siteed/expo-audio-ui`** - React Native Skia-based audio visualization components (waveforms, spectrograms)  \n- **`@siteed/react-native-essentia`** - Advanced audio analysis using Essentia (feature extraction, classification)\n- **`@siteed/sherpa-onnx.rn`** - Speech-to-text and text-to-speech capabilities (development)", "details": "\n            - **`@siteed/expo-audio-studio`** - Main audio processing library with dual-stream recording, device management, and format conversion\n- **`@siteed/expo-audio-ui`** - React Native Skia-based audio visualization components (waveforms, spectrograms)  \n- **`@siteed/react-native-essentia`** - Advanced audio analysis using Essentia (feature extraction, classification)\n- **`@siteed/sherpa-onnx.rn`** - Speech-to-text and text-to-speech capabilities (development)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Core Packages<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 8 - 11<br><strong>ID:</strong> rule_2\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- **`apps/playground`** - Full...", "group": "rule", "width": 176, "height": 120, "color": "#e51c1e", "border_width": 1.5, "raw_text": "- **`apps/playground`** - Full-featured demo app showcasing all capabilities (102 E2E tests)\n- **`apps/minimal`** - Simple integration example\n- **`apps/essentia-demo`** - Audio analysis demonstrations", "details": "\n            - **`apps/playground`** - Full-featured demo app showcasing all capabilities (102 E2E tests)\n- **`apps/minimal`** - Simple integration example\n- **`apps/essentia-demo`** - Audio analysis demonstrations<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Applications<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 14 - 16<br><strong>ID:</strong> rule_3\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "You are working on the `main` ...", "group": "rule", "width": 155, "height": 54, "color": "#e51c1e", "border_width": 1.5, "raw_text": "You are working on the `main` branch which includes the newly implemented agentic framework validation system and React Native Storybook v8/v9 setup.", "details": "\n            You are working on the `main` branch which includes the newly implemented agentic framework validation system and React Native Storybook v8/v9 setup.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Current Branch Context<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 88 - 88<br><strong>ID:</strong> rule_4\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- Always run `yarn build:deps`...", "group": "rule", "width": 350, "height": 120, "color": "#e51c1e", "border_width": 1.5, "raw_text": "- Always run `yarn build:deps` in playground before development\n- Git LFS setup required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in test scripts\n- Background recording requires special permissions configuration\n- **VPN Interference**: Disconnect VPNs during iOS E2E tests; Android uses ADB port forwarding (VPN-resistant)\n- **Storybook Dual Setup**: Native (v9) uses Metro bundler; Web (v8) uses Vite bundler for React Native Web compatibility\n- **Story Sources**: Stories include playground app components and expo-audio-ui package components (AudioVisualizer, Waveform, etc.)", "details": "\n            - Always run `yarn build:deps` in playground before development\n- Git LFS setup required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in test scripts\n- Background recording requires special permissions configuration\n- **VPN Interference**: Disconnect VPNs during iOS E2E tests; Android uses ADB port forwarding (VPN-resistant)\n- **Storybook Dual Setup**: Native (v9) uses Metro bundler; Web (v8) uses Vite bundler for React Native Web compatibility\n- **Story Sources**: Stories include playground app components and expo-audio-ui package components (AudioVisualizer, Waveform, etc.)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Important Notes<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 103 - 110<br><strong>ID:</strong> rule_5\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "The agentic framework uses **i...", "group": "rule", "width": 147, "height": 60, "color": "#e51c1e", "border_width": 1.5, "raw_text": "The agentic framework uses **iPhone 16 Pro Max** as the standard iOS simulator for consistency across all tests and validations.", "details": "\n            The agentic framework uses **iPhone 16 Pro Max** as the standard iOS simulator for consistency across all tests and validations.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Default Simulator Setup<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 115 - 115<br><strong>ID:</strong> rule_6\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "AI Integration", "group": "label", "width": 151, "height": 120, "color": "#e31a1b", "border_width": 5.25, "fre_score": 28.1, "details": "Label: AI Integration<br>Total Rules: 16<br>Code Ratio: 0.81<br>FRE Cognitive Load: 28.1", "children": [{"name": "- **Build automated feedback l...", "group": "rule", "width": 207, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "- **Build automated feedback loops** - the absolute key to unlock automated improvements\n- **Quality over speed** - Protect your team from AI mistakes  \n- **Real testing over mocked** - Validate actual functionality works\n- **Fast iteration** - < 2 minutes to prove features work", "details": "\n            - **Build automated feedback loops** - the absolute key to unlock automated improvements\n- **Quality over speed** - Protect your team from AI mistakes  \n- **Real testing over mocked** - Validate actual functionality works\n- **Fast iteration** - < 2 minutes to prove features work<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Core Philosophy<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 22 - 25<br><strong>ID:</strong> rule_7\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**Usage**: `yarn agent:dev <fe...", "group": "rule", "width": 231, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**Usage**: `yarn agent:dev <feature> [platform]`\n- **Purpose**: Prove feature functionality works on real devices\n- **Method**: Uses agent-validation.tsx page with deep links  \n- **Validation**: Tests actual expo-audio-studio API behavior\n- **Result**: Immediate feedback on success/failure\n- **Requirement**: **MANDATORY for ALL agent work**", "details": "\n            **Usage**: `yarn agent:dev <feature> [platform]`\n- **Purpose**: Prove feature functionality works on real devices\n- **Method**: Uses agent-validation.tsx page with deep links  \n- **Validation**: Tests actual expo-audio-studio API behavior\n- **Result**: Immediate feedback on success/failure\n- **Requirement**: **MANDATORY for ALL agent work**<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Validation (< 2 minutes) - MANDATORY<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 29 - 34<br><strong>ID:</strong> rule_8\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**Usage**: `yarn agent:full [p...", "group": "rule", "width": 170, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**Usage**: `yarn agent:full [platform]`\n- **Purpose**: Comprehensive testing (102 tests)\n- **When**: Manual choice or CI pipeline\n- **Requirement**: **NOT required for agent completion**", "details": "\n            **Usage**: `yarn agent:full [platform]`\n- **Purpose**: Comprehensive testing (102 tests)\n- **When**: Manual choice or CI pipeline\n- **Requirement**: **NOT required for agent completion**<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Full Validation (5-10 minutes) - OPTIONAL<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 37 - 40<br><strong>ID:</strong> rule_9\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "1. **NEVER IMPLEMENT UNLESS AS...", "group": "rule", "width": 209, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "1. **NEVER IMPLEMENT UNLESS ASKED** - No unsolicited changes\n2. **ALWAYS VERIFY IN SOURCE CODE** - No hallucinations accepted\n3. **MINIMIZE DIFF** - Smallest possible changes\n4. **NO WORKAROUNDS** - Fix root causes, not symptoms\n5. **REAL TESTING ONLY** - No simulated results accepted", "details": "\n            1. **NEVER IMPLEMENT UNLESS ASKED** - No unsolicited changes\n2. **ALWAYS VERIFY IN SOURCE CODE** - No hallucinations accepted\n3. **MINIMIZE DIFF** - Smallest possible changes\n4. **NO WORKAROUNDS** - Fix root causes, not symptoms\n5. **REAL TESTING ONLY** - No simulated results accepted<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Agent Constraints (Prevent Costly Mistakes)<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 43 - 47<br><strong>ID:</strong> rule_10\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**BEFORE making ANY changes, a...", "group": "rule", "width": 260, "height": 114, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**BEFORE making ANY changes, ask yourself:**\n1. \"Does this already exist?\" \u2192 Use `grep -r \"feature_name\" .`\n2. \"Will this break existing agent commands?\" \u2192 Test `yarn agent:dev compression ios`\n3. \"Is this a protected file?\" \u2192 Check the protected files list below\n4. \"Did I test both platforms?\" \u2192 Run Android AND iOS validation\n5. \"Are there TypeScript/lint errors?\" \u2192 ALWAYS run `yarn typecheck && yarn lint:fix`", "details": "\n            **BEFORE making ANY changes, ask yourself:**\n1. \"Does this already exist?\" \u2192 Use `grep -r \"feature_name\" .`\n2. \"Will this break existing agent commands?\" \u2192 Test `yarn agent:dev compression ios`\n3. \"Is this a protected file?\" \u2192 Check the protected files list below\n4. \"Did I test both platforms?\" \u2192 Run Android AND iOS validation\n5. \"Are there TypeScript/lint errors?\" \u2192 ALWAYS run `yarn typecheck && yarn lint:fix`<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> \ud83e\udde0 Quick Reference for Future AI Agents<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 172 - 177<br><strong>ID:</strong> rule_11\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u2705 SAFE TO MODIFY**: New file...", "group": "rule", "width": 164, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u2705 SAFE TO MODIFY**: New files in `src/`, new stories, new E2E tests\n**\ud83d\udea8 DANGER ZONE**: Anything in `scripts/`, `.detoxrc.js`, root `/index.js`, package.json agent scripts", "details": "\n            **\u2705 SAFE TO MODIFY**: New files in `src/`, new stories, new E2E tests\n**\ud83d\udea8 DANGER ZONE**: Anything in `scripts/`, `.detoxrc.js`, root `/index.js`, package.json agent scripts<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> \ud83e\udde0 Quick Reference for Future AI Agents<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 179 - 180<br><strong>ID:</strong> rule_12\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Delete or modify ...", "group": "rule", "width": 161, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Delete or modify the monorepo root `/index.js` file - it's critical for Storybook\n**\u2705 ALWAYS**: Use `yarn build:deps` before any Storybook development", "details": "\n            **\u274c NEVER**: Delete or modify the monorepo root `/index.js` file - it's critical for Storybook\n**\u2705 ALWAYS**: Use `yarn build:deps` before any Storybook development<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 1: Storybook v9 Integration Complexities<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 194 - 195<br><strong>ID:</strong> rule_13\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Change simulator ...", "group": "rule", "width": 196, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Change simulator selection without updating ALL references in:\n  - `.detoxrc.js`\n  - `scripts/setup-simulators.sh`\n  - `scripts/generate-screenshots.sh` \n**\u2705 ALWAYS**: Use existing `yarn setup:ios-simulator` command for simulator management", "details": "\n            **\u274c NEVER**: Change simulator selection without updating ALL references in:\n  - `.detoxrc.js`\n  - `scripts/setup-simulators.sh`\n  - `scripts/generate-screenshots.sh` \n**\u2705 ALWAYS**: Use existing `yarn setup:ios-simulator` command for simulator management<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 2: Device Configuration Consistency<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 203 - 207<br><strong>ID:</strong> rule_14\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Modify core `scri...", "group": "rule", "width": 168, "height": 102, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Modify core `scripts/agent.sh` without understanding full validation flow\n**\u2705 ALWAYS**: Add new agent commands as separate scripts that integrate with existing patterns", "details": "\n            **\u274c NEVER**: Modify core `scripts/agent.sh` without understanding full validation flow\n**\u2705 ALWAYS**: Add new agent commands as separate scripts that integrate with existing patterns<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 3: Agentic Framework Integration<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 215 - 216<br><strong>ID:</strong> rule_15\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Assume cross-plat...", "group": "rule", "width": 154, "height": 96, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Assume cross-platform tests will work identically\n**\u2705 ALWAYS**: Test on BOTH platforms and handle platform-specific timing differences", "details": "\n            **\u274c NEVER**: Assume cross-platform tests will work identically\n**\u2705 ALWAYS**: Test on BOTH platforms and handle platform-specific timing differences<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 4: Cross-Platform Test Differences<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 223 - 224<br><strong>ID:</strong> rule_16\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Add new functiona...", "group": "rule", "width": 162, "height": 102, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Add new functionality without checking for existing implementations\n**\u2705 ALWAYS**: Use `grep -r` to find existing patterns before implementing new features", "details": "\n            **\u274c NEVER**: Add new functionality without checking for existing implementations\n**\u2705 ALWAYS**: Use `grep -r` to find existing patterns before implementing new features<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 5: Documentation vs Implementation Gaps<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 231 - 232<br><strong>ID:</strong> rule_17\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Create E2E test f...", "group": "rule", "width": 183, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Create E2E test files without proper Jest imports\n**\u2705 ALWAYS**: Copy import structure from existing working E2E tests\n**\ud83d\udea8 MANDATORY**: Run `yarn typecheck && yarn lint:fix` after creating any new test files", "details": "\n            **\u274c NEVER**: Create E2E test files without proper Jest imports\n**\u2705 ALWAYS**: Copy import structure from existing working E2E tests\n**\ud83d\udea8 MANDATORY**: Run `yarn typecheck && yarn lint:fix` after creating any new test files<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 6: TypeScript Jest Configuration<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 242 - 244<br><strong>ID:</strong> rule_18\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\u274c NEVER**: Mix platform-spec...", "group": "rule", "width": 193, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\u274c NEVER**: Mix platform-specific code in ui-components folder\n**\u2705 ALWAYS**: Test components in both native and web Storybook before marking complete\n**\ud83d\udea8 IMPORTANT**: The `storybook:both` command was removed for clarity - use separate commands", "details": "\n            **\u274c NEVER**: Mix platform-specific code in ui-components folder\n**\u2705 ALWAYS**: Test components in both native and web Storybook before marking complete\n**\ud83d\udea8 IMPORTANT**: The `storybook:both` command was removed for clarity - use separate commands<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 7: Cross-Platform Component Architecture<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 252 - 254<br><strong>ID:</strong> rule_19\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\ud83d\udd12 PROTECTED FILES:**\n- `/ind...", "group": "rule", "width": 332, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\ud83d\udd12 PROTECTED FILES:**\n- `/index.js` (monorepo root) - Critical for Storybook module resolution\n- `apps/playground/.rnstorybook/storybook.requires.ts` - Auto-generated, only update via `sb-rn-get-stories`\n- `apps/playground/.detoxrc.js` - Device configurations used across ALL tests\n- `apps/playground/scripts/agent.sh` - Core agentic framework script\n\n**\ud83d\udd12 PROTECTED PATTERNS:**\n- Any script that starts with `yarn agent:` in package.json\n- Simulator device names in any configuration files\n- Metro/bundler configuration related to Storybook\n- E2E test timeout values and screenshot configurations", "details": "\n            **\ud83d\udd12 PROTECTED FILES:**\n- `/index.js` (monorepo root) - Critical for Storybook module resolution\n- `apps/playground/.rnstorybook/storybook.requires.ts` - Auto-generated, only update via `sb-rn-get-stories`\n- `apps/playground/.detoxrc.js` - Device configurations used across ALL tests\n- `apps/playground/scripts/agent.sh` - Core agentic framework script\n\n**\ud83d\udd12 PROTECTED PATTERNS:**\n- Any script that starts with `yarn agent:` in package.json\n- Simulator device names in any configuration files\n- Metro/bundler configuration related to Storybook\n- E2E test timeout values and screenshot configurations<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 8: Critical Files - DO NOT MODIFY<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 258 - 268<br><strong>ID:</strong> rule_20\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**\ud83d\udea8 BEFORE MODIFYING PROTECTED...", "group": "rule", "width": 231, "height": 108, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**\ud83d\udea8 BEFORE MODIFYING PROTECTED FILES:**\n1. Create backup: `cp file.js file.js.backup`\n2. Test change on single platform first\n3. Verify ALL existing agent commands still work\n4. Test both Android and iOS platforms\n5. Check that screenshots still capture properly\n6. **MANDATORY**: Run `yarn typecheck && yarn lint:fix` after ANY code changes", "details": "\n            **\ud83d\udea8 BEFORE MODIFYING PROTECTED FILES:**\n1. Create backup: `cp file.js file.js.backup`\n2. Test change on single platform first\n3. Verify ALL existing agent commands still work\n4. Test both Android and iOS platforms\n5. Check that screenshots still capture properly\n6. **MANDATORY**: Run `yarn typecheck && yarn lint:fix` after ANY code changes<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 8: Critical Files - DO NOT MODIFY<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 270 - 276<br><strong>ID:</strong> rule_21\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**DO NOT RE-IMPLEMENT THESE FE...", "group": "rule", "width": 120, "height": 72, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**DO NOT RE-IMPLEMENT THESE FEATURES - THEY WORK PERFECTLY**", "details": "\n            **DO NOT RE-IMPLEMENT THESE FEATURES - THEY WORK PERFECTLY**<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> \u2705 COMPLETED IMPLEMENTATIONS (DO NOT DUPLICATE)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 316 - 316<br><strong>ID:</strong> rule_22\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Documentation", "group": "label", "width": 180, "height": 70, "color": "#f5aaaa", "border_width": 6.0, "fre_score": 0.0, "details": "Label: Documentation<br>Total Rules: 3<br>Code Ratio: 1.0<br>FRE Cognitive Load: 0.0", "children": [{"name": "**\ud83d\udcd6 Complete Workflow**: See `...", "group": "rule", "width": 139, "height": 84, "color": "#f5aaaa", "border_width": 1.5, "raw_text": "**\ud83d\udcd6 Complete Workflow**: See `docs/AGENT_WORKFLOW.md` for detailed usage, log management, and troubleshooting", "details": "\n            **\ud83d\udcd6 Complete Workflow**: See `docs/AGENT_WORKFLOW.md` for detailed usage, log management, and troubleshooting<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Success Criteria<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 75 - 75<br><strong>ID:</strong> rule_23\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- **\ud83d\udcd6 Complete Guide**: `docs/...", "group": "rule", "width": 169, "height": 120, "color": "#f5aaaa", "border_width": 1.5, "raw_text": "- **\ud83d\udcd6 Complete Guide**: `docs/STORYBOOK.md` - Architecture, commands, validation workflow\n- **\ud83d\udcd6 Migration Guide**: `docs/STORYBOOK_MIGRATION_GUIDE.md` - Step-by-step component migration", "details": "\n            - **\ud83d\udcd6 Complete Guide**: `docs/STORYBOOK.md` - Architecture, commands, validation workflow\n- **\ud83d\udcd6 Migration Guide**: `docs/STORYBOOK_MIGRATION_GUIDE.md` - Step-by-step component migration<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Storybook Documentation<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 98 - 99<br><strong>ID:</strong> rule_24\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "**\ud83d\udcd6 Complete Guide**: `docs/AG...", "group": "rule", "width": 310, "height": 120, "color": "#f5aaaa", "border_width": 1.5, "raw_text": "**\ud83d\udcd6 Complete Guide**: `docs/AGENT_WORKFLOW.md` - Comprehensive usage, features, setup, and troubleshooting\n**\ud83d\udcd6 Testing Strategy**: `packages/expo-audio-studio/docs/TESTING_STRATEGY.md` - Agentic validation approach\n**\ud83d\udcd6 Storybook Quick Start**: `docs/AGENT_STORYBOOK_QUICKSTART.md` - Commands and workflow for Storybook development\n**\ud83d\udcd6 Storybook Status**: `docs/AGENT_STORYBOOK_STATUS.md` - Current implementation status and capabilities\n**\ud83d\udcd6 Storybook Plan**: `docs/AGENT_STORYBOOK_UPGRADE_PLAN.md` - Architecture decisions and lessons learned", "details": "\n            **\ud83d\udcd6 Complete Guide**: `docs/AGENT_WORKFLOW.md` - Comprehensive usage, features, setup, and troubleshooting\n**\ud83d\udcd6 Testing Strategy**: `packages/expo-audio-studio/docs/TESTING_STRATEGY.md` - Agentic validation approach\n**\ud83d\udcd6 Storybook Quick Start**: `docs/AGENT_STORYBOOK_QUICKSTART.md` - Commands and workflow for Storybook development\n**\ud83d\udcd6 Storybook Status**: `docs/AGENT_STORYBOOK_STATUS.md` - Current implementation status and capabilities\n**\ud83d\udcd6 Storybook Plan**: `docs/AGENT_STORYBOOK_UPGRADE_PLAN.md` - Architecture decisions and lessons learned<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Documentation<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 319 - 323<br><strong>ID:</strong> rule_25\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Build", "group": "category", "width": 215, "height": 146, "color": "#377EB8", "border_width": 3.333333333333333, "details": "Category: Build<br>Total Labels: 3<br>Total Rules: 12<br>Code Ratio: 0.33", "children": [{"name": "Build and Run", "group": "label", "width": 168, "height": 70, "color": "#b2d0e8", "border_width": 2.0, "fre_score": 11.8, "details": "Label: Build and Run<br>Total Rules: 3<br>Code Ratio: 0.0<br>FRE Cognitive Load: 11.8", "children": [{"name": "yarn install                  ...", "group": "rule", "width": 170, "height": 78, "color": "#b2d0e8", "border_width": 1.5, "raw_text": "yarn install                    # Install dependencies\n./scripts/setup-lfs.sh         # Setup Git LFS for models\ncd apps/playground && yarn build:deps && yarn start  # Run playground app", "details": "\n            yarn install                    # Install dependencies\n./scripts/setup-lfs.sh         # Setup Git LFS for models\ncd apps/playground && yarn build:deps && yarn start  # Run playground app<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Quick Start<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 79 - 81<br><strong>ID:</strong> rule_26\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "# Building packages\nyarn works...", "group": "rule", "width": 139, "height": 90, "color": "#b2d0e8", "border_width": 1.5, "raw_text": "# Building packages\nyarn workspace @siteed/expo-audio-studio build\nyarn workspace @siteed/expo-audio-ui build", "details": "\n            # Building packages\nyarn workspace @siteed/expo-audio-studio build\nyarn workspace @siteed/expo-audio-ui build<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 85 - 87<br><strong>ID:</strong> rule_27\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "cd apps/playground\nyarn agent:...", "group": "rule", "width": 203, "height": 90, "color": "#b2d0e8", "border_width": 1.5, "raw_text": "cd apps/playground\nyarn agent:setup                # Device setup (first time)\nyarn agent:dev compression      # Validate compression feature (REQUIRED)\nyarn agent:full                 # Optional comprehensive testing\nyarn agent:cleanup              # Clean dev artifacts", "details": "\n            cd apps/playground\nyarn agent:setup                # Device setup (first time)\nyarn agent:dev compression      # Validate compression feature (REQUIRED)\nyarn agent:full                 # Optional comprehensive testing\nyarn agent:cleanup              # Clean dev artifacts<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Quick Commands<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 50 - 55<br><strong>ID:</strong> rule_28\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}, {"name": "Testing", "group": "label", "width": 180, "height": 90, "color": "#377eb8", "border_width": 3.6, "fre_score": 0.0, "details": "Label: Testing<br>Total Rules: 5<br>Code Ratio: 0.4<br>FRE Cognitive Load: 0.0", "children": [{"name": "- \u2705 Development validation pas...", "group": "rule", "width": 188, "height": 78, "color": "#377eb8", "border_width": 1.5, "raw_text": "- \u2705 Development validation passes in < 2 minutes\n- \u2705 Feature functionality confirmed working\n- \u2705 Include actual command output in response\n- \u2705 Real device/simulator testing completed\n- \u2705 Optional: Full validation available if desired", "details": "\n            - \u2705 Development validation passes in < 2 minutes\n- \u2705 Feature functionality confirmed working\n- \u2705 Include actual command output in response\n- \u2705 Real device/simulator testing completed\n- \u2705 Optional: Full validation available if desired<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Success Criteria<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 69 - 73<br><strong>ID:</strong> rule_29\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "cd packages/expo-audio-studio\n...", "group": "rule", "width": 152, "height": 84, "color": "#377eb8", "border_width": 1.5, "raw_text": "cd packages/expo-audio-studio\nyarn test:android               # Android tests (36/36) \nyarn test:ios                   # iOS compilation check", "details": "\n            cd packages/expo-audio-studio\nyarn test:android               # Android tests (36/36) \nyarn test:ios                   # iOS compilation check<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 89 - 91<br><strong>ID:</strong> rule_30\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "# E2E Testing\ncd apps/playgrou...", "group": "rule", "width": 170, "height": 66, "color": "#377eb8", "border_width": 1.5, "raw_text": "# E2E Testing\ncd apps/playground\nyarn e2e:android:record         # Recording workflow\nyarn e2e:android:import         # Import workflow\nyarn e2e:android:screenshots    # Visual validation", "details": "\n            # E2E Testing\ncd apps/playground\nyarn e2e:android:record         # Recording workflow\nyarn e2e:android:import         # Import workflow\nyarn e2e:android:screenshots    # Visual validation<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 93 - 97<br><strong>ID:</strong> rule_31\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "# Storybook Development\nyarn s...", "group": "rule", "width": 309, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "# Storybook Development\nyarn storybook                  # Native Storybook (metro bundler)\nyarn storybook:ios              # iOS native Storybook\nyarn storybook:android          # Android native Storybook\nyarn storybook:web              # Web Storybook (vite bundler)\nyarn agent:storybook:ios        # iOS validation with screenshots\nyarn agent:storybook:android    # Android validation with screenshots\nyarn e2e:android:storybook      # Storybook E2E validation (Android)\nyarn e2e:ios:storybook          # Storybook E2E validation (iOS)", "details": "\n            # Storybook Development\nyarn storybook                  # Native Storybook (metro bundler)\nyarn storybook:ios              # iOS native Storybook\nyarn storybook:android          # Android native Storybook\nyarn storybook:web              # Web Storybook (vite bundler)\nyarn agent:storybook:ios        # iOS validation with screenshots\nyarn agent:storybook:android    # Android validation with screenshots\nyarn e2e:android:storybook      # Storybook E2E validation (Android)\nyarn e2e:ios:storybook          # Storybook E2E validation (iOS)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 99 - 107<br><strong>ID:</strong> rule_32\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- Import Jest globals from `@j...", "group": "rule", "width": 219, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "- Import Jest globals from `@jest/globals`: `import { beforeAll, afterAll, describe, it, expect as jestExpected } from '@jest/globals'`\n- Import Detox separately: `import { by, element, expect as detoxExpected, device, waitFor } from 'detox'`\n- Follow exact pattern from existing `e2e/agent-validation.test.ts`", "details": "\n            - Import Jest globals from `@jest/globals`: `import { beforeAll, afterAll, describe, it, expect as jestExpected } from '@jest/globals'`\n- Import Detox separately: `import { by, element, expect as detoxExpected, device, waitFor } from 'detox'`\n- Follow exact pattern from existing `e2e/agent-validation.test.ts`<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 6: TypeScript Jest Configuration<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 238 - 240<br><strong>ID:</strong> rule_33\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Conf.&Env.", "group": "label", "width": 167, "height": 80, "color": "#82b2d9", "border_width": 4.0, "fre_score": 12.0, "details": "Label: Conf.&Env.<br>Total Rules: 4<br>Code Ratio: 0.5<br>FRE Cognitive Load: 12.0", "children": [{"name": "# Android: Connect device or s...", "group": "rule", "width": 174, "height": 72, "color": "#82b2d9", "border_width": 1.5, "raw_text": "# Android: Connect device or start emulator\nadb devices                     # Check connected devices\n\n# iOS (macOS only): Boot simulator  \nxcrun simctl boot \"iPhone 15\"  # Or any available iPhone", "details": "\n            # Android: Connect device or start emulator\nadb devices                     # Check connected devices\n\n# iOS (macOS only): Boot simulator  \nxcrun simctl boot \"iPhone 15\"  # Or any available iPhone<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Manual Setup<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 63 - 67<br><strong>ID:</strong> rule_34\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "Simulator selection is control...", "group": "rule", "width": 161, "height": 120, "color": "#82b2d9", "border_width": 1.5, "raw_text": "Simulator selection is controlled in `.detoxrc.js`:\n- **Primary**: `ios.sim.debug` \u2192 iPhone 16 Pro Max\n- **Alternative**: `ios.iPadPro.debug` \u2192 iPad Pro 13-inch (M4)", "details": "\n            Simulator selection is controlled in `.detoxrc.js`:\n- **Primary**: `ios.sim.debug` \u2192 iPhone 16 Pro Max\n- **Alternative**: `ios.iPadPro.debug` \u2192 iPad Pro 13-inch (M4)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Detox Configuration<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 133 - 135<br><strong>ID:</strong> rule_35\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- All screenshot scripts use i...", "group": "rule", "width": 160, "height": 72, "color": "#82b2d9", "border_width": 1.5, "raw_text": "- All screenshot scripts use iPhone 16 Pro Max (6.9\" display)\n- App Store preparation uses same simulator\n- Agent validation maintains cross-platform consistency", "details": "\n            - All screenshot scripts use iPhone 16 Pro Max (6.9\" display)\n- App Store preparation uses same simulator\n- Agent validation maintains cross-platform consistency<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Consistency Notes<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 157 - 159<br><strong>ID:</strong> rule_36\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- Created `/index.js` redirect...", "group": "rule", "width": 200, "height": 120, "color": "#82b2d9", "border_width": 1.5, "raw_text": "- Created `/index.js` redirect at monorepo root pointing to `apps/playground/src/index.tsx`\n- Fixed `storybook.requires.ts` with proper require.context paths\n- Added missing dependencies: `@react-native-community/datetimepicker`, `@react-native-community/slider`", "details": "\n            - Created `/index.js` redirect at monorepo root pointing to `apps/playground/src/index.tsx`\n- Fixed `storybook.requires.ts` with proper require.context paths\n- Added missing dependencies: `@react-native-community/datetimepicker`, `@react-native-community/slider`<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 1: Storybook v9 Integration Complexities<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 190 - 192<br><strong>ID:</strong> rule_37\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}, {"name": "Management", "group": "category", "width": 165, "height": 74, "color": "#FF7F00", "border_width": 6.0, "details": "Category: Management<br>Total Labels: 1<br>Total Rules: 3<br>Code Ratio: 1.0", "children": [{"name": "Development Process", "group": "label", "width": 180, "height": 70, "color": "#ff7f00", "border_width": 6.0, "fre_score": 0.0, "details": "Label: Development Process<br>Total Rules: 3<br>Code Ratio: 1.0<br>FRE Cognitive Load: 0.0", "children": [{"name": "- Created platform-specific te...", "group": "rule", "width": 174, "height": 96, "color": "#ff7f00", "border_width": 1.5, "raw_text": "- Created platform-specific test adaptations in `e2e/storybook-validation.test.ts`\n- Used try/catch blocks for timing-sensitive elements\n- Maintained consistent screenshot capture across platforms", "details": "\n            - Created platform-specific test adaptations in `e2e/storybook-validation.test.ts`\n- Used try/catch blocks for timing-sensitive elements\n- Maintained consistent screenshot capture across platforms<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 4: Cross-Platform Test Differences<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 220 - 222<br><strong>ID:</strong> rule_38\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- Analyzed existing `agent.sh`...", "group": "rule", "width": 169, "height": 90, "color": "#ff7f00", "border_width": 1.5, "raw_text": "- Analyzed existing `agent.sh`, `package.json`, `.detoxrc.js` before changes\n- Added documentation AFTER confirming integration works\n- Verified no duplicate functionality was created", "details": "\n            - Analyzed existing `agent.sh`, `package.json`, `.detoxrc.js` before changes\n- Added documentation AFTER confirming integration works\n- Verified no duplicate functionality was created<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 5: Documentation vs Implementation Gaps<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 228 - 230<br><strong>ID:</strong> rule_39\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "- Created `ui-components/` fol...", "group": "rule", "width": 173, "height": 120, "color": "#ff7f00", "border_width": 1.5, "raw_text": "- Created `ui-components/` folder at playground root for cross-platform components\n- Kept `src/stories-web/` for web-only stories\n- Both locations are auto-discovered by Storybook configurations", "details": "\n            - Created `ui-components/` folder at playground root for cross-platform components\n- Kept `src/stories-web/` for web-only stories\n- Both locations are auto-discovered by Storybook configurations<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Lesson 7: Cross-Platform Component Architecture<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 249 - 251<br><strong>ID:</strong> rule_40\n            </small>\n            ", "strength": "SHOULD", "value": 1}]}]}]};
+
+        const container = document.getElementById("graph-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const g = svg.append("g");
+        
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+            
+        svg.call(zoom);
+
+        let root = d3.hierarchy(treeData);
+        let i = 0;
+        
+        root.descendants().forEach(d => {
+            if (d.depth >= 1) { 
+                d._children = d.children;
+                d.children = null;
+            }
+        });
+
+        const dx = 1;  
+        const dy = 320; 
+        const treeLayout = d3.tree()
+            .nodeSize([dx, dy])
+            .separation((a, b) => {
+                const hA = a.data.height || 40;
+                const hB = b.data.height || 40;
+                return (hA + hB) / 2 + 30;
+            });
+        
+        g.append("g").attr("class", "links");
+        g.append("g").attr("class", "nodes");
+        g.attr("transform", `translate(${dy / 2},${height / 2})`);
+
+        function update(source) {
+            treeLayout(root);
+            
+            const nodes = root.descendants();
+            const links = root.links();
+            
+            // LINKS
+            const link = g.select(".links").selectAll("path.link")
+                .data(links, d => d.target.id || (d.target.id = ++i));
+                
+            const linkEnter = link.enter().append("path")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0 || source.x, y: source.y0 || source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                });
+                
+            link.merge(linkEnter).transition().duration(400)
+                .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                
+            link.exit().transition().duration(400)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                }).remove();
+                
+            // NODES
+            const node = g.select(".nodes").selectAll("g.node")
+                .data(nodes, d => d.id || (d.id = ++i));
+                
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0 || source.y},${source.x0 || source.x})`)
+                .on("click", (event, d) => {
+                    showDetails(d.data, event.currentTarget);
+                    if (d.data.group === "rule" && d.data.raw_text) {
+                        highlightTextInLeftPane(d.data.raw_text, d.data.color);
+                    } else {
+                        clearHighlightInLeftPane();
+                    }
+                    
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else if (d._children) {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    if (d.data.group !== "rule") {
+                        update(d);
+                    }
+                });
+                
+            nodeEnter.filter(d => d.data.group !== "root").append("rect")
+                .attr("class", "main-rect")
+                .attr("width", d => d.data.width || 120)
+                .attr("height", d => d.data.height || 40)
+                .attr("y", d => -(d.data.height || 40) / 2)
+                .attr("rx", 6).attr("ry", 6)
+                .attr("fill", d => d.data.color)
+                .attr("stroke-width", d => d.data.border_width || 2)
+                .attr("stroke", "#0f172a");
+                
+            nodeEnter.filter(d => d.data.group === "root")
+                .append("image")
+                .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
+                .attr("width", 32)
+                .attr("height", 32)
+                .attr("x", -16)
+                .attr("y", -16);
+                
+            nodeEnter.append("rect")
+                .attr("class", "text-bg")
+                .attr("fill", "rgba(255, 255, 255, 0.70)")
+                .attr("rx", 3).attr("ry", 3)
+                .style("pointer-events", "none");
+                
+            nodeEnter.append("text")
+                .attr("class", "node-label")
+                .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
+                .attr("x", d => d.data.group === "root" ? 0 : 12)
+                .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
+                .text(d => d.data.name)
+                .style("fill", "#0f172a") 
+                .style("font-weight", "500");
+                
+            const nodeUpdate = nodeEnter.merge(node);
+            
+            // --- MODIFICACIÓN 3: Truncar texto de Rules con "..." si supera el ancho ---
+            nodeUpdate.select(".node-label").each(function(d) {
+                if (d.data.group === "rule") {
+                    const padding = 24; // Espacio seguro izq y der
+                    const maxWidth = (d.data.width || 120) - padding;
+                    let textStr = d.data.name;
+                    this.textContent = textStr; // Reset al texto completo
+                    
+                    if (this.getComputedTextLength() > maxWidth && textStr.length > 3) {
+                        let i = textStr.length;
+                        while (this.getComputedTextLength() > maxWidth && i > 0) {
+                            i--;
+                            this.textContent = textStr.slice(0, i) + "...";
+                        }
+                    }
+                }
+            });
+
+            // --- MODIFICACIÓN 2: Fondo blanco para las Rules también ---
+            nodeUpdate.each(function(d) {
+                const textNode = d3.select(this).select(".node-label").node();
+                if (textNode && textNode.getBBox) {
+                    const bbox = textNode.getBBox();
+                    // Ahora se permite a category, label Y rule tener fondo blanco
+                    if (d.data.group === "category" || d.data.group === "label" || d.data.group === "rule") {
+                        d3.select(this).select(".text-bg")
+                            .attr("x", bbox.x - 4)
+                            .attr("y", bbox.y - 2)
+                            .attr("width", bbox.width + 8)
+                            .attr("height", bbox.height + 4);
+                    } else {
+                        d3.select(this).select(".text-bg")
+                            .attr("width", 0).attr("height", 0);
+                    }
+                }
+            });
+            
+            nodeUpdate.transition().duration(400)
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+                
+            nodeUpdate.select("rect").transition().duration(400)
+                .attr("stroke", "#0f172a");
+                
+            node.exit().transition().duration(400)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .style("opacity", 0)
+                .remove();
+                
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+        
+        root.x0 = height / 2;
+        root.y0 = 0;
+        update(root);
+
+        function showDetails(nodeData, nodeElement) {
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            let html = `<strong>${nodeData.group.toUpperCase()}</strong><br>`;
+            html += nodeData.details;
+            content.innerHTML = html;
+            panel.style.display = "block";
+        }
+
+        window.addEventListener("resize", () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            svg.attr("width", newWidth).attr("height", newHeight);
+        });
+
+        const leftPaneEl = document.getElementById("markdown-content");
+        const originalLeftHtml = leftPaneEl.innerHTML;
+
+        // Helper: escapa un string para usarlo como literal en un RegExp
+        function escapeRegExp(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Helper: escapa texto igual que html.escape() de Python, para buscar en innerHTML
+        function htmlEscape(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // --- MODIFICACIÓN 1: Regex robusto que opera sobre el HTML escapado ---
+        function highlightTextInLeftPane(searchText, highlightColor) {
+            leftPaneEl.innerHTML = originalLeftHtml;
+            if (!searchText || searchText.trim() === "") return;
+
+            try {
+                // El originalLeftHtml contiene texto HTML-escapado (ej: & -> &amp;).
+                // Debemos escapar el searchText de la misma forma antes de extraer palabras,
+                // así el regex opera en el mismo espacio de caracteres que el innerHTML.
+                const escapedSearchText = htmlEscape(searchText);
+
+                // Extrae tokens alfanuméricos del texto ya escapado
+                // Incluye también secuencias de entidades HTML como &amp; &lt; etc.
+                const words = escapedSearchText.match(/(?:&[a-z]+;|[A-Za-z0-9À-ÿ]+)/g);
+                if (!words || words.length === 0) return;
+
+                // El separador permite cero o más caracteres no-alfanuméricos entre tokens
+                // (espacios, saltos de línea, markdown, entidades HTML parciales, etc.)
+                // Usamos *? (cero o más, no-greedy) para no saltar demasiado entre tokens
+                const sep = '[^A-Za-z0-9À-ÿ]*?';
+
+                function buildRegexStr(wordList) {
+                    return wordList.map(escapeRegExp).join(sep);
+                }
+
+                function tryHighlight(regexStr) {
+                    const regex = new RegExp('(' + regexStr + ')', 'gi');
+                    let matchFound = false;
+                    const newHtml = originalLeftHtml.replace(regex, (match) => {
+                        matchFound = true;
+                        return `<mark style="background-color:${highlightColor};color:#0f172a;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${highlightColor};">` + match + '</mark>';
+                    });
+                    if (matchFound) {
+                        leftPaneEl.innerHTML = newHtml;
+                        const mark = leftPaneEl.querySelector("mark");
+                        if (mark) mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return matchFound;
+                }
+
+                let matched = false;
+
+                if (words.length <= 15) {
+                    // Texto corto: busca la secuencia completa de tokens
+                    matched = tryHighlight(buildRegexStr(words));
+                } else {
+                    // Texto largo: ancla primeras 8 y últimas 8 palabras con gap flexible en el medio
+                    const startWords = words.slice(0, 8);
+                    const endWords = words.slice(-8);
+                    const regexStr = buildRegexStr(startWords) + '[\\s\\S]{0,5000}?' + buildRegexStr(endWords);
+                    matched = tryHighlight(regexStr);
+                }
+
+                // FALLBACK 1: Si no hubo match, intenta solo las primeras 8 palabras
+                if (!matched) {
+                    const fallbackWords = words.slice(0, 8);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }
+
+                // FALLBACK 2: Si sigue sin match, intenta solo las primeras 4 palabras
+                if (!matched) {
+                    const fallbackWords = words.slice(0, 4);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }
+
+                if (!matched) {
+                    console.warn("[highlight] No match found for:", searchText);
+                }
+
+            } catch (e) {
+                console.error("[highlight] Failed:", e);
+            }
+        }
+
+        function clearHighlightInLeftPane() {
+            leftPaneEl.innerHTML = originalLeftHtml;
+        }
+    </script>
+</body>
+</html>
+    

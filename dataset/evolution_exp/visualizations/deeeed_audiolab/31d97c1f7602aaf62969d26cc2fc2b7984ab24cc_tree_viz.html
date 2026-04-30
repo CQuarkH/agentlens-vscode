@@ -1,0 +1,822 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AST Tree View: deeeed/audiolab - CLAUDE.md</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow: hidden;
+        }
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-title { margin: 0; font-size: 1.2rem; }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+        
+        .left-pane {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-right: 2px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+
+        .left-pane-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        #markdown-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #475569;
+        }
+        
+        .right-pane {
+            flex: 1;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #graph-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #graph-container:active { cursor: grabbing; }
+        
+        .pane-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        #details-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: calc(100% - 40px);
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 5;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        #details-panel h3 { margin-top: 0; color: #0f172a; font-size: 1.1rem; }
+        #details-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        #details-panel .close-btn:hover { color: #0f172a; }
+        
+        .node circle {
+            stroke: #fff;
+            stroke-width: 2px;
+            cursor: pointer;
+        }
+        .node:hover circle {
+            stroke: #334155;
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            pointer-events: none;
+        }
+        
+        .link {
+            fill: none;
+            stroke: #cbd5e1;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <h1 class="header-title">deeeed/audiolab - CLAUDE.md - Evolution AST View</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="left-pane">
+            <div class="left-pane-header">
+                <h2 style="font-size: 1.1rem; text-transform: uppercase; color: #64748b; margin: 0; font-family: sans-serif;">Raw Document (31d97c1f7602aaf62969d26cc2fc2b7984ab24cc.md)</h2>
+            </div>
+            <!-- Separamos el contenido para no romper el HTML del <h2> con el Regex -->
+            <div id="markdown-content"># CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Repository Overview
+
+This is a monorepo for audio processing libraries and applications built with React Native and Expo. It contains multiple packages:
+
+- `@siteed/expo-audio-studio` - Comprehensive audio processing library (formerly `@siteed/expo-audio-stream`)
+- `@siteed/expo-audio-ui` - UI components for audio visualization
+- `@siteed/react-native-essentia` - React Native bindings for Essentia audio analysis
+- `@siteed/sherpa-onnx.rn` - React Native wrapper for sherpa-onnx TTS/STT (in development)
+
+## Essential Commands
+
+### Development Setup
+```bash
+# Install dependencies
+yarn install
+
+# Setup Git LFS for ONNX models (required)
+./scripts/setup-lfs.sh
+```
+
+### Building Packages
+
+#### expo-audio-studio
+```bash
+cd packages/expo-audio-studio
+yarn build          # Build all formats (CJS, ESM, types, plugin)
+yarn build:plugin   # Build Expo plugin only
+yarn build:dev      # Build for development
+yarn typecheck      # Type checking
+yarn lint           # Lint code
+yarn test           # Run all tests
+```
+
+#### expo-audio-ui
+```bash
+cd packages/expo-audio-ui
+yarn build          # Build with Rollup
+yarn build:clean    # Clean and build
+yarn typecheck      # Type checking
+yarn lint           # Lint code
+yarn storybook      # Run Storybook development server
+```
+
+#### react-native-essentia
+```bash
+cd packages/react-native-essentia
+yarn prepare        # Build the package
+yarn build:ios      # Build Essentia for iOS
+yarn build:android  # Build Essentia for Android
+yarn build:all      # Build for all platforms
+yarn test           # Run tests
+```
+
+### Running Example Apps
+
+#### Audio Playground (main demo app)
+```bash
+cd apps/playground
+yarn build:deps     # Build all dependencies
+yarn start          # Start Metro bundler (port 7365)
+yarn ios            # Run on iOS device
+yarn android        # Run on Android
+yarn web            # Run on web
+```
+
+#### Minimal Example
+```bash
+cd apps/minimal
+yarn start          # Start Metro bundler
+yarn ios            # Run on iOS
+yarn android        # Run on Android
+yarn web            # Run on web
+```
+
+### Testing
+
+#### expo-audio-studio Testing
+```bash
+cd packages/expo-audio-studio
+
+# Android tests
+yarn test:android                    # Run all Android tests
+yarn test:android:unit               # Unit tests only
+yarn test:android:instrumented       # Instrumented tests
+yarn test:android:unit:watch         # Watch mode for unit tests
+yarn test:coverage                   # Generate coverage report
+
+# iOS tests
+yarn test:ios                        # Run iOS tests
+```
+
+#### Playground E2E Testing
+```bash
+cd apps/playground
+
+# Android E2E
+yarn detox:build:android
+yarn e2e:android:record              # Test recording functionality
+yarn e2e:android:screenshots         # Generate screenshots
+yarn e2e:android:import              # Test import functionality
+
+# iOS E2E
+yarn detox:build:ios
+yarn e2e:ios:record
+yarn e2e:ios:screenshots
+yarn e2e:ios:import
+```
+
+### Release &amp; Publishing
+
+#### Publishing Packages
+```bash
+# expo-audio-studio
+cd packages/expo-audio-studio
+yarn release
+
+# expo-audio-ui
+cd packages/expo-audio-ui
+yarn release
+
+# react-native-essentia
+cd packages/react-native-essentia
+npm publish
+```
+
+#### Playground App Deployment
+```bash
+cd apps/playground
+yarn publish                         # Deploy to web
+yarn build:android:production        # Build production Android
+yarn build:ios:production            # Build production iOS
+yarn ota-update:production           # Over-the-air update for production
+```
+
+## Architecture Overview
+
+### Monorepo Structure
+- Uses Yarn workspaces for dependency management
+- Apps in `/apps` directory consume packages from `/packages`
+- Shared TypeScript configuration at root level
+- Lefthook for Git hooks (configured but not enforced)
+
+### Package Architecture
+
+#### expo-audio-studio
+- Native modules for iOS (Swift) and Android (Kotlin)
+- Supports dual-stream recording (raw PCM + compressed)
+- Audio device management and selection
+- Background recording capabilities
+- Integration tests for both platforms
+
+#### expo-audio-ui
+- Built with React Native Skia for visualizations
+- Rollup build system
+- Storybook for component development
+- Peer dependency on expo-audio-studio
+
+#### react-native-essentia
+- C++ native implementation using Essentia library
+- Requires building static libraries for iOS/Android
+- Advanced audio analysis algorithms
+- Uses react-native-builder-bob for building
+
+#### sherpa-onnx.rn
+- Wraps sherpa-onnx for speech recognition and synthesis
+- Web support through WASM
+- Model management system
+- Currently in development
+
+### Key Technical Details
+- All packages use TypeScript
+- iOS requires minimum deployment target 13.4
+- Android minimum SDK 24
+- Web support varies by package
+- ONNX models stored with Git LFS
+- Integration tests require device/simulator
+
+## Important Notes
+
+- Always run `yarn build:deps` in playground before development
+- The playground app uses port 7365 by default
+- Git LFS setup is required for ONNX models
+- Native changes require pod install (iOS) or gradle sync (Android)
+- Use absolute paths in native test scripts
+- Background recording requires special permissions configuration
+
+## Current Branch Context
+
+You are working on the `fix/compressed-only-output-issue-244` branch which addresses issue #244 - when primary output is disabled and compressed output is enabled, the compression info was not being returned.
+
+### Testing the Fix for Issue #244
+
+To validate the compressed-only output fix on real devices/simulators:
+
+#### Android Testing
+```bash
+# From the repository root
+cd apps/playground/android
+
+# Run the specific test for compressed-only output
+./gradlew :siteed-expo-audio-studio:connectedAndroidTest --tests &quot;*.CompressedOnlyOutputTest&quot;
+
+# Or run all integration tests including the new one
+./gradlew :siteed-expo-audio-studio:connectedAndroidTest
+```
+
+#### iOS Testing
+```bash
+# From the repository root
+cd packages/expo-audio-studio/ios/tests/integration
+
+# Make the test executable and run it
+chmod +x compressed_only_output_test.swift
+./compressed_only_output_test.swift
+
+# Or run all integration tests
+./run_integration_tests.sh
+```
+
+#### What the Tests Validate
+- When primary output is disabled and compressed is enabled, compression info is returned
+- The compressed file URI is accessible in the result
+- Different compression formats work correctly (AAC, Opus)
+- File size and metadata are properly reported
+
+## Integration Testing Best Practices
+
+### Running Integration Tests on Real Devices/Simulators
+
+Integration tests are essential for validating that native functionality works correctly. Here&#x27;s what we&#x27;ve learned:
+
+#### Android Integration Testing
+
+1. **Running Tests**: Android integration tests use instrumented tests that run on a real device or emulator:
+   ```bash
+   cd apps/playground/android
+   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest
+   ```
+
+2. **Test Results**: Located in `packages/expo-audio-studio/android/build/outputs/androidTest-results/`
+
+3. **Specific Test Execution**: Run individual test classes:
+   ```bash
+   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest --tests &quot;*.CompressedOnlyOutputTest&quot;
+   ```
+
+4. **Requirements**:
+   - Connected Android device or running emulator
+   - USB debugging enabled on device
+   - Gradle will automatically install the test APK
+
+#### iOS Integration Testing
+
+1. **Current Setup**: iOS integration tests are script-based and located in `packages/expo-audio-studio/ios/tests/integration/`
+
+2. **Running Tests**:
+   ```bash
+   cd packages/expo-audio-studio/ios/tests/integration
+   ./run_integration_tests.sh
+   ```
+
+3. **Test Types**:
+   - **Simulation Tests**: Some tests simulate behavior (e.g., `compressed_only_output_test.swift`)
+   - **Real Tests**: Unit tests in `ExpoAudioStudioTests/` test actual implementation
+   
+4. **Important Note**: The iOS integration test scripts currently simulate behavior rather than testing the actual AudioStreamManager. For real testing, use the unit tests in Xcode.
+
+### iOS Testing Limitations
+
+**What can be done from CLI:**
+- Build the iOS project (requires Xcode installed)
+- Run script-based tests that don&#x27;t require iOS runtime
+- Verify source code implementation
+- Check for compilation errors
+
+**What CANNOT be done from CLI:**
+- Run tests that require iOS simulator
+- Execute code that uses iOS-specific APIs (AVAudioSession, etc.)
+- Run instrumented tests on actual devices
+- Access iOS runtime environment
+
+**For actual iOS integration testing:**
+1. Open the project in Xcode
+2. Select a simulator or connected device
+3. Run the test target or app
+4. Manually test the feature or run XCTest unit tests
+
+This limitation applies to any CLI tool (including Claude) that doesn&#x27;t have access to macOS GUI and Xcode&#x27;s simulator runtime.
+
+#### Key Learnings
+
+1. **Always Test on Real Implementation**: Simulated tests can mask real bugs. Android&#x27;s instrumented tests run actual code, while iOS integration scripts may simulate behavior.
+
+2. **Platform Differences**:
+   - Android: Gradle-based instrumented tests run on device
+   - iOS: Mix of script-based tests and Xcode unit tests
+   
+3. **Debugging Failed Tests**:
+   - Check test output logs for detailed error messages
+   - Android: View XML test results in build directory
+   - iOS: Console output from test scripts
+
+4. **Test Coverage**:
+   - Test both success and failure scenarios
+   - Verify edge cases (e.g., primary disabled, compressed enabled)
+   - Check platform-specific behavior (e.g., Opus fallback on iOS)
+
+5. **Fix Validation Process**:
+   - Write/update tests that demonstrate the bug
+   - Implement the fix
+   - Run tests to confirm fix works
+   - Ensure no regression in existing functionality
+
+### Example: Validating Issue #244 Fix
+
+1. **Android** (✅ Can be validated via CLI):
+   ```bash
+   cd apps/playground/android
+   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=net.siteed.audiostream.integration.CompressedOnlyOutputTest
+   ```
+   All 4 tests passed, confirming the fix works on Android.
+
+2. **iOS** (⚠️ Requires Xcode/Physical Environment):
+   - **Claude/CLI Limitation**: Cannot run iOS simulator or device tests from command line
+   - **Code Verification**: Can verify fix is implemented by examining source code
+   - **Real Testing**: Requires opening Xcode and running on actual simulator/device
+   - The integration scripts in `ios/tests/integration/` simulate behavior rather than testing real implementation
+
+### Writing Integration Tests
+
+When adding new features or fixing bugs:
+
+1. **Create Test First**: Write a test that demonstrates the current bug
+2. **Run Test**: Confirm it fails with the bug
+3. **Implement Fix**: Make the necessary code changes
+4. **Run Test Again**: Confirm it passes with the fix
+5. **Run Full Suite**: Ensure no regressions
+
+This approach ensures fixes work correctly on real devices and prevents future regressions.
+</div>
+        </div>
+        
+        <div class="right-pane">
+            <h2 class="pane-title">Hierarchical AST Tree</h2>
+            
+            <div id="graph-container"></div>
+            
+            <div id="details-panel">
+                <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+                <h3>Node Details</h3>
+                <div id="details-content">Click a node to view its structural properties and rules.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const treeData = {"name": "deeeed/audiolab - CLAUDE.md", "group": "root", "width": 220, "height": 60, "color": "#1e293b", "border_width": 2, "details": "Repository Name: deeeed/audiolab - CLAUDE.md", "children": [{"name": "General", "group": "category", "width": 165, "height": 98, "color": "#E41A1C", "border_width": 4.0, "details": "Category: General<br>Total Labels: 1<br>Total Rules: 6<br>Code Ratio: 0.5", "children": [{"name": "System Overview", "group": "label", "width": 180, "height": 100, "color": "#e31a1b", "border_width": 4.0, "fre_score": 0.0, "details": "Label: System Overview<br>Total Rules: 6<br>Code Ratio: 0.5<br>FRE Cognitive Load: 0.0", "children": [{"name": "This is a monorepo for audio p...", "group": "rule", "width": 350, "height": 120, "color": "#e31a1b", "border_width": 1.5, "raw_text": "This is a monorepo for audio processing libraries and applications built with React Native and Expo. It contains multiple packages:\n\n- `@siteed/expo-audio-studio` - Comprehensive audio processing library (formerly `@siteed/expo-audio-stream`)\n- `@siteed/expo-audio-ui` - UI components for audio visualization\n- `@siteed/react-native-essentia` - React Native bindings for Essentia audio analysis\n- `@siteed/sherpa-onnx.rn` - React Native wrapper for sherpa-onnx TTS/STT (in development)", "details": "\n            This is a monorepo for audio processing libraries and applications built with React Native and Expo. It contains multiple packages:\n\n- `@siteed/expo-audio-studio` - Comprehensive audio processing library (formerly `@siteed/expo-audio-stream`)\n- `@siteed/expo-audio-ui` - UI components for audio visualization\n- `@siteed/react-native-essentia` - React Native bindings for Essentia audio analysis\n- `@siteed/sherpa-onnx.rn` - React Native wrapper for sherpa-onnx TTS/STT (in development)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Repository Overview<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 4 - 10<br><strong>ID:</strong> rule_1\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- Uses Yarn workspaces for dep...", "group": "rule", "width": 186, "height": 108, "color": "#e31a1b", "border_width": 1.5, "raw_text": "- Uses Yarn workspaces for dependency management\n- Apps in `/apps` directory consume packages from `/packages`\n- Shared TypeScript configuration at root level\n- Lefthook for Git hooks (configured but not enforced)", "details": "\n            - Uses Yarn workspaces for dependency management\n- Apps in `/apps` directory consume packages from `/packages`\n- Shared TypeScript configuration at root level\n- Lefthook for Git hooks (configured but not enforced)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Monorepo Structure<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 100 - 103<br><strong>ID:</strong> rule_2\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- All packages use TypeScript\n...", "group": "rule", "width": 185, "height": 78, "color": "#e31a1b", "border_width": 1.5, "raw_text": "- All packages use TypeScript\n- iOS requires minimum deployment target 13.4\n- Android minimum SDK 24\n- Web support varies by package\n- ONNX models stored with Git LFS\n- Integration tests require device/simulator", "details": "\n            - All packages use TypeScript\n- iOS requires minimum deployment target 13.4\n- Android minimum SDK 24\n- Web support varies by package\n- ONNX models stored with Git LFS\n- Integration tests require device/simulator<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Technical Details<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 131 - 136<br><strong>ID:</strong> rule_3\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "You are working on the `fix/co...", "group": "rule", "width": 183, "height": 90, "color": "#e31a1b", "border_width": 1.5, "raw_text": "You are working on the `fix/compressed-only-output-issue-244` branch which addresses issue #244 - when primary output is disabled and compressed output is enabled, the compression info was not being returned.", "details": "\n            You are working on the `fix/compressed-only-output-issue-244` branch which addresses issue #244 - when primary output is disabled and compressed output is enabled, the compression info was not being returned.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Current Branch Context<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 142 - 142<br><strong>ID:</strong> rule_4\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "#### What the Tests Validate\n-...", "group": "rule", "width": 225, "height": 96, "color": "#e31a1b", "border_width": 1.5, "raw_text": "#### What the Tests Validate\n- When primary output is disabled and compressed is enabled, compression info is returned\n- The compressed file URI is accessible in the result\n- Different compression formats work correctly (AAC, Opus)\n- File size and metadata are properly reported", "details": "\n            #### What the Tests Validate\n- When primary output is disabled and compressed is enabled, compression info is returned\n- The compressed file URI is accessible in the result\n- Different compression formats work correctly (AAC, Opus)\n- File size and metadata are properly reported<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Testing the Fix for Issue #244<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 168 - 172<br><strong>ID:</strong> rule_5\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**What CANNOT be done from CLI...", "group": "rule", "width": 187, "height": 102, "color": "#e31a1b", "border_width": 1.5, "raw_text": "**What CANNOT be done from CLI:**\n- Run tests that require iOS simulator\n- Execute code that uses iOS-specific APIs (AVAudioSession, etc.)\n- Run instrumented tests on actual devices\n- Access iOS runtime environment", "details": "\n            **What CANNOT be done from CLI:**\n- Run tests that require iOS simulator\n- Execute code that uses iOS-specific APIs (AVAudioSession, etc.)\n- Run instrumented tests on actual devices\n- Access iOS runtime environment<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Testing Limitations<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 210 - 214<br><strong>ID:</strong> rule_6\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}, {"name": "Build", "group": "category", "width": 240, "height": 150, "color": "#377EB8", "border_width": 4.6, "details": "Category: Build<br>Total Labels: 4<br>Total Rules: 20<br>Code Ratio: 0.65", "children": [{"name": "Build and Run", "group": "label", "width": 180, "height": 110, "color": "#377eb8", "border_width": 6.0, "fre_score": 0.0, "details": "Label: Build and Run<br>Total Rules: 7<br>Code Ratio: 1.0<br>FRE Cognitive Load: 0.0", "children": [{"name": "```bash\n# Install dependencies...", "group": "rule", "width": 127, "height": 114, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\n# Install dependencies\nyarn install\n\n# Setup Git LFS for ONNX models (required)\n./scripts/setup-lfs.sh\n```", "details": "\n            ```bash\n# Install dependencies\nyarn install\n\n# Setup Git LFS for ONNX models (required)\n./scripts/setup-lfs.sh\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Development Setup<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 14 - 20<br><strong>ID:</strong> rule_7\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd packages/expo-audio...", "group": "rule", "width": 239, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd packages/expo-audio-studio\nyarn build          # Build all formats (CJS, ESM, types, plugin)\nyarn build:plugin   # Build Expo plugin only\nyarn build:dev      # Build for development\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn test           # Run all tests\n```", "details": "\n            ```bash\ncd packages/expo-audio-studio\nyarn build          # Build all formats (CJS, ESM, types, plugin)\nyarn build:plugin   # Build Expo plugin only\nyarn build:dev      # Build for development\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn test           # Run all tests\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> expo-audio-studio<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 24 - 32<br><strong>ID:</strong> rule_8\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd packages/expo-audio...", "group": "rule", "width": 201, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd packages/expo-audio-ui\nyarn build          # Build with Rollup\nyarn build:clean    # Clean and build\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn storybook      # Run Storybook development server\n```", "details": "\n            ```bash\ncd packages/expo-audio-ui\nyarn build          # Build with Rollup\nyarn build:clean    # Clean and build\nyarn typecheck      # Type checking\nyarn lint           # Lint code\nyarn storybook      # Run Storybook development server\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> expo-audio-ui<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 35 - 42<br><strong>ID:</strong> rule_9\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd packages/react-nati...", "group": "rule", "width": 213, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd packages/react-native-essentia\nyarn prepare        # Build the package\nyarn build:ios      # Build Essentia for iOS\nyarn build:android  # Build Essentia for Android\nyarn build:all      # Build for all platforms\nyarn test           # Run tests\n```", "details": "\n            ```bash\ncd packages/react-native-essentia\nyarn prepare        # Build the package\nyarn build:ios      # Build Essentia for iOS\nyarn build:android  # Build Essentia for Android\nyarn build:all      # Build for all platforms\nyarn test           # Run tests\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> react-native-essentia<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 45 - 52<br><strong>ID:</strong> rule_10\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd apps/playground\nyar...", "group": "rule", "width": 202, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd apps/playground\nyarn build:deps     # Build all dependencies\nyarn start          # Start Metro bundler (port 7365)\nyarn ios            # Run on iOS device\nyarn android        # Run on Android\nyarn web            # Run on web\n```", "details": "\n            ```bash\ncd apps/playground\nyarn build:deps     # Build all dependencies\nyarn start          # Start Metro bundler (port 7365)\nyarn ios            # Run on iOS device\nyarn android        # Run on Android\nyarn web            # Run on web\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Audio Playground (main demo app)<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 57 - 64<br><strong>ID:</strong> rule_11\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd apps/minimal\nyarn s...", "group": "rule", "width": 162, "height": 102, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd apps/minimal\nyarn start          # Start Metro bundler\nyarn ios            # Run on iOS\nyarn android        # Run on Android\nyarn web            # Run on web\n```", "details": "\n            ```bash\ncd apps/minimal\nyarn start          # Start Metro bundler\nyarn ios            # Run on iOS\nyarn android        # Run on Android\nyarn web            # Run on web\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Minimal Example<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 67 - 73<br><strong>ID:</strong> rule_12\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "```bash\ncd apps/playground\nyar...", "group": "rule", "width": 227, "height": 120, "color": "#377eb8", "border_width": 1.5, "raw_text": "```bash\ncd apps/playground\nyarn publish                         # Deploy to web\nyarn build:android:production        # Build production Android\nyarn build:ios:production            # Build production iOS\nyarn ota-update:production           # Over-the-air update for production\n```", "details": "\n            ```bash\ncd apps/playground\nyarn publish                         # Deploy to web\nyarn build:android:production        # Build production Android\nyarn build:ios:production            # Build production iOS\nyarn ota-update:production           # Over-the-air update for production\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Playground App Deployment<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 91 - 97<br><strong>ID:</strong> rule_13\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Testing", "group": "label", "width": 156, "height": 120, "color": "#3b86c4", "border_width": 4.0, "fre_score": 23.9, "details": "Label: Testing<br>Total Rules: 10<br>Code Ratio: 0.5<br>FRE Cognitive Load: 23.9", "children": [{"name": "```bash\ncd packages/expo-audio...", "group": "rule", "width": 315, "height": 120, "color": "#3b86c4", "border_width": 1.5, "raw_text": "```bash\ncd packages/expo-audio-studio\n\n# Android tests\nyarn test:android                    # Run all Android tests\nyarn test:android:unit               # Unit tests only\nyarn test:android:instrumented       # Instrumented tests\nyarn test:android:unit:watch         # Watch mode for unit tests\nyarn test:coverage                   # Generate coverage report\n\n# iOS tests\nyarn test:ios                        # Run iOS tests\n```", "details": "\n            ```bash\ncd packages/expo-audio-studio\n\n# Android tests\nyarn test:android                    # Run all Android tests\nyarn test:android:unit               # Unit tests only\nyarn test:android:instrumented       # Instrumented tests\nyarn test:android:unit:watch         # Watch mode for unit tests\nyarn test:coverage                   # Generate coverage report\n\n# iOS tests\nyarn test:ios                        # Run iOS tests\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> expo-audio-studio Testing<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 77 - 89<br><strong>ID:</strong> rule_14\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "1. **Running Tests**: Android ...", "group": "rule", "width": 189, "height": 120, "color": "#3b86c4", "border_width": 1.5, "raw_text": "1. **Running Tests**: Android integration tests use instrumented tests that run on a real device or emulator:\n   ```bash\n   cd apps/playground/android\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest\n   ```", "details": "\n            1. **Running Tests**: Android integration tests use instrumented tests that run on a real device or emulator:\n   ```bash\n   cd apps/playground/android\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest\n   ```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Android Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 181 - 185<br><strong>ID:</strong> rule_15\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "2. **Test Results**: Located i...", "group": "rule", "width": 120, "height": 120, "color": "#3b86c4", "border_width": 1.5, "raw_text": "2. **Test Results**: Located in `packages/expo-audio-studio/android/build/outputs/androidTest-results/`", "details": "\n            2. **Test Results**: Located in `packages/expo-audio-studio/android/build/outputs/androidTest-results/`<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Android Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 187 - 187<br><strong>ID:</strong> rule_16\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "3. **Specific Test Execution**...", "group": "rule", "width": 163, "height": 120, "color": "#3b86c4", "border_width": 1.5, "raw_text": "3. **Specific Test Execution**: Run individual test classes:\n   ```bash\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest --tests \"*.CompressedOnlyOutputTest\"\n   ```", "details": "\n            3. **Specific Test Execution**: Run individual test classes:\n   ```bash\n   ./gradlew :siteed-expo-audio-studio:connectedAndroidTest --tests \"*.CompressedOnlyOutputTest\"\n   ```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Android Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 189 - 192<br><strong>ID:</strong> rule_17\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "4. **Requirements**:\n   - Conn...", "group": "rule", "width": 154, "height": 78, "color": "#3b86c4", "border_width": 1.5, "raw_text": "4. **Requirements**:\n   - Connected Android device or running emulator\n   - USB debugging enabled on device\n   - Gradle will automatically install the test APK", "details": "\n            4. **Requirements**:\n   - Connected Android device or running emulator\n   - USB debugging enabled on device\n   - Gradle will automatically install the test APK<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Android Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 194 - 197<br><strong>ID:</strong> rule_18\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "1. **Current Setup**: iOS inte...", "group": "rule", "width": 134, "height": 120, "color": "#3b86c4", "border_width": 1.5, "raw_text": "1. **Current Setup**: iOS integration tests are script-based and located in `packages/expo-audio-studio/ios/tests/integration/`", "details": "\n            1. **Current Setup**: iOS integration tests are script-based and located in `packages/expo-audio-studio/ios/tests/integration/`<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 201 - 201<br><strong>ID:</strong> rule_19\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "4. **Important Note**: The iOS...", "group": "rule", "width": 167, "height": 60, "color": "#3b86c4", "border_width": 1.5, "raw_text": "4. **Important Note**: The iOS integration test scripts currently simulate behavior rather than testing the actual AudioStreamManager. For real testing, use the unit tests in Xcode.", "details": "\n            4. **Important Note**: The iOS integration test scripts currently simulate behavior rather than testing the actual AudioStreamManager. For real testing, use the unit tests in Xcode.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 208 - 208<br><strong>ID:</strong> rule_20\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "**For actual iOS integration t...", "group": "rule", "width": 175, "height": 60, "color": "#3b86c4", "border_width": 1.5, "raw_text": "**For actual iOS integration testing:**\n1. Open the project in Xcode\n2. Select a simulator or connected device\n3. Run the test target or app\n4. Manually test the feature or run XCTest unit tests", "details": "\n            **For actual iOS integration testing:**\n1. Open the project in Xcode\n2. Select a simulator or connected device\n3. Run the test target or app\n4. Manually test the feature or run XCTest unit tests<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Testing Limitations<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 216 - 220<br><strong>ID:</strong> rule_21\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "1. **Always Test on Real Imple...", "group": "rule", "width": 165, "height": 60, "color": "#3b86c4", "border_width": 1.5, "raw_text": "1. **Always Test on Real Implementation**: Simulated tests can mask real bugs. Android's instrumented tests run actual code, while iOS integration scripts may simulate behavior.", "details": "\n            1. **Always Test on Real Implementation**: Simulated tests can mask real bugs. Android's instrumented tests run actual code, while iOS integration scripts may simulate behavior.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Learnings<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 225 - 225<br><strong>ID:</strong> rule_22\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "5. **Fix Validation Process**:...", "group": "rule", "width": 172, "height": 90, "color": "#3b86c4", "border_width": 1.5, "raw_text": "5. **Fix Validation Process**:\n   - Write/update tests that demonstrate the bug\n   - Implement the fix\n   - Run tests to confirm fix works\n   - Ensure no regression in existing functionality", "details": "\n            5. **Fix Validation Process**:\n   - Write/update tests that demonstrate the bug\n   - Implement the fix\n   - Run tests to confirm fix works\n   - Ensure no regression in existing functionality<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Learnings<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 237 - 241<br><strong>ID:</strong> rule_23\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "DevOps", "group": "label", "width": 180, "height": 50, "color": "#b2d0e8", "border_width": 6.0, "fre_score": 0.0, "details": "Label: DevOps<br>Total Rules: 1<br>Code Ratio: 1.0<br>FRE Cognitive Load: 0.0", "children": [{"name": "```bash\n# expo-audio-studio\ncd...", "group": "rule", "width": 179, "height": 120, "color": "#b2d0e8", "border_width": 1.5, "raw_text": "```bash\n# expo-audio-studio\ncd packages/expo-audio-studio\nyarn release\n\n# expo-audio-ui\ncd packages/expo-audio-ui\nyarn release\n\n# react-native-essentia\ncd packages/react-native-essentia\nnpm publish\n```", "details": "\n            ```bash\n# expo-audio-studio\ncd packages/expo-audio-studio\nyarn release\n\n# expo-audio-ui\ncd packages/expo-audio-ui\nyarn release\n\n# react-native-essentia\ncd packages/react-native-essentia\nnpm publish\n```<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Publishing Packages<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 79 - 91<br><strong>ID:</strong> rule_24\n            </small>\n            ", "strength": "MUST", "value": 1}]}, {"name": "Conf.&Env.", "group": "label", "width": 166, "height": 60, "color": "#a6c8e4", "border_width": 2.0, "fre_score": 13.8, "details": "Label: Conf.&Env.<br>Total Rules: 2<br>Code Ratio: 0.0<br>FRE Cognitive Load: 13.8", "children": [{"name": "**What can be done from CLI:**...", "group": "rule", "width": 181, "height": 102, "color": "#a6c8e4", "border_width": 1.5, "raw_text": "**What can be done from CLI:**\n- Build the iOS project (requires Xcode installed)\n- Run script-based tests that don't require iOS runtime\n- Verify source code implementation\n- Check for compilation errors", "details": "\n            **What can be done from CLI:**\n- Build the iOS project (requires Xcode installed)\n- Run script-based tests that don't require iOS runtime\n- Verify source code implementation\n- Check for compilation errors<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Testing Limitations<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 204 - 208<br><strong>ID:</strong> rule_35\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "This limitation applies to any...", "group": "rule", "width": 134, "height": 48, "color": "#a6c8e4", "border_width": 1.5, "raw_text": "This limitation applies to any CLI tool (including Claude) that doesn't have access to macOS GUI and Xcode's simulator runtime.", "details": "\n            This limitation applies to any CLI tool (including Claude) that doesn't have access to macOS GUI and Xcode's simulator runtime.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Testing Limitations<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 222 - 222<br><strong>ID:</strong> rule_36\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}, {"name": "Implementation", "group": "category", "width": 165, "height": 90, "color": "#984EA3", "border_width": 2.8, "details": "Category: Implementation<br>Total Labels: 1<br>Total Rules: 5<br>Code Ratio: 0.2", "children": [{"name": "Impl. Details", "group": "label", "width": 180, "height": 90, "color": "#984ea3", "border_width": 2.8, "fre_score": 0.0, "details": "Label: Impl. Details<br>Total Rules: 5<br>Code Ratio: 0.2<br>FRE Cognitive Load: 0.0", "children": [{"name": "- Native modules for iOS (Swif...", "group": "rule", "width": 193, "height": 114, "color": "#984ea3", "border_width": 1.5, "raw_text": "- Native modules for iOS (Swift) and Android (Kotlin)\n- Supports dual-stream recording (raw PCM + compressed)\n- Audio device management and selection\n- Background recording capabilities\n- Integration tests for both platforms", "details": "\n            - Native modules for iOS (Swift) and Android (Kotlin)\n- Supports dual-stream recording (raw PCM + compressed)\n- Audio device management and selection\n- Background recording capabilities\n- Integration tests for both platforms<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> expo-audio-studio<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 107 - 111<br><strong>ID:</strong> rule_25\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- Built with React Native Skia...", "group": "rule", "width": 147, "height": 72, "color": "#984ea3", "border_width": 1.5, "raw_text": "- Built with React Native Skia for visualizations\n- Rollup build system\n- Storybook for component development\n- Peer dependency on expo-audio-studio", "details": "\n            - Built with React Native Skia for visualizations\n- Rollup build system\n- Storybook for component development\n- Peer dependency on expo-audio-studio<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> expo-audio-ui<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 115 - 118<br><strong>ID:</strong> rule_26\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- C++ native implementation us...", "group": "rule", "width": 169, "height": 96, "color": "#984ea3", "border_width": 1.5, "raw_text": "- C++ native implementation using Essentia library\n- Requires building static libraries for iOS/Android\n- Advanced audio analysis algorithms\n- Uses react-native-builder-bob for building", "details": "\n            - C++ native implementation using Essentia library\n- Requires building static libraries for iOS/Android\n- Advanced audio analysis algorithms\n- Uses react-native-builder-bob for building<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> react-native-essentia<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 122 - 125<br><strong>ID:</strong> rule_27\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "- Wraps sherpa-onnx for speech...", "group": "rule", "width": 140, "height": 66, "color": "#984ea3", "border_width": 1.5, "raw_text": "- Wraps sherpa-onnx for speech recognition and synthesis\n- Web support through WASM\n- Model management system\n- Currently in development", "details": "\n            - Wraps sherpa-onnx for speech recognition and synthesis\n- Web support through WASM\n- Model management system\n- Currently in development<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> sherpa-onnx.rn<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 129 - 132<br><strong>ID:</strong> rule_28\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "3. **Test Types**:\n   - **Simu...", "group": "rule", "width": 181, "height": 120, "color": "#984ea3", "border_width": 1.5, "raw_text": "3. **Test Types**:\n   - **Simulation Tests**: Some tests simulate behavior (e.g., `compressed_only_output_test.swift`)\n   - **Real Tests**: Unit tests in `ExpoAudioStudioTests/` test actual implementation", "details": "\n            3. **Test Types**:\n   - **Simulation Tests**: Some tests simulate behavior (e.g., `compressed_only_output_test.swift`)\n   - **Real Tests**: Unit tests in `ExpoAudioStudioTests/` test actual implementation<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> iOS Integration Testing<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 205 - 207<br><strong>ID:</strong> rule_29\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}, {"name": "Quality", "group": "category", "width": 165, "height": 90, "color": "#4DAF4A", "border_width": 2.8, "details": "Category: Quality<br>Total Labels: 1<br>Total Rules: 5<br>Code Ratio: 0.2", "children": [{"name": "Maintenance", "group": "label", "width": 131, "height": 90, "color": "#4daf4a", "border_width": 2.8, "fre_score": 48.5, "details": "Label: Maintenance<br>Total Rules: 5<br>Code Ratio: 0.2<br>FRE Cognitive Load: 48.5", "children": [{"name": "- Always run `yarn build:deps`...", "group": "rule", "width": 258, "height": 108, "color": "#4daf4a", "border_width": 1.5, "raw_text": "- Always run `yarn build:deps` in playground before development\n- The playground app uses port 7365 by default\n- Git LFS setup is required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in native test scripts\n- Background recording requires special permissions configuration", "details": "\n            - Always run `yarn build:deps` in playground before development\n- The playground app uses port 7365 by default\n- Git LFS setup is required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in native test scripts\n- Background recording requires special permissions configuration<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Important Notes<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 140 - 145<br><strong>ID:</strong> rule_30\n            </small>\n            ", "strength": "MUST", "value": 1}, {"name": "2. **Platform Differences**:\n ...", "group": "rule", "width": 145, "height": 84, "color": "#4daf4a", "border_width": 1.5, "raw_text": "2. **Platform Differences**:\n   - Android: Gradle-based instrumented tests run on device\n   - iOS: Mix of script-based tests and Xcode unit tests", "details": "\n            2. **Platform Differences**:\n   - Android: Gradle-based instrumented tests run on device\n   - iOS: Mix of script-based tests and Xcode unit tests<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Learnings<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 227 - 229<br><strong>ID:</strong> rule_31\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "3. **Debugging Failed Tests**:...", "group": "rule", "width": 169, "height": 78, "color": "#4daf4a", "border_width": 1.5, "raw_text": "3. **Debugging Failed Tests**:\n   - Check test output logs for detailed error messages\n   - Android: View XML test results in build directory\n   - iOS: Console output from test scripts", "details": "\n            3. **Debugging Failed Tests**:\n   - Check test output logs for detailed error messages\n   - Android: View XML test results in build directory\n   - iOS: Console output from test scripts<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Learnings<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 231 - 234<br><strong>ID:</strong> rule_32\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "4. **Test Coverage**:\n   - Tes...", "group": "rule", "width": 179, "height": 108, "color": "#4daf4a", "border_width": 1.5, "raw_text": "4. **Test Coverage**:\n   - Test both success and failure scenarios\n   - Verify edge cases (e.g., primary disabled, compressed enabled)\n   - Check platform-specific behavior (e.g., Opus fallback on iOS)", "details": "\n            4. **Test Coverage**:\n   - Test both success and failure scenarios\n   - Verify edge cases (e.g., primary disabled, compressed enabled)\n   - Check platform-specific behavior (e.g., Opus fallback on iOS)<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Key Learnings<br>\n            <strong>Format:</strong> ListItem<br>\n            <strong>Lines:</strong> 235 - 238<br><strong>ID:</strong> rule_33\n            </small>\n            ", "strength": "SHOULD", "value": 1}, {"name": "When adding new features or fi...", "group": "rule", "width": 303, "height": 120, "color": "#4daf4a", "border_width": 1.5, "raw_text": "When adding new features or fixing bugs:\n\n1. **Create Test First**: Write a test that demonstrates the current bug\n2. **Run Test**: Confirm it fails with the bug\n3. **Implement Fix**: Make the necessary code changes\n4. **Run Test Again**: Confirm it passes with the fix\n5. **Run Full Suite**: Ensure no regressions\n\nThis approach ensures fixes work correctly on real devices and prevents future regressions.", "details": "\n            When adding new features or fixing bugs:\n\n1. **Create Test First**: Write a test that demonstrates the current bug\n2. **Run Test**: Confirm it fails with the bug\n3. **Implement Fix**: Make the necessary code changes\n4. **Run Test Again**: Confirm it passes with the fix\n5. **Run Full Suite**: Ensure no regressions\n\nThis approach ensures fixes work correctly on real devices and prevents future regressions.<br><br>\n            <hr>\n            <small>\n            <strong>Original Header:</strong> Writing Integration Tests<br>\n            <strong>Format:</strong> Paragraph<br>\n            <strong>Lines:</strong> 261 - 270<br><strong>ID:</strong> rule_34\n            </small>\n            ", "strength": "MUST", "value": 1}]}]}]};
+
+        const container = document.getElementById("graph-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select("#graph-container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+            
+        const g = svg.append("g");
+        
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+            
+        svg.call(zoom);
+
+        let root = d3.hierarchy(treeData);
+        let i = 0;
+        
+        root.descendants().forEach(d => {
+            if (d.depth >= 1) { 
+                d._children = d.children;
+                d.children = null;
+            }
+        });
+
+        const dx = 1;  
+        const dy = 320; 
+        const treeLayout = d3.tree()
+            .nodeSize([dx, dy])
+            .separation((a, b) => {
+                const hA = a.data.height || 40;
+                const hB = b.data.height || 40;
+                return (hA + hB) / 2 + 30;
+            });
+        
+        g.append("g").attr("class", "links");
+        g.append("g").attr("class", "nodes");
+        g.attr("transform", `translate(${dy / 2},${height / 2})`);
+
+        function update(source) {
+            treeLayout(root);
+            
+            const nodes = root.descendants();
+            const links = root.links();
+            
+            // LINKS
+            const link = g.select(".links").selectAll("path.link")
+                .data(links, d => d.target.id || (d.target.id = ++i));
+                
+            const linkEnter = link.enter().append("path")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0 || source.x, y: source.y0 || source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                });
+                
+            link.merge(linkEnter).transition().duration(400)
+                .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                
+            link.exit().transition().duration(400)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return d3.linkHorizontal().x(d => d.y).y(d => d.x)({source: o, target: o});
+                }).remove();
+                
+            // NODES
+            const node = g.select(".nodes").selectAll("g.node")
+                .data(nodes, d => d.id || (d.id = ++i));
+                
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0 || source.y},${source.x0 || source.x})`)
+                .on("click", (event, d) => {
+                    showDetails(d.data, event.currentTarget);
+                    if (d.data.group === "rule" && d.data.raw_text) {
+                        highlightTextInLeftPane(d.data.raw_text, d.data.color);
+                    } else {
+                        clearHighlightInLeftPane();
+                    }
+                    
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else if (d._children) {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    if (d.data.group !== "rule") {
+                        update(d);
+                    }
+                });
+                
+            nodeEnter.filter(d => d.data.group !== "root").append("rect")
+                .attr("class", "main-rect")
+                .attr("width", d => d.data.width || 120)
+                .attr("height", d => d.data.height || 40)
+                .attr("y", d => -(d.data.height || 40) / 2)
+                .attr("rx", 6).attr("ry", 6)
+                .attr("fill", d => d.data.color)
+                .attr("stroke-width", d => d.data.border_width || 2)
+                .attr("stroke", "#0f172a");
+                
+            nodeEnter.filter(d => d.data.group === "root")
+                .append("image")
+                .attr("href", "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>")
+                .attr("width", 32)
+                .attr("height", 32)
+                .attr("x", -16)
+                .attr("y", -16);
+                
+            nodeEnter.append("rect")
+                .attr("class", "text-bg")
+                .attr("fill", "rgba(255, 255, 255, 0.70)")
+                .attr("rx", 3).attr("ry", 3)
+                .style("pointer-events", "none");
+                
+            nodeEnter.append("text")
+                .attr("class", "node-label")
+                .attr("dy", d => d.data.group === "root" ? "28px" : "0.31em")
+                .attr("x", d => d.data.group === "root" ? 0 : 12)
+                .attr("text-anchor", d => d.data.group === "root" ? "middle" : "start")
+                .text(d => d.data.name)
+                .style("fill", "#0f172a") 
+                .style("font-weight", "500");
+                
+            const nodeUpdate = nodeEnter.merge(node);
+            
+            // --- MODIFICACIÓN 3: Truncar texto de Rules con "..." si supera el ancho ---
+            nodeUpdate.select(".node-label").each(function(d) {
+                if (d.data.group === "rule") {
+                    const padding = 24; // Espacio seguro izq y der
+                    const maxWidth = (d.data.width || 120) - padding;
+                    let textStr = d.data.name;
+                    this.textContent = textStr; // Reset al texto completo
+                    
+                    if (this.getComputedTextLength() > maxWidth && textStr.length > 3) {
+                        let i = textStr.length;
+                        while (this.getComputedTextLength() > maxWidth && i > 0) {
+                            i--;
+                            this.textContent = textStr.slice(0, i) + "...";
+                        }
+                    }
+                }
+            });
+
+            // --- MODIFICACIÓN 2: Fondo blanco para las Rules también ---
+            nodeUpdate.each(function(d) {
+                const textNode = d3.select(this).select(".node-label").node();
+                if (textNode && textNode.getBBox) {
+                    const bbox = textNode.getBBox();
+                    // Ahora se permite a category, label Y rule tener fondo blanco
+                    if (d.data.group === "category" || d.data.group === "label" || d.data.group === "rule") {
+                        d3.select(this).select(".text-bg")
+                            .attr("x", bbox.x - 4)
+                            .attr("y", bbox.y - 2)
+                            .attr("width", bbox.width + 8)
+                            .attr("height", bbox.height + 4);
+                    } else {
+                        d3.select(this).select(".text-bg")
+                            .attr("width", 0).attr("height", 0);
+                    }
+                }
+            });
+            
+            nodeUpdate.transition().duration(400)
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+                
+            nodeUpdate.select("rect").transition().duration(400)
+                .attr("stroke", "#0f172a");
+                
+            node.exit().transition().duration(400)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .style("opacity", 0)
+                .remove();
+                
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+        
+        root.x0 = height / 2;
+        root.y0 = 0;
+        update(root);
+
+        function showDetails(nodeData, nodeElement) {
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            let html = `<strong>${nodeData.group.toUpperCase()}</strong><br>`;
+            html += nodeData.details;
+            content.innerHTML = html;
+            panel.style.display = "block";
+        }
+
+        window.addEventListener("resize", () => {
+            const newWidth = container.clientWidth;
+            const newHeight = container.clientHeight;
+            svg.attr("width", newWidth).attr("height", newHeight);
+        });
+
+        const leftPaneEl = document.getElementById("markdown-content");
+        const originalLeftHtml = leftPaneEl.innerHTML;
+
+        // Helper: escapa un string para usarlo como literal en un RegExp
+        function escapeRegExp(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Helper: escapa texto igual que html.escape() de Python, para buscar en innerHTML
+        function htmlEscape(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // --- MODIFICACIÓN 1: Regex robusto que opera sobre el HTML escapado ---
+        function highlightTextInLeftPane(searchText, highlightColor) {
+            leftPaneEl.innerHTML = originalLeftHtml;
+            if (!searchText || searchText.trim() === "") return;
+
+            try {
+                // El originalLeftHtml contiene texto HTML-escapado (ej: & -> &amp;).
+                // Debemos escapar el searchText de la misma forma antes de extraer palabras,
+                // así el regex opera en el mismo espacio de caracteres que el innerHTML.
+                const escapedSearchText = htmlEscape(searchText);
+
+                // Extrae tokens alfanuméricos del texto ya escapado
+                // Incluye también secuencias de entidades HTML como &amp; &lt; etc.
+                const words = escapedSearchText.match(/(?:&[a-z]+;|[A-Za-z0-9À-ÿ]+)/g);
+                if (!words || words.length === 0) return;
+
+                // El separador permite cero o más caracteres no-alfanuméricos entre tokens
+                // (espacios, saltos de línea, markdown, entidades HTML parciales, etc.)
+                // Usamos *? (cero o más, no-greedy) para no saltar demasiado entre tokens
+                const sep = '[^A-Za-z0-9À-ÿ]*?';
+
+                function buildRegexStr(wordList) {
+                    return wordList.map(escapeRegExp).join(sep);
+                }
+
+                function tryHighlight(regexStr) {
+                    const regex = new RegExp('(' + regexStr + ')', 'gi');
+                    let matchFound = false;
+                    const newHtml = originalLeftHtml.replace(regex, (match) => {
+                        matchFound = true;
+                        return `<mark style="background-color:${highlightColor};color:#0f172a;padding:2px 0;border-radius:2px;font-weight:bold;box-shadow:0 0 4px ${highlightColor};">` + match + '</mark>';
+                    });
+                    if (matchFound) {
+                        leftPaneEl.innerHTML = newHtml;
+                        const mark = leftPaneEl.querySelector("mark");
+                        if (mark) mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return matchFound;
+                }
+
+                let matched = false;
+
+                if (words.length <= 15) {
+                    // Texto corto: busca la secuencia completa de tokens
+                    matched = tryHighlight(buildRegexStr(words));
+                } else {
+                    // Texto largo: ancla primeras 8 y últimas 8 palabras con gap flexible en el medio
+                    const startWords = words.slice(0, 8);
+                    const endWords = words.slice(-8);
+                    const regexStr = buildRegexStr(startWords) + '[\\s\\S]{0,5000}?' + buildRegexStr(endWords);
+                    matched = tryHighlight(regexStr);
+                }
+
+                // FALLBACK 1: Si no hubo match, intenta solo las primeras 8 palabras
+                if (!matched) {
+                    const fallbackWords = words.slice(0, 8);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }
+
+                // FALLBACK 2: Si sigue sin match, intenta solo las primeras 4 palabras
+                if (!matched) {
+                    const fallbackWords = words.slice(0, 4);
+                    matched = tryHighlight(buildRegexStr(fallbackWords));
+                }
+
+                if (!matched) {
+                    console.warn("[highlight] No match found for:", searchText);
+                }
+
+            } catch (e) {
+                console.error("[highlight] Failed:", e);
+            }
+        }
+
+        function clearHighlightInLeftPane() {
+            leftPaneEl.innerHTML = originalLeftHtml;
+        }
+    </script>
+</body>
+</html>
+    

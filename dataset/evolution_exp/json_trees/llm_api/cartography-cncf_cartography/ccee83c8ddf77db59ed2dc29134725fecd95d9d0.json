@@ -1,0 +1,1079 @@
+{
+  "projectInfo": {
+    "repoName": "cartography-cncf/cartography",
+    "agentsMdSource": "AGENTS.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "cat_development_process",
+        "label": "Development Process",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "rule_1",
+            "type": "rule",
+            "content": {
+              "text": "**Signing Commits**: All commits must be signed using the `-s` flag. This adds a `Signed-off-by` line to your commit message, certifying that you have the right to submit the code under the project's license.",
+              "originalHeader": "📝 Git and Pull Request Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 30,
+              "line_end": 32
+            }
+          },
+          {
+            "id": "rule_2",
+            "type": "rule",
+            "content": {
+              "text": "**Pull Request Descriptions**: When creating a pull request, use the template at `.github/pull_request_template.md`.",
+              "originalHeader": "📝 Git and Pull Request Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 38,
+              "line_end": 38
+            }
+          },
+          {
+            "id": "rule_3",
+            "type": "rule",
+            "content": {
+              "text": "Every sync function follows this exact pattern:",
+              "originalHeader": "🔄 The Sync Pattern: Get, Transform, Load, Cleanup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 103,
+              "line_end": 103
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_impl_details",
+        "label": "Impl. Details",
+        "type": "category",
+        "count": 34,
+        "children": [
+          {
+            "id": "rule_4",
+            "type": "rule",
+            "content": {
+              "text": "1. **Minimal Error Handling**: Avoid adding try/except blocks in `get()` functions. Let errors propagate up to the caller.",
+              "originalHeader": "GET: Fetching Data"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 148,
+              "line_end": 149
+            }
+          },
+          {
+            "id": "rule_5",
+            "type": "rule",
+            "content": {
+              "text": "2. **Use Decorators**: For AWS modules, use `@aws_handle_regions` to handle common AWS errors:",
+              "originalHeader": "GET: Fetching Data"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 163,
+              "line_end": 163
+            }
+          },
+          {
+            "id": "rule_6",
+            "type": "rule",
+            "content": {
+              "text": "3. **Fail Loudly**: If an error occurs, let it propagate up to the caller. This helps users identify and fix issues quickly:",
+              "originalHeader": "GET: Fetching Data"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 170,
+              "line_end": 170
+            }
+          },
+          {
+            "id": "rule_7",
+            "type": "rule",
+            "content": {
+              "text": "4. **Timeout Configuration**: Set appropriate timeouts to avoid hanging:",
+              "originalHeader": "GET: Fetching Data"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 179,
+              "line_end": 179
+            }
+          },
+          {
+            "id": "rule_8",
+            "type": "rule",
+            "content": {
+              "text": "- **Required fields**: Use `data[\"field\"]` - let it fail if missing\n- **Optional fields**: Use `data.get(\"field\")` - defaults to `None`\n- **Consistency**: Use `None` for missing values, not empty strings",
+              "originalHeader": "TRANSFORM: Shaping Data"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 205,
+              "line_end": 207
+            }
+          },
+          {
+            "id": "rule_9",
+            "type": "rule",
+            "content": {
+              "text": "- First parameter: Key in your data dict or kwarg name. Use keys when you are ingesting a list of records. Use kwargs when you want to set the same value for all records in the list of records.\n- `extra_index=True`: Create database index for better query performance\n- `set_in_kwargs=True`: Value comes from kwargs passed to `load()`, not from individual records",
+              "originalHeader": "Node Properties"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 240,
+              "line_end": 242
+            }
+          },
+          {
+            "id": "rule_10",
+            "type": "rule",
+            "content": {
+              "text": "The `sub_resource_relationship` should **always** refer to a tenant-like object that represents the ownership or organizational boundary of the resource. This is crucial for proper data organization and cleanup operations.",
+              "originalHeader": "Sub-Resource Relationships: Always Point to Tenant-Like Objects"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 261,
+              "line_end": 261
+            }
+          },
+          {
+            "id": "rule_11",
+            "type": "rule",
+            "content": {
+              "text": "**❌ Incorrect Examples:**\n- Pointing to a parent resource that's not tenant-like (e.g., `ECSTaskDefinition` → `ECSTask`)\n- Pointing to infrastructure components (e.g., `ECSContainer` → `ECSTask`)\n- Pointing to logical groupings that aren't organizational boundaries",
+              "originalHeader": "Sub-Resource Relationships: Always Point to Tenant-Like Objects"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 270,
+              "line_end": 273
+            }
+          },
+          {
+            "id": "rule_12",
+            "type": "rule",
+            "content": {
+              "text": "**DO NOT add custom properties to `CartographyRelSchema` or `CartographyNodeSchema` subclasses**: These dataclasses are processed by Cartography's core loading system, which only recognizes the standard fields defined in the base classes. Any additional fields you add will be ignored and have no effect.",
+              "originalHeader": "⚠️ Common Schema Mistakes to Avoid"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 378,
+              "line_end": 378
+            }
+          },
+          {
+            "id": "rule_13",
+            "type": "rule",
+            "content": {
+              "text": "If you need conditional behavior, handle it in your transform function by setting field values to `None` when relationships shouldn't be created, or by filtering your data before calling `load()`.",
+              "originalHeader": "⚠️ Common Schema Mistakes to Avoid"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 430,
+              "line_end": 430
+            }
+          },
+          {
+            "id": "rule_14",
+            "type": "rule",
+            "content": {
+              "text": "**⚠️ IMPORTANT: Use MatchLinks sparingly due to performance impact!**",
+              "originalHeader": "🔗 MatchLinks: Connecting Existing Nodes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 434,
+              "line_end": 434
+            }
+          },
+          {
+            "id": "rule_15",
+            "type": "rule",
+            "content": {
+              "text": "**Prefer standard node schemas + relationship schemas** whenever possible:",
+              "originalHeader": "⚠️ Performance Impact"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 519,
+              "line_end": 519
+            }
+          },
+          {
+            "id": "rule_16",
+            "type": "rule",
+            "content": {
+              "text": "**❌ Don't use MatchLinks for:**\n- Standard parent-child relationships (use `other_relationships` in node schema)\n- Simple one-to-many relationships (use `one_to_many=True` in standard relationships)\n- When you can define the relationship in the node schema\n- Performance-critical scenarios",
+              "originalHeader": "When NOT to Use MatchLinks"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 533,
+              "line_end": 537
+            }
+          },
+          {
+            "id": "rule_17",
+            "type": "rule",
+            "content": {
+              "text": "**✅ Use MatchLinks only for:**\n- Connecting two existing node types from separate data sources\n- Relationships with rich metadata that doesn't belong in nodes",
+              "originalHeader": "When NOT to Use MatchLinks"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 539,
+              "line_end": 541
+            }
+          },
+          {
+            "id": "rule_18",
+            "type": "rule",
+            "content": {
+              "text": "Always implement cleanup for MatchLinks:",
+              "originalHeader": "MatchLink Cleanup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 556,
+              "line_end": 556
+            }
+          },
+          {
+            "id": "rule_19",
+            "type": "rule",
+            "content": {
+              "text": "**Semantic Labels (Recommended)**: Adds `UserAccount` labels and `_ont_*` properties to existing nodes:\n- ✅ Simpler implementation - no additional node creation\n- ✅ Direct querying of source nodes with normalized properties\n- ✅ Automatic property mapping with special handling for data transformations\n- ✅ Source tracking via `_ont_source` property",
+              "originalHeader": "Types of Ontology Integration"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 582,
+              "line_end": 586
+            }
+          },
+          {
+            "id": "rule_20",
+            "type": "rule",
+            "content": {
+              "text": "The `required` parameter in `OntologyFieldMapping` serves two critical purposes:\n\n**1. Data Quality Control**: When `required=True`, source nodes that lack this field (i.e., the field is `None` or missing) will be completely excluded from ontology node creation. This ensures only complete, usable data creates ontology nodes.\n\n**2. Primary Identifier Validation**: Fields used as primary identifiers **must** be marked as required to ensure ontology nodes can always be properly identified and matched across data sources.",
+              "originalHeader": "Required Fields"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 668,
+              "line_end": 674
+            }
+          },
+          {
+            "id": "rule_21",
+            "type": "rule",
+            "content": {
+              "text": "The `eligible_for_source` parameter in `OntologyNodeMapping` controls whether this node mapping can create new ontology nodes (default: `True`).\n\n**When to set `eligible_for_source=False`:**\n- Node type lacks sufficient data to create meaningful ontology nodes (e.g., no email for Users)\n- Node serves only as a connection point to existing ontology nodes\n- Required fields are not available or reliable enough for primary node creation",
+              "originalHeader": "Node Eligibility"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 685,
+              "line_end": 690
+            }
+          },
+          {
+            "id": "rule_22",
+            "type": "rule",
+            "content": {
+              "text": "Always validate your configuration:",
+              "originalHeader": "Validation in Module"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 773,
+              "line_end": 773
+            }
+          },
+          {
+            "id": "rule_23",
+            "type": "rule",
+            "content": {
+              "text": "- When key assumptions your code relies upon stop being true, **stop execution immediately** and let\n  the error propagate. Add context if needed, then re-raise, rather than swallowing or downgrading\n  the exception.\n- Lean toward propagating errors up to callers instead of logging a warning inside a `try`/`except`\n  block and continuing. Every time we continue execution after an unexpected error we risk silently\n  corrupting downstream data.\n- If you're confident data should always exist, access it directly. Allow natural `KeyError`,\n  `AttributeError`, or `IndexError` exceptions to signal corruption instead of building extra guard\n  rails or default placeholders.\n- Avoid using `hasattr()`/`getattr()` (or language equivalents) to probe for attributes that our\n  schemas guarantee. These checks often hide real contract violations and make debugging harder.\n- Never manufacture \"safe\" default return values for dictionary keys, tuple indices, or other\n  required data. Emit the real exception so the upstream issue can be fixed.",
+              "originalHeader": "🚨 Error Handling"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 793,
+              "line_end": 805
+            }
+          },
+          {
+            "id": "rule_24",
+            "type": "rule",
+            "content": {
+              "text": "- **Harmful try/except blocks** → Only catch exceptions when you can remediate them meaningfully.\n  Otherwise, let them bubble up and fail fast.\n- **Redundant attribute guards** → Remove `hasattr()`/`getattr()` shims for required fields and rely\n  on our strongly-defined schemas and tests to detect breakage.\n- **Defaulting required data** → Do not set fallback values for required dictionary keys or sequence\n  indices. Allow the error to surface so the caller can address it.",
+              "originalHeader": "🚨 Error Handling"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 809,
+              "line_end": 814
+            }
+          },
+          {
+            "id": "rule_25",
+            "type": "rule",
+            "content": {
+              "text": "Neo4j 4+ supports native Python datetime objects and ISO 8601 formatted strings. Avoid manual datetime parsing:",
+              "originalHeader": "Date Handling"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 843,
+              "line_end": 843
+            }
+          },
+          {
+            "id": "rule_26",
+            "type": "rule",
+            "content": {
+              "text": "**Simple Relationship Pattern**: When data type A only refers to data type B by an ID without providing additional properties about B, we can just define a relationship schema. This way when A is loaded, the relationship schema performs a `MATCH` to find and connect to existing nodes of type B.",
+              "originalHeader": "Multiple Intel Modules Modifying the Same Node Type"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 1063,
+              "line_end": 1063
+            }
+          },
+          {
+            "id": "rule_27",
+            "type": "rule",
+            "content": {
+              "text": "**Composite Node Pattern**: When a data type A refers to another data type B and offers additional fields about B that B doesn't have itself, we should define a composite node schema. This composite node would be named \"`BASchema`\" to denote that it's a \"`B`\" object as known by an \"`A`\" object. When loaded, the composite node schema targets the same node label as the primary `B` schema, allowing the loading system to perform a `MERGE` operation that combines properties from both sources.",
+              "originalHeader": "Multiple Intel Modules Modifying the Same Node Type"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 1079,
+              "line_end": 1079
+            }
+          },
+          {
+            "id": "rule_28",
+            "type": "rule",
+            "content": {
+              "text": "The key distinction is whether the referring module provides additional properties about the target entity. If it does, use a composite node schema. If it only provides IDs, use a simple relationship schema.",
+              "originalHeader": "Multiple Intel Modules Modifying the Same Node Type"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1103,
+              "line_end": 1103
+            }
+          },
+          {
+            "id": "rule_29",
+            "type": "rule",
+            "content": {
+              "text": "Always document your schema in `docs/schema/your_service.md`:",
+              "originalHeader": "Schema Documentation"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1044,
+              "line_end": 1044
+            }
+          },
+          {
+            "id": "rule_30",
+            "type": "rule",
+            "content": {
+              "text": "Set `scoped_cleanup=False` **ONLY** for intel modules that don't have a clear tenant-like entity:",
+              "originalHeader": "⚠️ When to Override `scoped_cleanup`"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 349,
+              "line_end": 349
+            }
+          },
+          {
+            "id": "rule_31",
+            "type": "rule",
+            "content": {
+              "text": "**Examples where `scoped_cleanup=False` makes sense:**\n- Vulnerability databases (CVE data is global)\n- Threat intelligence feeds (IOCs are not tenant-specific)\n- Public certificate transparency logs\n- Global DNS/domain information",
+              "originalHeader": "⚠️ When to Override `scoped_cleanup`"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 360,
+              "line_end": 364
+            }
+          },
+          {
+            "id": "rule_32",
+            "type": "rule",
+            "content": {
+              "text": "**Default behavior (`scoped_cleanup=True`) is correct for:**\n- User accounts (scoped to organization/tenant)\n- Infrastructure resources (scoped to AWS account, Azure subscription, etc.)\n- Application assets (scoped to company/tenant)",
+              "originalHeader": "⚠️ When to Override `scoped_cleanup`"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 366,
+              "line_end": 369
+            }
+          },
+          {
+            "id": "rule_33",
+            "type": "rule",
+            "content": {
+              "text": "**The Magic**: `one_to_many=True` tells Cartography to create a relationship to each subnet whose `subnet_id` is in the `subnet_ids` list.",
+              "originalHeader": "Define One-to-Many Relationship"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 375,
+              "line_end": 375
+            }
+          },
+          {
+            "id": "rule_34",
+            "type": "rule",
+            "content": {
+              "text": "All MatchLink relationship properties must include these mandatory fields:",
+              "originalHeader": "Required MatchLink Properties"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 543,
+              "line_end": 543
+            }
+          },
+          {
+            "id": "rule_35",
+            "type": "rule",
+            "content": {
+              "text": "Use Python 3.9+ style type hints throughout your code:",
+              "originalHeader": "Type Hints Style Guide"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1163,
+              "line_end": 1163
+            }
+          },
+          {
+            "id": "rule_36",
+            "type": "rule",
+            "content": {
+              "text": "**Standard fields for `CartographyRelSchema`:**\n- `target_node_label`: str\n- `target_node_matcher`: TargetNodeMatcher\n- `direction`: LinkDirection\n- `rel_label`: str\n- `properties`: CartographyRelProperties subclass",
+              "originalHeader": "⚠️ Common Schema Mistakes to Avoid"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 415,
+              "line_end": 420
+            }
+          },
+          {
+            "id": "rule_37",
+            "type": "rule",
+            "content": {
+              "text": "**Standard fields for `CartographyNodeSchema`:**\n- `label`: str\n- `properties`: CartographyNodeProperties subclass\n- `sub_resource_relationship`: CartographyRelSchema subclass\n- `other_relationships`: OtherRelationships (optional)\n- `extra_node_labels`: ExtraNodeLabels (optional)\n- `scoped_cleanup`: bool (optional, defaults to True, almost should never be overridden. This is only used for intel modules that don't have a clear tenant-like entity.)",
+              "originalHeader": "⚠️ Common Schema Mistakes to Avoid"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 422,
+              "line_end": 428
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_testing",
+        "label": "Testing",
+        "type": "category",
+        "count": 12,
+        "children": [
+          {
+            "id": "rule_38",
+            "type": "rule",
+            "content": {
+              "text": "**Key Principle: Test outcomes, not implementation details.**\n\nFocus on verifying that data is written to the graph as expected, rather than testing internal function parameters or implementation details. Mock external dependencies (APIs, databases) when necessary, but avoid brittle parameter testing.",
+              "originalHeader": "🧪 Testing Your Module"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 853,
+              "line_end": 856
+            }
+          },
+          {
+            "id": "rule_39",
+            "type": "rule",
+            "content": {
+              "text": "Unit tests are only for testing smaller functions and verifying that the outputs are as expected.",
+              "originalHeader": "Unit Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 876,
+              "line_end": 876
+            }
+          },
+          {
+            "id": "rule_40",
+            "type": "rule",
+            "content": {
+              "text": "**What to Test:**\n- ✅ **Outcomes**: Nodes created with correct properties\n- ✅ **Outcomes**: Relationships created between expected nodes",
+              "originalHeader": "Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 930,
+              "line_end": 932
+            }
+          },
+          {
+            "id": "rule_41",
+            "type": "rule",
+            "content": {
+              "text": "**What NOT to Test:**\n- ❌ **Implementation**: Function parameters passed to mocks (brittle!)\n- ❌ **Implementation**: Internal function call order\n- ❌ **Implementation**: Mock call counts unless absolutely necessary",
+              "originalHeader": "Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 934,
+              "line_end": 937
+            }
+          },
+          {
+            "id": "rule_42",
+            "type": "rule",
+            "content": {
+              "text": "**When to Mock:**\n- ✅ External APIs (AWS, Azure, third-party services) - provide test data\n- ✅ Database connections - avoid real connections\n- ✅ Network calls - avoid real network requests",
+              "originalHeader": "Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 939,
+              "line_end": 942
+            }
+          },
+          {
+            "id": "rule_43",
+            "type": "rule",
+            "content": {
+              "text": "**When NOT to Mock:**\n- ❌ Internal Cartography functions\n- ❌ Data transformation logic\n- ❌ The function that is being tested",
+              "originalHeader": "Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 944,
+              "line_end": 947
+            }
+          },
+          {
+            "id": "rule_44",
+            "type": "rule",
+            "content": {
+              "text": "**Before touching any code**, ensure you have comprehensive test coverage:",
+              "originalHeader": "🚨 Step 1: Prevent Regressions (CRITICAL)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 956,
+              "line_end": 956
+            }
+          },
+          {
+            "id": "rule_45",
+            "type": "rule",
+            "content": {
+              "text": "- **CRITICAL**: Run the test and ensure it passes before proceeding\n- If the test doesn't exist or fails, fix it first - **no exceptions**",
+              "originalHeader": "1b. Ensure Integration Test Exists"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 993,
+              "line_end": 994
+            }
+          },
+          {
+            "id": "rule_46",
+            "type": "rule",
+            "content": {
+              "text": "#### 2d. Test Continuously\n- Run your integration test after each change\n- Ensure it still passes - if not, debug before continuing\n- You may need to update minor details in tests due to data model differences",
+              "originalHeader": "🔧 Step 2: Convert to Data Model"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 1027,
+              "line_end": 1030
+            }
+          },
+          {
+            "id": "rule_47",
+            "type": "rule",
+            "content": {
+              "text": "**Do NOT explicitly test cleanup functions** unless there's a specific concern:\n- Data model handles complex cleanup cases automatically\n- Testing cleanup adds unnecessary boilerplate\n- Focus tests on data ingestion, not cleanup behavior",
+              "originalHeader": "🚫 What NOT to Test"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 1053,
+              "line_end": 1056
+            }
+          },
+          {
+            "id": "rule_48",
+            "type": "rule",
+            "content": {
+              "text": "**Stop and ask the user** if you encounter:\n- Unclear business logic in legacy Cypher\n- Complex relationships that don't map clearly to data model\n- Test failures you can't resolve\n- Multiple modules that seem interdependent",
+              "originalHeader": "🛑 When to Stop and Ask"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 1059,
+              "line_end": 1063
+            }
+          },
+          {
+            "id": "rule_49",
+            "type": "rule",
+            "content": {
+              "text": "If no test exists, **CREATE IT FIRST** before any refactoring:",
+              "originalHeader": "1b. Ensure Integration Test Exists"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 963,
+              "line_end": 963
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_architecture",
+        "label": "Architecture",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "rule_50",
+            "type": "rule",
+            "content": {
+              "text": "Every Cartography intel module follows this structure:",
+              "originalHeader": "🏗️ Module Structure Overview"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 72,
+              "line_end": 72
+            }
+          },
+          {
+            "id": "rule_51",
+            "type": "rule",
+            "content": {
+              "text": "The Ontology system works in two ways:\n1. **Semantic Labels**: Adds semantic labels (like `UserAccount`) and prefixed properties (`_ont_*`) directly to source nodes for cross-module querying during ingestion\n2. **Canonical Nodes**: Creates canonical node (like `(:User:Ontology)`) that represent unified entities",
+              "originalHeader": "Overview of Ontology System"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 573,
+              "line_end": 576
+            }
+          },
+          {
+            "id": "rule_52",
+            "type": "rule",
+            "content": {
+              "text": "Rules use a simple two-level hierarchy:\n\n```\nRule (e.g., \"unmanaged-accounts\")\n  └─ Fact (e.g., \"unmanaged-accounts-ontology\")\n```\n\n- **Rule**: Represents a security issue or attack surface (e.g., \"User accounts not linked to a user identity\")\n- **Fact**: Individual Cypher query that gathers evidence about your environment\n- **Finding**: Pydantic model that defines the structure of results",
+              "originalHeader": "Rule Architecture"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 726,
+              "line_end": 735
+            }
+          },
+          {
+            "id": "rule_53",
+            "type": "rule",
+            "content": {
+              "text": "Each Rule must define an output model extending `Finding`:",
+              "originalHeader": "Output Models with Pydantic"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 779,
+              "line_end": 779
+            }
+          },
+          {
+            "id": "rule_54",
+            "type": "rule",
+            "content": {
+              "text": "- **Inherit from `Finding`**: Your model must extend the base class\n- **Match Query Aliases**: Field names must match `cypher_query` aliases\n- **Automatic Handling**: The `source` field is auto-populated with module name",
+              "originalHeader": "Output Models with Pydantic"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 793,
+              "line_end": 795
+            }
+          },
+          {
+            "id": "rule_55",
+            "type": "rule",
+            "content": {
+              "text": "Use semantic versioning for rules:",
+              "originalHeader": "Rule Versioning"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 812,
+              "line_end": 812
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_maintenance",
+        "label": "Maintenance",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_56",
+            "type": "rule",
+            "content": {
+              "text": "**IMPORTANT**: A critical task for AI agents is refactoring legacy Cartography code from handwritten Cypher queries to the modern data model approach. This section provides a step-by-step procedure to safely perform these refactors.",
+              "originalHeader": "🔄 Refactoring Legacy Code to Data Model"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 950,
+              "line_end": 950
+            }
+          },
+          {
+            "id": "rule_57",
+            "type": "rule",
+            "content": {
+              "text": "#### 3a. Remove Index Entries\nRemove manual index entries from `cartography/data/indexes.cypher`:\n\n```cypher\n# Remove entries like these - data model creates indexes automatically\nCREATE INDEX IF NOT EXISTS FOR (n:EC2Instance) ON (n.id);\nCREATE INDEX IF NOT EXISTS FOR (n:EC2Instance) ON (n.lastupdated);\n```\n\n**Note**: Only remove indexes for nodes you've converted to data model. Leave others untouched.",
+              "originalHeader": "🧹 Step 3: Cleanup Legacy Files"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1033,
+              "line_end": 1042
+            }
+          },
+          {
+            "id": "rule_58",
+            "type": "rule",
+            "content": {
+              "text": "#### 3b. Remove Cleanup Job Files\nRemove corresponding cleanup JSON files from `cartography/data/jobs/cleanup/`:\n\n```bash\n# Remove files like:\nrm cartography/data/jobs/cleanup/aws_import_ec2_instances_cleanup.json\n```\n\n**Note**: Only remove cleanup files for modules you've fully converted.",
+              "originalHeader": "🧹 Step 3: Cleanup Legacy Files"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1044,
+              "line_end": 1052
+            }
+          },
+          {
+            "id": "rule_59",
+            "type": "rule",
+            "content": {
+              "text": "Always implement cleanup to remove stale data:",
+              "originalHeader": "Cleanup Jobs"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1036,
+              "line_end": 1036
+            }
+          },
+          {
+            "id": "rule_60",
+            "type": "rule",
+            "content": {
+              "text": "A successful refactor should:\n1. **Preserve all functionality** - tests pass\n2. **Use data model** - no handwritten Cypher for CRUD operations\n3. **Clean up legacy files** - indexes and cleanup jobs removed\n4. **Maintain performance** - no significant speed degradation\n5. **Follow patterns** - consistent with other modern modules",
+              "originalHeader": "🎯 Success Criteria"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 1107,
+              "line_end": 1112
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_conf_env",
+        "label": "Conf.&Env.",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "rule_61",
+            "type": "rule",
+            "content": {
+              "text": "Add your configuration options in `cartography/cli.py`:",
+              "originalHeader": "Adding CLI Arguments"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 756,
+              "line_end": 756
+            }
+          },
+          {
+            "id": "rule_62",
+            "type": "rule",
+            "content": {
+              "text": "Add fields to `cartography/config.py`:",
+              "originalHeader": "Configuration Object"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 769,
+              "line_end": 769
+            }
+          },
+          {
+            "id": "rule_63",
+            "type": "rule",
+            "content": {
+              "text": "**2. Register rule** in `cartography/rules/data/rules/__init__.py`:",
+              "originalHeader": "Step-by-Step: Creating a New Rule"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 826,
+              "line_end": 826
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_ai_integration",
+        "label": "AI Integration",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "rule_64",
+            "type": "rule",
+            "content": {
+              "text": "1. **Check existing patterns first**: Look at similar modules in `cartography/intel/` before creating new patterns\n2. **Verify data model imports**: Ensure all `CartographyNodeSchema` imports are correct\n3. **Test transform functions**: Always test data transformation logic with real API responses\n4. **Validate Neo4j queries**: Use Neo4j browser to test queries manually if relationships aren't working\n5. **Check file naming**: Module files should match the service name (e.g., `cartography/intel/lastpass/users.py`)",
+              "originalHeader": "Debugging Tips for AI Assistants"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 1148,
+              "line_end": 1152
+            }
+          },
+          {
+            "id": "rule_65",
+            "type": "rule",
+            "content": {
+              "text": "The fastest way to get started is to copy the structure from an existing module:\n\n- **Simple module**: `cartography/intel/lastpass/` - Basic user sync with API calls\n- **Complex module**: `cartography/intel/aws/ec2/instances.py` - Multiple relationships and data types\n- **Reference documentation**: `docs/root/dev/writing-intel-modules.md`",
+              "originalHeader": "🚀 Quick Start: Copy an Existing Module"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 67,
+              "line_end": 71
+            }
+          },
+          {
+            "id": "rule_66",
+            "type": "rule",
+            "content": {
+              "text": "**Key Principle: Test outcomes, not implementation details.**\n\nFocus on verifying that data is written to the graph as expected, rather than testing internal function parameters or implementation details. Mock external dependencies (APIs, databases) when necessary, but avoid brittle parameter testing.",
+              "originalHeader": "Integration Tests"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 879,
+              "line_end": 882
+            }
+          },
+          {
+            "id": "rule_67",
+            "type": "rule",
+            "content": {
+              "text": "**IMPORTANT**: A critical task for AI agents is refactoring legacy Cartography code from handwritten Cypher queries to the modern data model approach.",
+              "originalHeader": "🔄 Refactoring Legacy Code to Data Model"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 950,
+              "line_end": 950
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_performance",
+        "label": "Performance",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "rule_68",
+            "type": "rule",
+            "content": {
+              "text": "MatchLinks have significant performance overhead because they require:\n\n1. **API Call A** → Write Node A to graph\n2. **API Call B** → Write Node B to graph\n3. **Read Node A** from graph\n4. **Read Node B** from graph\n5. **Write relationship** between A and B to graph",
+              "originalHeader": "⚠️ Performance Impact"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 511,
+              "line_end": 517
+            }
+          },
+          {
+            "id": "rule_69",
+            "type": "rule",
+            "content": {
+              "text": "Note though that if a field is referred to in a target node matcher, it will be indexed automatically.",
+              "originalHeader": "Performance Issues"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 1145,
+              "line_end": 1145
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_documentation",
+        "label": "Documentation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "rule_70",
+            "type": "rule",
+            "content": {
+              "text": "- **Logs**: Look for import errors in application logs\n- **Tests**: Check `tests/integration/cartography/intel/` for similar patterns\n- **Models**: Review `cartography/models/` for existing relationship patterns\n- **Core**: Understand `cartography/client/core/tx.py` for load function behavior",
+              "originalHeader": "Key Files for Debugging"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 1155,
+              "line_end": 1158
+            }
+          },
+          {
+            "id": "rule_71",
+            "type": "rule",
+            "content": {
+              "text": "**Critical Files to Know:**\n- `cartography/config.py` - Configuration object definitions\n- `cartography/cli.py` - Command-line argument definitions\n- `cartography/client/core/tx.py` - Core `load()` function\n- `cartography/graph/job.py` - Cleanup job utilities\n- `cartography/models/core/` - Base data model classes",
+              "originalHeader": "🤖 AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 18,
+              "line_end": 23
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

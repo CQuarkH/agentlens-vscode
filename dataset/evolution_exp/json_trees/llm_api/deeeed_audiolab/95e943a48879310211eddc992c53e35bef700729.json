@@ -1,0 +1,699 @@
+{
+  "projectInfo": {
+    "repoName": "deeeed/audiolab",
+    "agentsMdSource": "CLAUDE.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "cat_system_overview",
+        "label": "System Overview",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "rule_1",
+            "type": "rule",
+            "content": {
+              "text": "**expo-audio-stream** is a comprehensive audio processing monorepo for React Native and Expo applications. It provides real-time audio recording, analysis, visualization, and AI-powered processing capabilities across iOS, Android, and web platforms.",
+              "originalHeader": "Repository Overview"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 5,
+              "line_end": 5
+            }
+          },
+          {
+            "id": "rule_2",
+            "type": "rule",
+            "content": {
+              "text": "You are working on the `main` branch which includes the newly implemented agentic framework validation system and React Native Storybook v8/v9 setup.",
+              "originalHeader": "Current Branch Context"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 88,
+              "line_end": 88
+            }
+          },
+          {
+            "id": "rule_3",
+            "type": "rule",
+            "content": {
+              "text": "- Always run `yarn build:deps` in playground before development\n- Git LFS setup required for ONNX models\n- Native changes require pod install (iOS) or gradle sync (Android)\n- Use absolute paths in test scripts\n- Background recording requires special permissions configuration\n- **VPN Interference**: Disconnect VPNs during iOS E2E tests; Android uses ADB port forwarding (VPN-resistant)\n- **Storybook Dual Setup**: Native (v9) uses Metro bundler; Web (v8) uses Vite bundler for React Native Web compatibility\n- **Story Sources**: Stories include playground app components and expo-audio-ui package components (AudioVisualizer, Waveform, etc.)",
+              "originalHeader": "Important Notes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 107,
+              "line_end": 114
+            }
+          },
+          {
+            "id": "rule_4",
+            "type": "rule",
+            "content": {
+              "text": "The agentic framework uses **iPhone 16 Pro Max** as the standard iOS simulator for consistency across all tests and validations.",
+              "originalHeader": "Default Simulator Setup"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 119,
+              "line_end": 119
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_ai_integration",
+        "label": "AI Integration",
+        "type": "category",
+        "count": 15,
+        "children": [
+          {
+            "id": "rule_5",
+            "type": "rule",
+            "content": {
+              "text": "**Build automated feedback loops** - the absolute key to unlock automated improvements",
+              "originalHeader": "Core Philosophy"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 22,
+              "line_end": 22
+            }
+          },
+          {
+            "id": "rule_6",
+            "type": "rule",
+            "content": {
+              "text": "**Quality over speed** - Protect your team from AI mistakes  ",
+              "originalHeader": "Core Philosophy"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 23,
+              "line_end": 23
+            }
+          },
+          {
+            "id": "rule_7",
+            "type": "rule",
+            "content": {
+              "text": "**Real testing over mocked** - Validate actual functionality works",
+              "originalHeader": "Core Philosophy"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 24,
+              "line_end": 24
+            }
+          },
+          {
+            "id": "rule_8",
+            "type": "rule",
+            "content": {
+              "text": "**Fast iteration** - < 2 minutes to prove features work",
+              "originalHeader": "Core Philosophy"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 25,
+              "line_end": 25
+            }
+          },
+          {
+            "id": "rule_9",
+            "type": "rule",
+            "content": {
+              "text": "- **Requirement**: **MANDATORY for ALL agent work**",
+              "originalHeader": "Development Validation (< 2 minutes) - MANDATORY"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 33,
+              "line_end": 33
+            }
+          },
+          {
+            "id": "rule_10",
+            "type": "rule",
+            "content": {
+              "text": "1. **NEVER IMPLEMENT UNLESS ASKED** - No unsolicited changes\n2. **ALWAYS VERIFY IN SOURCE CODE** - No hallucinations accepted\n3. **MINIMIZE DIFF** - Smallest possible changes\n4. **NO WORKAROUNDS** - Fix root causes, not symptoms\n5. **REAL TESTING ONLY** - No simulated results accepted",
+              "originalHeader": "Agent Constraints (Prevent Costly Mistakes)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 43,
+              "line_end": 47
+            }
+          },
+          {
+            "id": "rule_11",
+            "type": "rule",
+            "content": {
+              "text": "**BEFORE making ANY changes, ask yourself:**\n1. \"Does this already exist?\" → Use `grep -r \"feature_name\" .`\n2. \"Will this break existing agent commands?\" → Test `yarn agent:dev compression ios`\n3. \"Is this a protected file?\" → Check the protected files list below\n4. \"Did I test both platforms?\" → Run Android AND iOS validation\n5. \"Are there TypeScript/lint errors?\" → ALWAYS run `yarn typecheck && yarn lint:fix`",
+              "originalHeader": "🧠 Quick Reference for Future AI Agents"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 172,
+              "line_end": 177
+            }
+          },
+          {
+            "id": "rule_12",
+            "type": "rule",
+            "content": {
+              "text": "**✅ SAFE TO MODIFY**: New files in `src/`, new stories, new E2E tests\n**🚨 DANGER ZONE**: Anything in `scripts/`, `.detoxrc.js`, root `/index.js`, package.json agent scripts",
+              "originalHeader": "🧠 Quick Reference for Future AI Agents"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 179,
+              "line_end": 180
+            }
+          },
+          {
+            "id": "rule_13",
+            "type": "rule",
+            "content": {
+              "text": "**🚨 MANDATORY: Read this section before ANY modifications to prevent repeating mistakes**",
+              "originalHeader": "Critical Implementation Lessons (MUST READ FOR ALL AI AGENTS)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 185,
+              "line_end": 185
+            }
+          },
+          {
+            "id": "rule_14",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Delete or modify the monorepo root `/index.js` file - it's critical for Storybook\n**✅ ALWAYS**: Use `yarn build:deps` before any Storybook development",
+              "originalHeader": "Lesson 1: Storybook v9 Integration Complexities"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 196,
+              "line_end": 197
+            }
+          },
+          {
+            "id": "rule_15",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Change simulator selection without updating ALL references in:\n  - `.detoxrc.js`\n  - `scripts/setup-simulators.sh`\n  - `scripts/generate-screenshots.sh` \n**✅ ALWAYS**: Use existing `yarn setup:ios-simulator` command for simulator management",
+              "originalHeader": "Lesson 2: Device Configuration Consistency"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 205,
+              "line_end": 209
+            }
+          },
+          {
+            "id": "rule_16",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Modify core `scripts/agent.sh` without understanding full validation flow\n**✅ ALWAYS**: Add new agent commands as separate scripts that integrate with existing patterns",
+              "originalHeader": "Lesson 3: Agentic Framework Integration"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 217,
+              "line_end": 218
+            }
+          },
+          {
+            "id": "rule_17",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Assume cross-platform tests will work identically\n**✅ ALWAYS**: Test on BOTH platforms and handle platform-specific timing differences",
+              "originalHeader": "Lesson 4: Cross-Platform Test Differences"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 226,
+              "line_end": 227
+            }
+          },
+          {
+            "id": "rule_18",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Add new functionality without checking for existing implementations\n**✅ ALWAYS**: Use `grep -r` to find existing patterns before implementing new features",
+              "originalHeader": "Lesson 5: Documentation vs Implementation Gaps"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 235,
+              "line_end": 236
+            }
+          },
+          {
+            "id": "rule_19",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Mix platform-specific code in ui-components folder\n**✅ ALWAYS**: Test components in both native and web Storybook before marking complete\n**🚨 IMPORTANT**: The `storybook:both` command was removed for clarity - use separate commands",
+              "originalHeader": "Lesson 7: Cross-Platform Component Architecture"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 256,
+              "line_end": 258
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_documentation",
+        "label": "Documentation",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "rule_20",
+            "type": "rule",
+            "content": {
+              "text": "**📖 Complete Workflow**: See `docs/AGENT_WORKFLOW.md` for detailed usage, log management, and troubleshooting",
+              "originalHeader": "Agent Validation System"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 71,
+              "line_end": 71
+            }
+          },
+          {
+            "id": "rule_21",
+            "type": "rule",
+            "content": {
+              "text": "- **📖 Complete Guide**: `docs/STORYBOOK.md` - Architecture, commands, validation workflow\n- **📖 Migration Guide**: `docs/STORYBOOK_MIGRATION_GUIDE.md` - Step-by-step component migration",
+              "originalHeader": "Storybook Documentation"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 100,
+              "line_end": 101
+            }
+          },
+          {
+            "id": "rule_22",
+            "type": "rule",
+            "content": {
+              "text": "**📖 Complete Guide**: `docs/AGENT_WORKFLOW.md` - Comprehensive usage, features, setup, and troubleshooting\n**📖 Testing Strategy**: `packages/expo-audio-studio/docs/TESTING_STRATEGY.md` - Agentic validation approach\n**📖 Storybook Quick Start**: `docs/AGENT_STORYBOOK_QUICKSTART.md` - Commands and workflow for Storybook development\n**📖 Storybook Status**: `docs/AGENT_STORYBOOK_STATUS.md` - Current implementation status and capabilities\n**📖 Storybook Plan**: `docs/AGENT_STORYBOOK_UPGRADE_PLAN.md` - Architecture decisions and lessons learned",
+              "originalHeader": "Documentation"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 316,
+              "line_end": 320
+            }
+          },
+          {
+            "id": "rule_23",
+            "type": "rule",
+            "content": {
+              "text": "**DO NOT RE-IMPLEMENT THESE FEATURES - THEY WORK PERFECTLY**",
+              "originalHeader": "✅ COMPLETED IMPLEMENTATIONS (DO NOT DUPLICATE)"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 313,
+              "line_end": 313
+            }
+          },
+          {
+            "id": "rule_24",
+            "type": "rule",
+            "content": {
+              "text": "**Solution Applied**:\n- Analyzed existing `agent.sh`, `package.json`, `.detoxrc.js` before changes\n- Added documentation AFTER confirming integration works\n- Verified no duplicate functionality was created",
+              "originalHeader": "Lesson 5: Documentation vs Implementation Gaps"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 232,
+              "line_end": 235
+            }
+          },
+          {
+            "id": "rule_25",
+            "type": "rule",
+            "content": {
+              "text": "**🚨 MANDATORY**: Run `yarn typecheck && yarn lint:fix` after creating any new test files",
+              "originalHeader": "Lesson 6: TypeScript Jest Configuration"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 248,
+              "line_end": 248
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_testing",
+        "label": "Testing",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "rule_26",
+            "type": "rule",
+            "content": {
+              "text": "- ✅ Development validation passes in < 2 minutes\n- ✅ Feature functionality confirmed working\n- ✅ Include actual command output in response\n- ✅ Real device/simulator testing completed\n- ✅ Optional: Full validation available if desired",
+              "originalHeader": "Success Criteria"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 63,
+              "line_end": 67
+            }
+          },
+          {
+            "id": "rule_27",
+            "type": "rule",
+            "content": {
+              "text": "**❌ NEVER**: Create E2E test files without proper Jest imports\n**✅ ALWAYS**: Copy import structure from existing working E2E tests\n**🚨 MANDATORY**: Run `yarn typecheck && yarn lint:fix` after creating any new test files",
+              "originalHeader": "Lesson 6: TypeScript Jest Configuration"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 246,
+              "line_end": 248
+            }
+          },
+          {
+            "id": "rule_28",
+            "type": "rule",
+            "content": {
+              "text": "- Import Jest globals from `@jest/globals`: `import { beforeAll, afterAll, describe, it, expect as jestExpected } from '@jest/globals'`\n- Import Detox separately: `import { by, element, expect as detoxExpected, device, waitFor } from 'detox'`\n- Follow exact pattern from existing `e2e/agent-validation.test.ts`",
+              "originalHeader": "Lesson 6: TypeScript Jest Configuration"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 243,
+              "line_end": 245
+            }
+          },
+          {
+            "id": "rule_29",
+            "type": "rule",
+            "content": {
+              "text": "- Created platform-specific test adaptations in `e2e/storybook-validation.test.ts`\n- Used try/catch blocks for timing-sensitive elements\n- Maintained consistent screenshot capture across platforms",
+              "originalHeader": "Lesson 4: Cross-Platform Test Differences"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 223,
+              "line_end": 225
+            }
+          },
+          {
+            "id": "rule_30",
+            "type": "rule",
+            "content": {
+              "text": "#### Development Validation (< 2 minutes) - MANDATORY\n**Usage**: `yarn agent:dev <feature> [platform]`\n- **Purpose**: Prove feature functionality works on real devices\n- **Method**: Uses agent-validation.tsx page with deep links  \n- **Validation**: Tests actual expo-audio-studio API behavior\n- **Result**: Immediate feedback on success/failure\n- **Requirement**: **MANDATORY for ALL agent work**",
+              "originalHeader": "Development Validation (< 2 minutes) - MANDATORY"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 27,
+              "line_end": 33
+            }
+          },
+          {
+            "id": "rule_31",
+            "type": "rule",
+            "content": {
+              "text": "#### Full Validation (5-10 minutes) - OPTIONAL  \n**Usage**: `yarn agent:full [platform]`\n- **Purpose**: Comprehensive testing (102 tests)\n- **When**: Manual choice or CI pipeline\n- **Requirement**: **NOT required for agent completion**",
+              "originalHeader": "Full Validation (5-10 minutes) - OPTIONAL"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 35,
+              "line_end": 39
+            }
+          },
+          {
+            "id": "rule_32",
+            "type": "rule",
+            "content": {
+              "text": "All screenshot scripts use iPhone 16 Pro Max (6.9\" display)",
+              "originalHeader": "Consistency Notes"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 158,
+              "line_end": 158
+            }
+          },
+          {
+            "id": "rule_33",
+            "type": "rule",
+            "content": {
+              "text": "If multiple simulators are running:\n1. **Identify target**: Detox will use the first matching device type\n2. **Explicit shutdown**: Close unwanted simulators for consistency  \n3. **Check logs**: Detox output shows which simulator was selected",
+              "originalHeader": "Troubleshooting Multiple Simulators"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 152,
+              "line_end": 155
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_build_and_run",
+        "label": "Build and Run",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "rule_34",
+            "type": "rule",
+            "content": {
+              "text": "```bash\nyarn install                    # Install dependencies\n./scripts/setup-lfs.sh         # Setup Git LFS for models\ncd apps/playground && yarn build:deps && yarn start  # Run playground app\n```",
+              "originalHeader": "Quick Start"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 75,
+              "line_end": 79
+            }
+          },
+          {
+            "id": "rule_35",
+            "type": "rule",
+            "content": {
+              "text": "```bash\n# Building packages\nyarn workspace @siteed/expo-audio-studio build\nyarn workspace @siteed/expo-audio-ui build\n```",
+              "originalHeader": "Development"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 82,
+              "line_end": 86
+            }
+          },
+          {
+            "id": "rule_36",
+            "type": "rule",
+            "content": {
+              "text": "**✅ ALWAYS**: Use `yarn build:deps` before any Storybook development",
+              "originalHeader": "Lesson 1: Storybook v9 Integration Complexities"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 197,
+              "line_end": 197
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_conf_env",
+        "label": "Conf.&Env.",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "rule_37",
+            "type": "rule",
+            "content": {
+              "text": "Simulator selection is controlled in `.detoxrc.js`:\n- **Primary**: `ios.sim.debug` → iPhone 16 Pro Max\n- **Alternative**: `ios.iPadPro.debug` → iPad Pro 13-inch (M4)",
+              "originalHeader": "Detox Configuration"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 133,
+              "line_end": 135
+            }
+          },
+          {
+            "id": "rule_38",
+            "type": "rule",
+            "content": {
+              "text": "- Created `/index.js` redirect at monorepo root pointing to `apps/playground/src/index.tsx`\n- Fixed `storybook.requires.ts` with proper require.context paths\n- Added missing dependencies: `@react-native-community/datetimepicker`, `@react-native-community/slider`",
+              "originalHeader": "Lesson 1: Storybook v9 Integration Complexities"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 190,
+              "line_end": 192
+            }
+          },
+          {
+            "id": "rule_39",
+            "type": "rule",
+            "content": {
+              "text": "- iPhone 16 Pro Max standardized across ALL agentic workflows\n- Documented simulator selection in `.detoxrc.js` configuration  \n- Created `yarn setup:ios-simulator` for consistent setup",
+              "originalHeader": "Lesson 2: Device Configuration Consistency"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 202,
+              "line_end": 204
+            }
+          },
+          {
+            "id": "rule_40",
+            "type": "rule",
+            "content": {
+              "text": "- Created `ui-components/` folder at playground root for cross-platform components\n- Kept `src/stories-web/` for web-only stories\n- Both locations are auto-discovered by Storybook configurations",
+              "originalHeader": "Lesson 7: Cross-Platform Component Architecture"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 253,
+              "line_end": 255
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_maintenance",
+        "label": "Maintenance",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_41",
+            "type": "rule",
+            "content": {
+              "text": "**🔒 PROTECTED FILES:**\n- `/index.js` (monorepo root) - Critical for Storybook module resolution\n- `apps/playground/.rnstorybook/storybook.requires.ts` - Auto-generated, only update via `sb-rn-get-stories`\n- `apps/playground/.detoxrc.js` - Device configurations used across ALL tests\n- `apps/playground/scripts/agent.sh` - Core agentic framework script",
+              "originalHeader": "Lesson 8: Critical Files - DO NOT MODIFY"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 263,
+              "line_end": 267
+            }
+          },
+          {
+            "id": "rule_42",
+            "type": "rule",
+            "content": {
+              "text": "**🔒 PROTECTED PATTERNS:**\n- Any script that starts with `yarn agent:` in package.json\n- Simulator device names in any configuration files\n- Metro/bundler configuration related to Storybook\n- E2E test timeout values and screenshot configurations",
+              "originalHeader": "Lesson 8: Critical Files - DO NOT MODIFY"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 269,
+              "line_end": 273
+            }
+          },
+          {
+            "id": "rule_43",
+            "type": "rule",
+            "content": {
+              "text": "**🚨 BEFORE MODIFYING PROTECTED FILES:**\n- Test change on single platform first\n- Verify ALL existing agent commands still work\n- Test both Android and iOS platforms\n- Check that screenshots still capture properly\n- **MANDATORY**: Run `yarn typecheck && yarn lint:fix` after ANY code changes",
+              "originalHeader": "Lesson 8: Critical Files - DO NOT MODIFY"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 275,
+              "line_end": 280
+            }
+          },
+          {
+            "id": "rule_44",
+            "type": "rule",
+            "content": {
+              "text": "Before making ANY changes, run these commands to understand current state:\n```bash\n# Check existing agent structure\ncat scripts/agent.sh | grep -A 5 -B 5 \"ios\\|android\"\n\n# Verify simulator configuration  \ncat .detoxrc.js | grep -A 10 \"devices\\|configurations\"\n\n# Check existing package.json scripts\ncat package.json | grep -A 1 -B 1 \"agent:\\|setup:\\|e2e:\"\n\n# Find integration points for new features\ngrep -r \"yarn.*agent\" scripts/\n```",
+              "originalHeader": "Verification Commands for Future Agents"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 283,
+              "line_end": 296
+            }
+          },
+          {
+            "id": "rule_45",
+            "type": "rule",
+            "content": {
+              "text": "- Added Storybook validation as NEW commands: `yarn agent:storybook:ios/android`\n- Integrated with existing validation timeouts and screenshot systems\n- Maintained existing log file structure in `logs/` directories",
+              "originalHeader": "Lesson 3: Agentic Framework Integration"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 214,
+              "line_end": 216
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
