@@ -29,9 +29,8 @@ def get_stable_id(text: str) -> str:
     return hashlib.md5(text.encode('utf-8')).hexdigest()[:10]
 
 def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
-    """Parsea el AST usando Pydantic para obtener los mismos colores y labels que el 4f."""
+    """Parsea el AST usando Pydantic para obtener colores, labels y metadatos HTML detallados."""
     try:
-        # Esto asigna los colores reales calculados por el backend (idéntico al 4f)
         doc = AgentASTDocument.model_validate(json_data)
     except Exception as e:
         logger.error(f"Failed to validate JSON for commit {commit_sha} using Pydantic: {e}")
@@ -42,11 +41,11 @@ def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
         "name": doc.repo_name,
         "group": "root",
         "color": getattr(doc, 'root_color', "#e2e8f0"),
+        "details": getattr(doc, 'root_html_details', ""),
         "children": []
     }
     
     for cat in doc.rootNode.children:
-        # Ignoramos categorías vacías igual que hace el 4f
         if getattr(cat, 'count', -1) == 0:
             continue
             
@@ -59,6 +58,7 @@ def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
             "name": cat_name,
             "group": "category",
             "color": cat_color,
+            "details": getattr(cat, 'html_details', ""),
             "children": []
         }
         
@@ -72,6 +72,7 @@ def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
                 "name": label_name,
                 "group": "label",
                 "color": label_color,
+                "details": getattr(label, 'html_details', ""),
                 "children": []
             }
             
@@ -79,11 +80,9 @@ def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
                 text = rule.content.text if (hasattr(rule, 'content') and rule.content) else ""
                 rule_label = getattr(rule, 'short_label', None)
                 
-                # Si el label es nulo o es un genérico "Rule", autogeneramos uno descriptivo
                 if not rule_label or rule_label == "Rule":
                     rule_label = text.strip().split('\n')[0][:60] + "..." if text else "Empty Rule"
                     
-                # El ID basado en hash permite que D3 trackee la regla perfectamente si no cambia
                 rule_id = f"rule_{cat_name}_{label_name}_{get_stable_id(text)}"
                 
                 label_node["children"].append({
@@ -92,6 +91,7 @@ def parse_commit_tree(json_data: dict, commit_sha: str, repo_name: str):
                     "group": "rule",
                     "color": label_color,
                     "raw_text": text,
+                    "details": getattr(rule, 'html_details', ""),
                     "width": min(max(180, len(rule_label) * 7), 400)
                 })
                 
@@ -150,10 +150,8 @@ def extract_timeline_data(repo_name: str) -> dict:
         except Exception as e:
             logger.error(f"Failed to process {j_path.name}: {e}")
 
-    # Invertir para que el slider vaya de más viejo (izq) a más nuevo (der)
     commits_data = list(reversed(commits_data))
 
-    # Reasignar índices secuenciales tras la inversión
     for idx, entry in enumerate(commits_data):
         entry["index"] = idx
 
@@ -185,7 +183,7 @@ def generate_html(data: dict, output_path: Path):
             overflow: hidden;
         }}
         
-        /* Header */
+        /* Header & Controls */
         .header-bar {{
             height: 60px;
             background: #1e293b; color: white;
@@ -195,173 +193,151 @@ def generate_html(data: dict, output_path: Path):
             z-index: 10;
         }}
         .header-title {{ margin: 0; font-size: 1.2rem; }}
-        .header-stats {{ font-size: 0.9rem; color: #cbd5e1; display: flex; gap: 15px; align-items: center; }}
-        .stat-badge {{ background: #334155; padding: 4px 10px; border-radius: 12px; }}
+        .header-controls-container {{
+            display: flex; gap: 20px; align-items: center;
+        }}
+        .control-group {{
+            display: flex; align-items: center; gap: 10px;
+            background: #334155; padding: 6px 14px; border-radius: 8px;
+            font-size: 0.85rem; color: #cbd5e1;
+        }}
+        .control-group label {{
+            display: flex; align-items: center; gap: 5px; cursor: pointer;
+        }}
+        .control-group input[type="radio"], .control-group input[type="checkbox"] {{
+            cursor: pointer; accent-color: #3b82f6;
+        }}
+        .header-stats {{ font-size: 0.9rem; color: #cbd5e1; display: flex; gap: 10px; }}
+        .stat-badge {{ background: #475569; padding: 4px 10px; border-radius: 6px; font-weight: 600; }}
         
         /* Graph Area */
         #graph-container {{
-            flex: 1;
-            width: 100%;
-            position: relative;
-            cursor: grab;
-            background: #f1f5f9;
+            flex: 1; width: 100%; position: relative;
+            cursor: grab; background: #f1f5f9;
         }}
         #graph-container:active {{ cursor: grabbing; }}
         
-        /* Modern Timeline Panel - Floating Island */
-        .timeline-panel {{
+        /* Details Panel */
+        #details-panel {{
             position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            height: auto;
-            padding: 15px 25px;
+            top: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: calc(100% - 180px);
+            overflow-y: auto;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            display: flex; 
-            align-items: center;
-            gap: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 0.8);
-            z-index: 100;
-            width: 85%;
-            max-width: 900px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 200;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }}
-        
-        /* Play Button - Rounded Square */
+        #details-panel h3 {{ margin-top: 0; color: #0f172a; font-size: 1.1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }}
+        #details-panel .close-btn {{
+            position: absolute; top: 12px; right: 15px;
+            cursor: pointer; color: #94a3b8; font-weight: bold; font-size: 1.2rem;
+            transition: color 0.2s;
+        }}
+        #details-panel .close-btn:hover {{ color: #ef4444; }}
+
+        /* Timeline Panel */
+        .timeline-panel {{
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            padding: 15px 25px; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); border-radius: 20px;
+            display: flex; align-items: center; gap: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8); z-index: 100;
+            width: 85%; max-width: 900px;
+        }}
         .play-btn {{
-            background: #3b82f6; color: white;
-            border: none; 
-            border-radius: 12px; /* Square with rounded corners */
-            width: 48px; height: 48px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-            flex-shrink: 0;
+            background: #3b82f6; color: white; border: none; border-radius: 12px;
+            width: 48px; height: 48px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); flex-shrink: 0;
         }}
-        .play-btn:hover {{ background: #2563eb; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4); }}
-        .play-btn:active {{ transform: translateY(0); }}
+        .play-btn:hover {{ background: #2563eb; transform: translateY(-2px); }}
         
         .slider-container {{ flex: 1; display: flex; flex-direction: column; }}
         .commit-labels {{ display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-bottom: 8px; }}
-        
-        /* Slider Wrapper to hold ticks and track together */
-        .slider-wrapper {{
-            position: relative;
-            width: 100%;
-            height: 24px;
-            display: flex;
-            align-items: center;
-        }}
-
-        /* Ticks/Dots */
-        .slider-ticks {{
-            position: absolute;
-            left: 10px; /* Aligns with center of thumb at min */
-            right: 10px; /* Aligns with center of thumb at max */
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-            z-index: 1;
-        }}
-        .tick {{
-            width: 6px; height: 6px;
-            background-color: #cbd5e1;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }}
+        .slider-wrapper {{ position: relative; width: 100%; height: 24px; display: flex; align-items: center; }}
+        .slider-ticks {{ position: absolute; left: 10px; right: 10px; display: flex; justify-content: space-between; pointer-events: none; z-index: 1; }}
+        .tick {{ width: 6px; height: 6px; background-color: #cbd5e1; border-radius: 50%; transition: background-color 0.3s ease; }}
         .tick.active {{ background-color: #3b82f6; box-shadow: 0 0 4px rgba(59,130,246,0.5); }}
         
-        /* The actual Slider */
-        input[type=range] {{
-            -webkit-appearance: none; width: 100%; background: transparent;
-            position: relative; z-index: 2; margin: 0;
-        }}
+        input[type=range] {{ -webkit-appearance: none; width: 100%; background: transparent; position: relative; z-index: 2; margin: 0; }}
         input[type=range]:focus {{ outline: none; }}
         input[type=range]::-webkit-slider-thumb {{
-            -webkit-appearance: none; 
-            height: 20px; width: 20px;
-            border-radius: 50%; background: #3b82f6;
-            cursor: pointer; border: 3px solid white; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-            margin-top: -7px;
-            transition: transform 0.1s;
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #3b82f6;
+            cursor: pointer; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.25); margin-top: -7px;
         }}
-        input[type=range]::-webkit-slider-thumb:hover {{ transform: scale(1.15); }}
-        input[type=range]::-webkit-slider-runnable-track {{
-            width: 100%; height: 6px; cursor: pointer;
-            background: #e2e8f0; border-radius: 3px;
-        }}
+        input[type=range]::-webkit-slider-runnable-track {{ width: 100%; height: 6px; cursor: pointer; background: #e2e8f0; border-radius: 3px; }}
         
-        /* Minimalist Commit Info */
-        .commit-info {{
-            width: auto; min-width: 110px;
-            text-align: right;
-            padding-left: 15px;
-            border-left: 1px solid #e2e8f0;
-        }}
+        .commit-info {{ width: auto; min-width: 110px; text-align: right; padding-left: 15px; border-left: 1px solid #e2e8f0; }}
         .commit-info span {{ color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }}
-        .commit-info strong {{ display: block; color: #0f172a; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 1.1rem; margin-top: 2px; }}
+        .commit-info strong {{ display: block; color: #0f172a; font-family: monospace; font-size: 1.1rem; margin-top: 2px; }}
 
-        /* D3 Node Styles */
+        /* D3 Nodes */
         .node {{ cursor: pointer; }}
         .node circle {{ stroke: #fff; stroke-width: 2px; }}
         .node text {{ font-size: 12px; font-family: -apple-system, sans-serif; pointer-events: none; }}
         .link {{ fill: none; stroke: #cbd5e1; stroke-width: 2px; transition: stroke 0.5s; }}
-        
-        /* Animations */
         .node-new rect.main-rect {{ stroke: #10b981 !important; stroke-width: 3px !important; filter: drop-shadow(0 0 6px rgba(16,185,129,0.5)); }}
-        .node-removed rect.main-rect {{ stroke: #ef4444 !important; stroke-dasharray: 4,4; opacity: 0.5; }}
-
+        
         /* Focus Indicator */
         #focus-indicator {{
-            display: none;
-            align-items: center;
-            gap: 8px;
-            background: #0f172a;
-            border: 1px solid #3b82f6;
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            color: #93c5fd;
+            display: none; align-items: center; gap: 8px;
+            background: #0f172a; border: 1px solid #3b82f6; border-radius: 8px;
+            padding: 4px 12px; font-size: 0.85rem; color: #93c5fd;
             animation: focusPulse 2s ease-in-out infinite;
         }}
         #focus-indicator strong {{ color: #e0f2fe; }}
         #focus-indicator .focus-clear-btn {{
-            background: #1e3a5f;
-            border: none;
-            color: #93c5fd;
-            border-radius: 10px;
-            padding: 2px 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
+            background: #1e3a5f; border: none; color: #93c5fd; border-radius: 6px;
+            padding: 2px 8px; cursor: pointer; font-size: 0.8rem;
         }}
         #focus-indicator .focus-clear-btn:hover {{ background: #2563eb; color: white; }}
-        @keyframes focusPulse {{
-            0%, 100% {{ box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }}
-            50% {{ box-shadow: 0 0 0 4px rgba(59,130,246,0); }}
-        }}
+        @keyframes focusPulse {{ 0%, 100% {{ box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }} 50% {{ box-shadow: 0 0 0 4px rgba(59,130,246,0); }} }}
     </style>
 </head>
 <body>
     <div class="header-bar">
         <h1 class="header-title">Evolution Graph: {repo_name}</h1>
-        <div style="display:flex; align-items:center; gap:12px;">
+        
+        <div class="header-controls-container">
             <div id="focus-indicator">
                 <span id="focus-label">Focusing: <strong id="focus-name"></strong></span>
-                <button class="focus-clear-btn" onclick="clearFocus()">✕ All</button>
+                <button class="focus-clear-btn" onclick="clearFocus()">✕ Clear</button>
             </div>
+            
+            <div class="control-group">
+                <label><input type="radio" name="interaction-mode" value="focus" checked> Filter/Focus Mode</label>
+                <label style="border-left: 1px solid #64748b; padding-left: 10px; margin-left: 5px;">
+                    <input type="radio" name="interaction-mode" value="inspect"> Inspect Details Mode
+                </label>
+            </div>
+
+            <div class="control-group">
+                <label><input type="checkbox" id="auto-fit-toggle" checked> Auto-Fit Zoom</label>
+            </div>
+
             <div class="header-stats" id="header-stats">Loading...</div>
         </div>
     </div>
     
     <div id="graph-container"></div>
+
+    <div id="details-panel">
+        <span class="close-btn" onclick="document.getElementById('details-panel').style.display='none'">✕</span>
+        <h3>Node Details</h3>
+        <div id="details-content"></div>
+    </div>
     
     <div class="timeline-panel">
         <button class="play-btn" id="play-btn">
-            <!-- Icono SVG Moderno para Play -->
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="icon-play">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
@@ -387,11 +363,9 @@ def generate_html(data: dict, output_path: Path):
         const commitsData = {timeline_json};
         const totalCommits = commitsData.length;
         
-        // Icons
         const svgPlay = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
         const svgPause = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
 
-        // Setup UI
         const slider = document.getElementById("timeline-slider");
         slider.max = totalCommits - 1;
         const playBtn = document.getElementById("play-btn");
@@ -399,7 +373,6 @@ def generate_html(data: dict, output_path: Path):
         const stepLabel = document.getElementById("current-step-label");
         const statsDisplay = document.getElementById("header-stats");
 
-        // Generar los "Dots" o Ticks del Slider
         const ticksContainer = document.getElementById("slider-ticks");
         for (let j = 0; j < totalCommits; j++) {{
             let dot = document.createElement("div");
@@ -407,10 +380,9 @@ def generate_html(data: dict, output_path: Path):
             ticksContainer.appendChild(dot);
         }}
 
-        // D3 Setup
         const container = document.getElementById("graph-container");
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+        let width = container.clientWidth;
+        let height = container.clientHeight;
 
         const svg = d3.select("#graph-container").append("svg")
             .attr("width", width)
@@ -423,7 +395,10 @@ def generate_html(data: dict, output_path: Path):
             .on("zoom", (event) => g.attr("transform", event.transform));
         svg.call(zoom);
 
-        // Layout settings
+        svg.on("click", () => {{
+            document.getElementById("details-panel").style.display = "none";
+        }});
+
         const dx = 45;  
         const dy = 350; 
         const treeLayout = d3.tree().nodeSize([dx, dy]);
@@ -431,14 +406,9 @@ def generate_html(data: dict, output_path: Path):
         g.append("g").attr("class", "links");
         g.append("g").attr("class", "nodes");
         
-        // Center initial view
-        svg.call(zoom.transform, d3.zoomIdentity.translate(dy / 2, height / 2).scale(0.8));
-
         let currentIds = new Set();
-        let i = 0;
-
-        // --- Focus State ---
         let activeFocus = null;
+        let collapsedNodes = new Set(); // Estado de los nodos colapsados
 
         function applyFocus(tree, focus) {{
             if (!focus) return tree;
@@ -476,12 +446,63 @@ def generate_html(data: dict, output_path: Path):
             updateGraph(parseInt(slider.value));
         }}
 
+        function showDetails(nodeData) {{
+            const panel = document.getElementById("details-panel");
+            const content = document.getElementById("details-content");
+            let html = `<strong>Type: ${{nodeData.group.toUpperCase()}}</strong><br>`;
+            if (nodeData.details) {{
+                html += `<div style="margin-top:10px;">${{nodeData.details}}</div>`;
+            }}
+            if (nodeData.raw_text) {{
+                html += `<hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0;">
+                         <strong>Raw Content:</strong>
+                         <pre style="white-space:pre-wrap; font-family:monospace; font-size:0.85rem; background:#f8fafc; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">${{nodeData.raw_text}}</pre>`;
+            }}
+            content.innerHTML = html;
+            panel.style.display = "block";
+        }}
+
+        function autoFitGraph(nodes) {{
+            if (!document.getElementById("auto-fit-toggle").checked) return;
+            if (!nodes || nodes.length === 0) return;
+
+            let minX = Infinity, maxX = -Infinity; 
+            let minY = Infinity, maxY = -Infinity; 
+
+            nodes.forEach(n => {{
+                if (n.x < minX) minX = n.x;
+                if (n.x > maxX) maxX = n.x;
+                if (n.y < minY) minY = n.y;
+                const nodeW = n.data.width || 200;
+                if (n.y + nodeW > maxY) maxY = n.y + nodeW;
+            }});
+
+            const padding = 60;
+            const treeHeight = (maxX - minX) + padding * 2; 
+            const treeWidth = (maxY - minY) + padding * 2;  
+
+            const availableW = width;
+            const availableH = height - 120; 
+
+            const scaleX = availableW / (treeWidth || 1);
+            const scaleY = availableH / (treeHeight || 1);
+            const scale = Math.min(scaleX, scaleY, 1.1); 
+
+            const centerX = minY + (maxY - minY) / 2;
+            const centerY = minX + (maxX - minX) / 2;
+
+            const tx = availableW / 2 - centerX * scale;
+            const ty = (availableH / 2) - centerY * scale + 20;
+
+            svg.transition().duration(800)
+               .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+        }}
+
         function updateGraph(index) {{
             const commitInfo = commitsData[index];
             shaDisplay.innerText = commitInfo.commit.substring(0, 8);
             stepLabel.innerText = `Commit ${{index + 1}} of ${{totalCommits}}`;
             
-            // Actualizar Ticks (Puntos de anclaje de la barra)
             const allTicks = document.querySelectorAll('.tick');
             allTicks.forEach((t, idx) => {{
                 if (idx <= index) t.classList.add('active');
@@ -492,7 +513,14 @@ def generate_html(data: dict, output_path: Path):
             const rootData = applyFocus(rawData, activeFocus);
             const root = d3.hierarchy(rootData);
             
-            // Ordenamos alfabéticamente para evitar saltos visuales
+            // Lógica para aplicar el estado de colapso antes de calcular el layout
+            root.each(d => {{
+                if (collapsedNodes.has(d.data.id) && d.children) {{
+                    d._children = d.children;
+                    d.children = null;
+                }}
+            }});
+
             root.sort((a, b) => a.data.name.localeCompare(b.data.name));
             treeLayout(root);
 
@@ -501,9 +529,11 @@ def generate_html(data: dict, output_path: Path):
             
             const numRules = nodes.filter(n => n.data.group === 'rule').length;
             statsDisplay.innerHTML = `
-                <span class="stat-badge">Total Nodes: ${{nodes.length - 1}}</span> 
-                <span class="stat-badge">Rules: ${{numRules}}</span>
+                <span class="stat-badge">Visible Nodes: ${{nodes.length - 1}}</span> 
+                <span class="stat-badge">Visible Rules: ${{numRules}}</span>
             `;
+
+            autoFitGraph(nodes);
 
             const newIds = new Set(nodes.map(d => d.data.id));
             const addedIds = new Set([...newIds].filter(x => !currentIds.has(x) && index > 0));
@@ -567,25 +597,39 @@ def generate_html(data: dict, output_path: Path):
                 .style("fill", "#0f172a").style("font-weight", "500")
                 .text(d => d.data.name);
 
-            nodeEnter.append("title")
-                .text(d => d.data.raw_text ? d.data.raw_text : d.data.name);
-
             const nodeUpdate = nodeEnter.merge(node);
 
-            // Click handlers
+            // CLICK HANDLERS
             nodeUpdate.on("click", (event, d) => {{
                 event.stopPropagation();
-                if (d.data.group === 'root') {{
-                    clearFocus();
-                }} else if (d.data.group === 'category') {{
-                    activeFocus = {{ type: 'category', name: d.data.name }};
-                    updateFocusIndicator();
-                    updateGraph(parseInt(slider.value));
-                }} else if (d.data.group === 'label') {{
-                    const catName = d.parent ? d.parent.data.name : null;
-                    if (catName) {{
-                        activeFocus = {{ type: 'label', catName: catName, labelName: d.data.name }};
+                const mode = document.querySelector('input[name="interaction-mode"]:checked').value;
+
+                if (mode === 'focus') {{
+                    document.getElementById("details-panel").style.display = "none";
+                    if (d.data.group === 'root') {{
+                        clearFocus();
+                    }} else if (d.data.group === 'category') {{
+                        activeFocus = {{ type: 'category', name: d.data.name }};
                         updateFocusIndicator();
+                        updateGraph(parseInt(slider.value));
+                    }} else if (d.data.group === 'label') {{
+                        const catName = d.parent ? d.parent.data.name : null;
+                        if (catName) {{
+                            activeFocus = {{ type: 'label', catName: catName, labelName: d.data.name }};
+                            updateFocusIndicator();
+                            updateGraph(parseInt(slider.value));
+                        }}
+                    }}
+                }} else if (mode === 'inspect') {{
+                    showDetails(d.data);
+                    
+                    // Lógica para Expandir/Contraer (Ignorar Root y Rule)
+                    if (d.data.group !== 'root' && d.data.group !== 'rule') {{
+                        if (collapsedNodes.has(d.data.id)) {{
+                            collapsedNodes.delete(d.data.id); // Expandir
+                        }} else {{
+                            collapsedNodes.add(d.data.id); // Contraer
+                        }}
                         updateGraph(parseInt(slider.value));
                     }}
                 }}
@@ -620,6 +664,12 @@ def generate_html(data: dict, output_path: Path):
                 }}
             }});
             
+            // Añadir indicación visual (borde azul punteado) a los nodos colapsados
+            nodeUpdate.select(".main-rect")
+                .attr("stroke-dasharray", d => d._children ? "4,4" : "none")
+                .attr("stroke", d => d._children ? "#3b82f6" : "#0f172a")
+                .attr("stroke-width", d => d._children ? 3 : 2);
+            
             nodeUpdate.classed("node-new", d => addedIds.has(d.data.id));
 
             nodeUpdate.transition().duration(800)
@@ -632,7 +682,7 @@ def generate_html(data: dict, output_path: Path):
                 .remove();
         }}
 
-        // Player / Controles
+        // Player controls
         let playInterval;
         let isPlaying = false;
 
@@ -667,7 +717,13 @@ def generate_html(data: dict, output_path: Path):
         }});
 
         window.addEventListener("resize", () => {{
-            svg.attr("width", container.clientWidth).attr("height", container.clientHeight);
+            width = container.clientWidth;
+            height = container.clientHeight;
+            svg.attr("width", width).attr("height", height);
+            
+            if (document.getElementById("auto-fit-toggle").checked && totalCommits > 0) {{
+                updateGraph(parseInt(slider.value));
+            }}
         }});
 
         if (totalCommits > 0) {{
