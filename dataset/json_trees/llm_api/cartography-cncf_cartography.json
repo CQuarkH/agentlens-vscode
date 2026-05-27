@@ -1,0 +1,477 @@
+{
+  "projectInfo": {
+    "repoName": "cartography-cncf/cartography",
+    "agentsMdSource": "cartography-cncf_cartography.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "cat_system_overview",
+        "label": "System Overview",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "rule_1",
+            "type": "rule",
+            "content": {
+              "text": "**Intel Module**: Component that fetches data from external APIs and loads into Neo4j",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 37,
+              "line_end": 37
+            }
+          },
+          {
+            "id": "rule_2",
+            "type": "rule",
+            "content": {
+              "text": "**Sync Pattern**: `get()` -> `transform()` -> `load()` -> `cleanup()` -> `analysis` (optional)",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 38,
+              "line_end": 38
+            }
+          },
+          {
+            "id": "rule_3",
+            "type": "rule",
+            "content": {
+              "text": "**Data Model**: Declarative schema using `CartographyNodeSchema` and `CartographyRelSchema`",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 39,
+              "line_end": 39
+            }
+          },
+          {
+            "id": "rule_4",
+            "type": "rule",
+            "content": {
+              "text": "**Update Tag**: Timestamp used for cleanup jobs to remove stale data",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 40,
+              "line_end": 40
+            }
+          },
+          {
+            "id": "rule_5",
+            "type": "rule",
+            "content": {
+              "text": "**Analysis Jobs**: Post-ingestion queries that enrich the graph (e.g., internet exposure, permission inheritance)",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 41,
+              "line_end": 41
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_ai_integration",
+        "label": "Claude/AI Integration",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "rule_6",
+            "type": "rule",
+            "content": {
+              "text": "> **For AI Coding Assistants**: This document provides comprehensive guidance for understanding and developing Cartography intel modules. It contains codebase-specific patterns, architectural decisions, and implementation details necessary for effective AI-assisted development within the Cartography project.",
+              "originalHeader": "AGENTS.md: Cartography Intel Module Development Guide"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 3,
+              "line_end": 3
+            }
+          },
+          {
+            "id": "rule_7",
+            "type": "rule",
+            "content": {
+              "text": "- Check existing patterns in `cartography/intel/` before creating new ones",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 75,
+              "line_end": 75
+            }
+          },
+          {
+            "id": "rule_8",
+            "type": "rule",
+            "content": {
+              "text": "- Ensure `__init__.py` files exist in all module directories",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "ListItem",
+              "line_start": 76,
+              "line_end": 76
+            }
+          },
+          {
+            "id": "rule_9",
+            "type": "rule",
+            "content": {
+              "text": "- Look at `tests/integration/cartography/intel/` for similar test patterns",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 77,
+              "line_end": 77
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_architecture",
+        "label": "Architecture",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "rule_10",
+            "type": "rule",
+            "content": {
+              "text": "### Relationship Direction\n\n```python\n# OUTWARD: (:Source)-[:REL]->(:Target)\ndirection: LinkDirection = LinkDirection.OUTWARD\n\n# INWARD: (:Source)<-[:REL]-(:Target)\ndirection: LinkDirection = LinkDirection.INWARD\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 163,
+              "line_end": 172
+            }
+          },
+          {
+            "id": "rule_11",
+            "type": "rule",
+            "content": {
+              "text": "### File Structure Template\n\n```\ncartography/intel/your_service/\n├── __init__.py          # Main entry point\n└── entities.py          # Domain sync modules\n\ncartography/models/your_service/\n├── entity.py            # Data model definitions\n└── tenant.py            # Tenant model\n\ntests/data/your_service/\n└── entities.py          # Mock test data\n\ntests/integration/cartography/intel/your_service/\n└── test_entities.py     # Integration tests\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 207,
+              "line_end": 224
+            }
+          },
+          {
+            "id": "rule_12",
+            "type": "rule",
+            "content": {
+              "text": "- Review `cartography/models/` for existing relationship patterns",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 78,
+              "line_end": 78
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_impl_details",
+        "label": "Implementation Details",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "rule_13",
+            "type": "rule",
+            "content": {
+              "text": "### Standard Sync Function Template\n\n```python\n@timeit\ndef sync(neo4j_session: neo4j.Session, api_key: str, tenant_id: str,\n         update_tag: int, common_job_parameters: dict[str, Any]) -> None:\n    \"\"\"\n    Main sync entry point for the module.\n    \"\"\"\n    logger.info(\"Starting MyResource sync\")\n\n    # 1. GET - Fetch data from API\n    logger.debug(\"Fetching MyResource data from API\")\n    raw_data = get(api_key, tenant_id)\n\n    # 2. TRANSFORM - Shape data for ingestion\n    logger.debug(\"Transforming %d MyResource items\", len(raw_data))\n    transformed = transform(raw_data)\n\n    # 3. LOAD - Ingest to Neo4j\n    load_entities(neo4j_session, transformed, tenant_id, update_tag)\n\n    # 4. CLEANUP - Remove stale data\n    logger.debug(\"Running MyResource cleanup job\")\n    cleanup(neo4j_session, common_job_parameters)\n\n    logger.info(\"Completed MyResource sync\")\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 103,
+              "line_end": 130
+            }
+          },
+          {
+            "id": "rule_14",
+            "type": "rule",
+            "content": {
+              "text": "### Standard Load and Cleanup Patterns\n\n```python\ndef load_entities(neo4j_session: neo4j.Session, data: list[dict],\n                 tenant_id: str, update_tag: int) -> None:\n    load(neo4j_session, YourSchema(), data,\n         lastupdated=update_tag, TENANT_ID=tenant_id)\n\ndef cleanup(neo4j_session: neo4j.Session, common_job_parameters: dict[str, Any]) -> None:\n    logger.debug(\"Running cleanup job for MyResource\")\n    GraphJob.from_node_schema(YourSchema(), common_job_parameters).run(neo4j_session)\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 132,
+              "line_end": 143
+            }
+          },
+          {
+            "id": "rule_15",
+            "type": "rule",
+            "content": {
+              "text": "### Required Node Properties\n\n```python\n@dataclass(frozen=True)\nclass YourNodeProperties(CartographyNodeProperties):\n    id: PropertyRef = PropertyRef(\"id\")                                    # REQUIRED\n    lastupdated: PropertyRef = PropertyRef(\"lastupdated\", set_in_kwargs=True)  # REQUIRED\n    # Your business properties here...\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 145,
+              "line_end": 153
+            }
+          },
+          {
+            "id": "rule_16",
+            "type": "rule",
+            "content": {
+              "text": "### One-to-Many Relationship Pattern\n\n```python\n# Transform: Create list field\n{\"entity_id\": \"123\", \"related_ids\": [\"a\", \"b\", \"c\"]}\n\n# Schema: Use one_to_many=True\ntarget_node_matcher: TargetNodeMatcher = make_target_node_matcher({\n    \"id\": PropertyRef(\"related_ids\", one_to_many=True),\n})\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 174,
+              "line_end": 184
+            }
+          },
+          {
+            "id": "rule_17",
+            "type": "rule",
+            "content": {
+              "text": "### MatchLink Pattern\n\n```python\n@dataclass(frozen=True)\nclass YourMatchLinkSchema(CartographyRelSchema):\n    target_node_label: str = \"TargetNode\"\n    target_node_matcher: TargetNodeMatcher = make_target_node_matcher({\n        \"id\": PropertyRef(\"target_id\"),\n    })\n    source_node_label: str = \"SourceNode\"\n    source_node_matcher: SourceNodeMatcher = make_source_node_matcher({\n        \"id\": PropertyRef(\"source_id\"),\n    })\n    direction: LinkDirection = LinkDirection.OUTWARD\n    rel_label: str = \"CONNECTS_TO\"\n    properties: YourMatchLinkRelProperties = YourMatchLinkRelProperties()\n\n# Required properties for MatchLinks\n@dataclass(frozen=True)\nclass YourMatchLinkRelProperties(CartographyRelProperties):\n    lastupdated: PropertyRef = PropertyRef(\"lastupdated\", set_in_kwargs=True)\n    _sub_resource_label: PropertyRef = PropertyRef(\"_sub_resource_label\", set_in_kwargs=True)\n    _sub_resource_id: PropertyRef = PropertyRef(\"_sub_resource_id\", set_in_kwargs=True)\n\n# Load and cleanup MatchLinks\nload_matchlinks(neo4j_session, YourMatchLinkSchema(), mapping_data,\n                lastupdated=update_tag, _sub_resource_label=\"AWSAccount\", _sub_resource_id=account_id)\n\nGraphJob.from_matchlink(YourMatchLinkSchema(), \"AWSAccount\", account_id, update_tag).run(neo4j_session)\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 186,
+              "line_end": 205
+            }
+          },
+          {
+            "id": "rule_18",
+            "type": "rule",
+            "content": {
+              "text": "**Essential Imports:**\n```python\nimport logging\nfrom dataclasses import dataclass\nfrom cartography.models.core.common import PropertyRef\nfrom cartography.models.core.nodes import CartographyNodeProperties, CartographyNodeSchema, ExtraNodeLabels\nfrom cartography.models.core.relationships import (\n    CartographyRelProperties, CartographyRelSchema, LinkDirection,\n    make_target_node_matcher, TargetNodeMatcher, OtherRelationships,\n    make_source_node_matcher, SourceNodeMatcher,\n)\nfrom cartography.client.core.tx import load, load_matchlinks\nfrom cartography.graph.job import GraphJob\nfrom cartography.util import timeit\n\n# For analysis jobs (optional)\nfrom cartography.util import run_analysis_job, run_scoped_analysis_job, run_analysis_and_ensure_deps\n\nlogger = logging.getLogger(__name__)\n```",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 55,
+              "line_end": 73
+            }
+          },
+          {
+            "id": "rule_19",
+            "type": "rule",
+            "content": {
+              "text": "**PropertyRef Quick Reference:**\n```python\nPropertyRef(\"field_name\")                          # Value from data dict\nPropertyRef(\"KWARG_NAME\", set_in_kwargs=True)      # Value from load() kwargs\nPropertyRef(\"field\", extra_index=True)             # Create database index\nPropertyRef(\"field_list\", one_to_many=True)        # One-to-many relationships\n```",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 75,
+              "line_end": 81
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_documentation",
+        "label": "Documentation",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "rule_20",
+            "type": "rule",
+            "content": {
+              "text": "| [Creating a New Module](docs/agents/create-module.md) | Complete guide to creating a new Cartography intel module |",
+              "originalHeader": "Procedure Documentation"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 20,
+              "line_end": 20
+            }
+          },
+          {
+            "id": "rule_21",
+            "type": "rule",
+            "content": {
+              "text": "- **Simple module**: `cartography/intel/lastpass/` - Basic user sync with API calls\n- **Complex module**: `cartography/intel/aws/ec2/instances.py` - Multiple relationships and data types\n- **Reference documentation**: `docs/root/dev/writing-intel-modules.md`",
+              "originalHeader": "Quick Start: Copy an Existing Module"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 92,
+              "line_end": 94
+            }
+          },
+          {
+            "id": "rule_22",
+            "type": "rule",
+            "content": {
+              "text": "For detailed step-by-step instructions, see [Creating a New Module](docs/agents/create-module.md).",
+              "originalHeader": "Quick Start: Copy an Existing Module"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 96,
+              "line_end": 96
+            }
+          },
+          {
+            "id": "rule_23",
+            "type": "rule",
+            "content": {
+              "text": "**Critical Files to Know:**\n- `cartography/config.py` - Configuration object definitions\n- `cartography/cli.py` - Command-line argument definitions\n- `cartography/client/core/tx.py` - Core `load()` function\n- `cartography/graph/job.py` - Cleanup job utilities\n- `cartography/models/core/` - Base data model classes",
+              "originalHeader": "AI Assistant Quick Reference"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 43,
+              "line_end": 49
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_test",
+        "label": "Test",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "rule_24",
+            "type": "rule",
+            "content": {
+              "text": "### Test Utilities\n\n```python\nfrom tests.integration.util import check_nodes, check_rels\n\n# Check nodes\nexpected_nodes = {(\"user-123\", \"alice@example.com\")}\nassert check_nodes(neo4j_session, \"YourServiceUser\", [\"id\", \"email\"]) == expected_nodes\n\n# Check relationships\nexpected_rels = {(\"user-123\", \"tenant-123\")}\nassert check_rels(\n    neo4j_session,\n    \"YourServiceUser\", \"id\",\n    \"YourServiceTenant\", \"id\",\n    \"RESOURCE\",\n    rel_direction_right=True,\n) == expected_rels\n```",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 226,
+              "line_end": 244
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_development_process",
+        "label": "Development Process",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "rule_25",
+            "type": "rule",
+            "content": {
+              "text": "**Signing Commits**: All commits must be signed using the `-s` flag. This adds a `Signed-off-by` line to your commit message, certifying that you have the right to submit the code under the project's license.\n\n```bash\n# Sign a commit with a message\ngit commit -s -m \"feat(module): add new feature\"\n```",
+              "originalHeader": "Git and Pull Request Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 83,
+              "line_end": 88
+            }
+          },
+          {
+            "id": "rule_26",
+            "type": "rule",
+            "content": {
+              "text": "**Pull Request Descriptions**: When creating a pull request, use the template at `.github/pull_request_template.md`.",
+              "originalHeader": "Git and Pull Request Guidelines"
+            },
+            "metadata": {
+              "strength": "MUST",
+              "format": "Paragraph",
+              "line_start": 90,
+              "line_end": 90
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_maintainability",
+        "label": "Maintanability",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "rule_27",
+            "type": "rule",
+            "content": {
+              "text": "Remember: Start simple, iterate, and use existing modules as references. The Cartography community is here to help!",
+              "originalHeader": "Quick Reference Cheat Sheet"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "Paragraph",
+              "line_start": 248,
+              "line_end": 248
+            }
+          }
+        ]
+      },
+      {
+        "id": "cat_debugging",
+        "label": "Debugging",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "rule_28",
+            "type": "rule",
+            "content": {
+              "text": "| [Troubleshooting](docs/agents/troubleshooting.md) | Common errors, debugging tips, and key files reference |",
+              "originalHeader": "Procedure Documentation"
+            },
+            "metadata": {
+              "strength": "SHOULD",
+              "format": "ListItem",
+              "line_start": 27,
+              "line_end": 27
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

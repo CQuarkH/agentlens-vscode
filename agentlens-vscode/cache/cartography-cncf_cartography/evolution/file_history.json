@@ -1,0 +1,52 @@
+[
+  {
+    "sha": "fd9137b8945ebfd9be931e98eda86cc91a7402ed",
+    "date": "2026-01-28T00:05:01Z",
+    "message": "doc: split AGENTS.md into separate procedures (#2281)"
+  },
+  {
+    "sha": "ae808c54e4367ab2b7222ffc147b794e3e3150ee",
+    "date": "2026-01-27T19:46:51Z",
+    "message": "feat(rules): Add Asset Compliance Metrics to Cartography Rules (#2261)"
+  },
+  {
+    "sha": "ccee83c8ddf77db59ed2dc29134725fecd95d9d0",
+    "date": "2026-01-16T19:41:58Z",
+    "message": "feat(core): add BufferError retry handling to Neo4j transactions (#2236)"
+  },
+  {
+    "sha": "f1040506cfe274c9e56ceb8273ddf800ef6e8e5b",
+    "date": "2025-11-24T19:33:56Z",
+    "message": "feat: ontology for inactive users + fix github mapping + inactive rule (#2076)"
+  },
+  {
+    "sha": "070c2a3391d81f64e482c0305bde3ec2abae0a23",
+    "date": "2025-11-19T00:24:04Z",
+    "message": "feat: ontology improvement (fields for semantic labels) (#2059)"
+  },
+  {
+    "sha": "c79e1ce3f763001cf7145614b5cc069c15bfb550",
+    "date": "2025-10-30T18:31:20Z",
+    "message": "feat(ontology): enable Ontology users for AWS and Okta (#2036)"
+  },
+  {
+    "sha": "8b3daf9eb09c44c21d0e3208b072513b8e13c863",
+    "date": "2025-10-29T16:46:52Z",
+    "message": "fix: improve ontology with multiple sources of truth (#2031)"
+  },
+  {
+    "sha": "9d110b0cb607234e1f9bdd59fa7ae42f3bfa1293",
+    "date": "2025-10-28T22:55:41Z",
+    "message": "feat: Ontology - Phase 1 - Users & Devices (#1633)"
+  },
+  {
+    "sha": "b7b70aa8c9c59a8524544603d61be9819a2141c9",
+    "date": "2025-09-22T16:59:42Z",
+    "message": "Document fail-loud error handling expectations (#1933)"
+  },
+  {
+    "sha": "cf90f98fda52e41134da33002ca782437b676c02",
+    "date": "2025-09-03T00:14:52Z",
+    "message": "docs: teach agents how to refactor modules (#1873)"
+  }
+]
