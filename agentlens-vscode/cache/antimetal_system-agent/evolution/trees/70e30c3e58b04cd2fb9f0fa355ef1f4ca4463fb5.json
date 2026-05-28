@@ -1,0 +1,621 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmpg38ou3rm.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent is a sophisticated Kubernetes controller written in Go that connects infrastructure to the Antimetal platform for cloud resource management. It's designed as a cloud-native agent that:\n\n- **Collects Kubernetes resources** via controller-runtime patterns\n- **Monitors system performance** through /proc and /sys filesystem collectors\n- **Uploads data to Antimetal** via gRPC streaming to the intake service\n- **Stores resource state** using BadgerDB for efficient tracking\n- **Supports multi-cloud environments** with provider abstractions (AWS/EKS, KIND)",
+                  "originalHeader": "Project Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 6,
+                  "line_end": 13
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "- **Go 1.24** with controller-runtime framework\n- **Kubernetes** custom controller patterns\n- **gRPC** for streaming data to intake service\n- **BadgerDB** for embedded resource storage\n- **Docker** with multi-arch support (linux/amd64, linux/arm64)\n- **KIND** for local development and testing",
+                  "originalHeader": "Key Technologies"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 16,
+                  "line_end": 21
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "- **In-memory storage** for development/testing\n- **Event-driven subscriptions** for real-time updates\n- **RDF triplet relationships** (subject, predicate, object)\n- **Efficient indexing** for complex queries",
+                  "originalHeader": "BadgerDB Integration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 148,
+                  "line_end": 151
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "- **Streaming gRPC** for efficient data upload\n- **Batched deltas** with configurable batch sizes\n- **Exponential backoff** for connection failures\n- **Stream recovery** with automatic reconnection\n- **Heartbeat mechanism** for connection health",
+                  "originalHeader": "Intake Service Communication"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 172,
+                  "line_end": 176
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "- `NODE_NAME`: Node identification\n- `HOST_PROC`, `HOST_SYS`, `HOST_DEV`: Containerized filesystem paths",
+                  "originalHeader": "Environment Variables"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 196,
+                  "line_end": 197
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 10,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "1. **Kubernetes Controller** (`internal/kubernetes/agent/`)\n   - Watches K8s resources using controller-runtime\n   - Implements event-driven reconciliation\n   - Handles resource indexing and storage\n   - Supports leader election for HA\n\n2. **Intake Worker** (`internal/intake/`)\n   - gRPC streaming client for data upload\n   - Batches deltas for efficient transmission\n   - Handles retry logic and stream recovery\n   - Implements heartbeat mechanism\n\n3. **Performance Monitoring** (`pkg/performance/`)\n   - Collector architecture for system metrics\n   - Supports both one-shot and continuous collection\n   - Reads from /proc and /sys filesystems\n   - Provides LoadStats, MemoryStats, CPUStats, etc.\n\n4. **Resource Store** (`pkg/resource/store/`)\n   - BadgerDB-backed storage for resource state\n   - Supports resources and relationships (RDF triplets)\n   - Event-driven subscription model\n   - Efficient indexing and querying\n\n5. **Cloud Provider Abstractions** (`internal/kubernetes/cluster/`)\n   - Interface for different cloud providers\n   - EKS implementation with auto-discovery\n   - KIND support for local development\n   - Extensible for GKE, AKS future support",
+                  "originalHeader": "Core Components"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 25,
+                  "line_end": 52
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "The performance monitoring system follows a dual-interface pattern:\n\n```go\n// PointCollector - one-shot data collection\ntype PointCollector interface {\n    Collect(ctx context.Context) (any, error)\n}\n\n// ContinuousCollector - streaming data collection\ntype ContinuousCollector interface {\n    Start(ctx context.Context) (<-chan any, error)\n    Stop() error\n}\n```",
+                  "originalHeader": "Collector Interface Design"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 100,
+                  "line_end": 113
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "1. K8s events → Controller → Resource Store\n2. Resource Store → Event Router → Intake Worker\n3. Intake Worker → Batching → gRPC Stream → Antimetal",
+                  "originalHeader": "Data Flow"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 179,
+                  "line_end": 181
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "- **EKS**: Full AWS integration with auto-discovery\n- **KIND**: Local development support\n- **GKE/AKS**: Interface defined, implementation pending",
+                  "originalHeader": "Supported Providers"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 190,
+                  "line_end": 192
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Comprehensive flag system for:\n- Intake service configuration\n- Kubernetes provider settings\n- Performance monitoring options\n- Security and TLS settings",
+                  "originalHeader": "Command Line Flags"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 194,
+                  "line_end": 198
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "- **Collector registry** for new metric types\n- **Provider interface** for additional cloud platforms\n- **gRPC interceptors** for custom processing\n- **Event filters** for selective data collection",
+                  "originalHeader": "Extension Points"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 261,
+                  "line_end": 264
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "- **Early returns** to reduce nesting\n- **Functional patterns** where applicable\n- **Concise implementations** without unnecessary comments\n- **Error wrapping** with context",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 234,
+                  "line_end": 237
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "- **Efficient BadgerDB usage** with proper indexing\n- **Batch gRPC operations** for network efficiency\n- **Context cancellation** for graceful shutdowns\n- **Memory pooling** for high-frequency operations",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 243,
+                  "line_end": 246
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "- **PolyForm Shield License** for source code\n- License header enforcement via Python script\n- Automatic license header generation",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 201,
+                  "line_end": 203
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "- **Non-root container** execution (user 65532)\n- **Minimal distroless base** image\n- **TLS by default** for gRPC connections\n- **RBAC permissions** via kubebuilder annotations",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 206,
+                  "line_end": 209
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 14,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "make build                    # Build binary for current platform\nmake test                     # Run tests with coverage\nmake lint                     # Run golangci-lint\nmake fmt                      # Format Go code\nmake vendor                   # Update vendored dependencies\nmake generate                 # Generate K8s manifests (after annotation changes)\nmake gen-license-headers      # ALWAYS run before committing",
+                  "originalHeader": "Core Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 72,
+                  "line_end": 78
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "make cluster                  # Create antimetal-agent-dev KIND cluster\nmake docker-build             # Build Docker image\nmake load-image               # Load image into KIND cluster\nmake deploy                   # Deploy agent to current context\nmake undeploy                 # Remove agent from cluster\nmake destroy-cluster          # Delete KIND cluster",
+                  "originalHeader": "Local Testing with KIND"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 82,
+                  "line_end": 87
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "make build-and-load-image     # Rebuild and redeploy in one command",
+                  "originalHeader": "Quick Development Iteration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 91,
+                  "line_end": 91
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "make build-all               # Build for all platforms\nmake docker-build-all        # Build multi-arch Docker images",
+                  "originalHeader": "Multi-Architecture Support"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 95,
+                  "line_end": 96
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "- Use standard Go testing framework\n- Tests located alongside implementation files\n- Table-driven tests for comprehensive coverage\n- Mock external dependencies (gRPC, AWS, K8s)",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 111,
+                  "line_end": 114
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "1. **Test Structure**\n   - Table-driven tests for multiple scenarios\n   - Temporary file system isolation using `t.TempDir()`\n   - Mock /proc and /sys filesystem files\n   - Reusable helper functions for common operations\n\n2. **Core Testing Areas**\n   - **Constructor validation**: Path handling, configuration validation\n   - **Data parsing**: Valid scenarios, malformed input, edge cases\n   - **Error handling**: Missing files, invalid data, graceful degradation\n   - **File system operations**: Different proc paths, access errors\n   - **Whitespace tolerance**: Leading/trailing whitespace handling",
+                  "originalHeader": "Standardized Testing Approach"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 120,
+                  "line_end": 131
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "4. **Testing Requirements**\n   - **Path validation**: Test absolute vs relative paths\n   - **File interdependency**: Test behavior when related files unavailable\n   - **Return type validation**: Explicit type assertions\n   - **Graceful degradation**: Document critical vs optional files\n\n5. **Testing Principles**\n   - Don't test static properties (Name, RequiresRoot)\n   - Focus on parsing logic and error handling\n   - Use realistic test data from actual /proc files\n   - Test collectors in `collectors_test` package",
+                  "originalHeader": "Standardized Testing Approach"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 143,
+                  "line_end": 153
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "- **Mock external dependencies** (gRPC, AWS, K8s)\n- **Table-driven tests** for comprehensive coverage\n- **Temporary file systems** for isolation\n- **Testify** for assertions and mocking",
+                  "originalHeader": "Unit Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 218,
+                  "line_end": 221
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "- **KIND clusters** for K8s integration\n- **Mock intake service** for gRPC testing\n- **BadgerDB in-memory** for storage testing",
+                  "originalHeader": "Integration Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 224,
+                  "line_end": 226
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "- **Benchmarks** for critical paths\n- **Load testing** with realistic data volumes\n- **Memory profiling** for optimization",
+                  "originalHeader": "Performance Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 229,
+                  "line_end": 231
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "- Don't test static properties (Name, RequiresRoot)\n- Focus on parsing logic and error handling\n- Use realistic test data from actual /proc files\n- Test collectors in `collectors_test` package",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 150,
+                  "line_end": 153
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "- **Path validation**: Test absolute vs relative paths\n- **File interdependency**: Test behavior when related files unavailable\n- **Return type validation**: Explicit type assertions\n- **Graceful degradation**: Document critical vs optional files",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 144,
+                  "line_end": 147
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_devops",
+            "label": "DevOps",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_35",
+                "type": "rule",
+                "content": {
+                  "text": "- **linux/amd64** and **linux/arm64** support\n- **GoReleaser** for automated releases\n- **Distroless base** for minimal attack surface",
+                  "originalHeader": "Docker Multi-Arch"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 230,
+                  "line_end": 232
+                }
+              },
+              {
+                "id": "rule_36",
+                "type": "rule",
+                "content": {
+                  "text": "- **Kustomize** for configuration management\n- **Helm charts** published separately\n- **antimetal-system** namespace by default",
+                  "originalHeader": "Deployment"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 235,
+                  "line_end": 237
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after:\n- Modifying kubebuilder annotations (`+kubebuilder:rbac`)\n- Changing CRD definitions\n- Updating webhook configurations",
+                  "originalHeader": "Code Generation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 100,
+                  "line_end": 103
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "- **ALWAYS** run `make gen-license-headers` before committing\n- All Go files must have the PolyForm Shield license header\n- Uses `tools/license_check/license_check.py` for enforcement",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 106,
+                  "line_end": 108
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "- Always run `make generate` after annotation changes\n- Don't forget license headers before committing\n- Test with both AMD64 and ARM64 architectures\n- Validate /proc file parsing with realistic data",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 237,
+                  "line_end": 240
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "- **Docker** (rootless, containerd snapshotter enabled)\n- **kubectl** for K8s operations\n- **Go 1.24+** as specified in go.mod",
+                  "originalHeader": "Prerequisites"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 67,
+                  "line_end": 69
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 3,
+        "children": [
+          {
+            "id": "cat_debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "- **Structured logging** with logr\n- **Contextual logging** with component names\n- **Configurable log levels** via zap",
+                  "originalHeader": "Logging"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 213,
+                  "line_end": 215
+                }
+              },
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "- **Prometheus metrics** via controller-runtime\n- **Health checks** (`/healthz`, `/readyz`)\n- **Pprof support** for performance profiling",
+                  "originalHeader": "Metrics and Health"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 218,
+                  "line_end": 220
+                }
+              },
+              {
+                "id": "rule_34",
+                "type": "rule",
+                "content": {
+                  "text": "kubectl logs -n antimetal-system <pod-name>\nkubectl get pods -n antimetal-system\nkubectl describe deployment -n antimetal-system agent",
+                  "originalHeader": "Debugging Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 224,
+                  "line_end": 226
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

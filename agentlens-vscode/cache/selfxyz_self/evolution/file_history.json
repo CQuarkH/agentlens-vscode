@@ -1,0 +1,62 @@
+[
+  {
+    "sha": "f48a1d6ae7141dcb2fa3a6df59e18cffc75d9694",
+    "date": "2025-07-07T00:35:18Z",
+    "message": "Improve AGENTS workflow notes (#747)",
+    "changes": 49
+  },
+  {
+    "sha": "fdb932eeba703240ca6352b06f95f53342b9f229",
+    "date": "2025-08-06T19:41:09Z",
+    "message": "Feat: Lightweight e2e tests for iOS and Android  (#840)",
+    "changes": 9
+  },
+  {
+    "sha": "b59dbe1b0510232a985845dbb70e33b574c689e6",
+    "date": "2025-08-10T00:14:56Z",
+    "message": "Chore: mobile sdk refinements (#858)",
+    "changes": 9
+  },
+  {
+    "sha": "29c620baddeacd67ecc350ce053f54dbe6aba6f7",
+    "date": "2025-08-11T02:16:31Z",
+    "message": "Add composite cache actions (#874)",
+    "changes": 11
+  },
+  {
+    "sha": "b2839e163368ee0de5a83d9588aa68076964a6fc",
+    "date": "2025-08-12T23:39:15Z",
+    "message": "Chore: improve ai context (#883)",
+    "changes": 78
+  },
+  {
+    "sha": "8983ac22688f731bca8890cbf9be9c85b4ac2bfc",
+    "date": "2025-09-17T13:48:36Z",
+    "message": "Mobile SDK: move provingMachine from the app (#1052)",
+    "changes": 8
+  },
+  {
+    "sha": "3397fcf43bb9e752554de4d7637c58d87debe275",
+    "date": "2025-09-17T19:48:42Z",
+    "message": "Revert \"Mobile SDK: move provingMachine from the app (#1052)\" (#1084)",
+    "changes": 8
+  },
+  {
+    "sha": "a826c71f366923c3a0afd42eb7fda42968a64630",
+    "date": "2025-09-29T21:17:51Z",
+    "message": "Redo \"Mobile SDK: move provingMachine from the app (#1052)\" (#1084)\" (#1114)",
+    "changes": 8
+  },
+  {
+    "sha": "6c28bbd576dfc89847b950945d58a8eae2a68b1c",
+    "date": "2025-11-11T23:53:38Z",
+    "message": "Update agents.md files to protect against out of memory tests (#1395)",
+    "changes": 51
+  },
+  {
+    "sha": "d5a03a6f64dc63f000830d6f1f98cf02e73f78c8",
+    "date": "2026-02-18T05:31:01Z",
+    "message": "refactor specs with new style (#1769)",
+    "changes": 17
+  }
+]

@@ -1,0 +1,611 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmpa1z1dlam.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_ui_ux",
+            "label": "UI/UX",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Use collapsible sections (`<details>` tags) for non-actionable feedback, explanations, or background information",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 8,
+                  "line_end": 8
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Keep actionable items (bugs, required changes) visible by default",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 9,
+                  "line_end": 9
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "**Always visible**: Security issues, bugs, breaking changes\n2. **Collapsible**: Style suggestions, minor optimizations, educational content\n3. **Focus on**: Constructive, actionable feedback over nitpicking",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 43,
+                  "line_end": 45
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_security",
+            "label": "Security",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "**PolyForm Shield License** for source code",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 196,
+                  "line_end": 196
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "License header enforcement via Python script",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 197,
+                  "line_end": 197
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "**Non-root container** execution (user 65532)\n- **Minimal distroless base** image\n- **TLS by default** for gRPC connections\n- **RBAC permissions** via kubebuilder annotations",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 201,
+                  "line_end": 204
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_performance",
+            "label": "Performance",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "**Efficient BadgerDB usage** with proper indexing\n- **Batch gRPC operations** for network efficiency\n- **Context cancellation** for graceful shutdowns\n- **Memory pooling** for high-frequency operations",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 251,
+                  "line_end": 254
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "**Structured logging** with logr\n- **Contextual logging** with component names\n- **Configurable log levels** via zap",
+                  "originalHeader": "Logging"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 208,
+                  "line_end": 210
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 5,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after:\n- Modifying kubebuilder annotations (`+kubebuilder:rbac`)\n- Changing CRD definitions\n- Updating webhook configurations",
+                  "originalHeader": "Code Generation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 100,
+                  "line_end": 104
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** run `make gen-license-headers` before committing",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 107,
+                  "line_end": 107
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "All Go files must have the PolyForm Shield license header",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 108,
+                  "line_end": 108
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `commit-author` agent for creating commit messages, reviewing commits, or generating PR descriptions",
+                  "originalHeader": "Git Commits and PRs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 115,
+                  "line_end": 115
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `linux-systems-expert` agent when developing or debugging Linux system collectors, eBPF programs, or /proc or /sys parsers",
+                  "originalHeader": "Linux Systems and eBPF Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 119,
+                  "line_end": 119
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 9,
+        "children": [
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Use standard Go testing framework",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 112,
+                  "line_end": 112
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Tests located alongside implementation files",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 113,
+                  "line_end": 113
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Table-driven tests for comprehensive coverage",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 114,
+                  "line_end": 114
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "**Mock external dependencies** (gRPC, AWS, K8s)\n- **Table-driven tests** for comprehensive coverage\n- **Temporary file systems** for isolation\n- **Testify** for assertions and mocking",
+                  "originalHeader": "Unit Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 222,
+                  "line_end": 225
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "**KIND clusters** for K8s integration\n- **Mock intake service** for gRPC testing\n- **BadgerDB in-memory** for storage testing",
+                  "originalHeader": "Integration Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 228,
+                  "line_end": 230
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "**Benchmarks** for critical paths\n- **Load testing** with realistic data volumes\n- **Memory profiling** for optimization",
+                  "originalHeader": "Performance Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 233,
+                  "line_end": 235
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "Run `make help` for the full list.",
+                  "originalHeader": "Common Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 77,
+                  "line_end": 77
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_conf_env",
+            "label": "Conf.&Env.",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "**Docker** (rootless, containerd snapshotter enabled)\n- **kubectl** for K8s operations\n- **Go 1.24+** as specified in go.mod",
+                  "originalHeader": "Prerequisites"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 72,
+                  "line_end": 74
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "`NODE_NAME`: Node identification\n- `HOST_PROC`, `HOST_SYS`, `HOST_DEV`: Containerized filesystem paths",
+                  "originalHeader": "Environment Variables"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 191,
+                  "line_end": 192
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 7,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "**Early returns** to reduce nesting",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 239,
+                  "line_end": 239
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "**Functional patterns** where applicable",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 240,
+                  "line_end": 240
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "**Concise implementations** without unnecessary comments",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 241,
+                  "line_end": 241
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "**Error wrapping** with context",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 242,
+                  "line_end": 242
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after annotation changes\n- Don't forget license headers before committing\n- Test with both AMD64 and ARM64 architectures\n- Validate /proc file parsing with realistic data",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 245,
+                  "line_end": 248
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent is a Kubernetes controller that connects infrastructure to the Antimetal platform for cloud resource management. It collects K8s resources, monitors system performance, and streams data via gRPC.",
+                  "originalHeader": "Project Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 49,
+                  "line_end": 49
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent includes a comprehensive performance monitoring system that collects system metrics from /proc and /sys filesystems. Collectors follow a dual-interface pattern (PointCollector for one-shot, ContinuousCollector for streaming) with standardized error handling and testing methodologies.",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 124,
+                  "line_end": 124
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "For detailed performance collector development including implementation patterns, testing methodology, continuous collectors, and examples, see **[docs/performance-collectors.md](docs/performance-collectors.md)**.",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 131,
+                  "line_end": 131
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "For detailed eBPF development guidance including CO-RE support, adding new programs, troubleshooting, and best practices, see **[docs/ebpf-development.md](docs/ebpf-development.md)**.",
+                  "originalHeader": "eBPF Development"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 261,
+                  "line_end": 261
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_ai_integration",
+            "label": "AI Integration",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `commit-author` agent for creating commit messages, reviewing commits, or generating PR descriptions\n- The agent ensures compliance with project commit conventions and formatting standards",
+                  "originalHeader": "Git Commits and PRs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 115,
+                  "line_end": 116
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `linux-systems-expert` agent when developing or debugging Linux system collectors, eBPF programs, or /proc or /sys parsers\n- The agent has deep expertise in kernel interfaces, CO-RE/BTF, performance monitoring, and cross-kernel compatibility",
+                  "originalHeader": "Linux Systems and eBPF Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 119,
+                  "line_end": 120
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmp0gzrk1d0.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 19,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "**Package Manager:** Yarn\n\n**Commands to use:** yarn install, yarn add, yarn remove\n\n**Note:** Do not use npm or pnpm.",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 3,
+                  "line_end": 7
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Run `yarn install` once before running any other commands. This installs root dependencies and sets up husky hooks.",
+                  "originalHeader": "Workflow > Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 26,
+                  "line_end": 26
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] `yarn nice` (or equivalent) passes in affected workspaces\n- [ ] `yarn types` passes across the repo\n- [ ] `yarn test` passes in affected packages\n- [ ] `yarn build` succeeds for all workspaces",
+                  "originalHeader": "Workflow > Pre-PR Checklist > Code Quality"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 32,
+                  "line_end": 35
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "```bash\n# Fix linting and formatting issues automatically (for packages that support it)\nyarn workspaces foreach -A -p -v --topological-dev --since=HEAD run nice --if-present\n\n# Lint all packages in parallel\nyarn lint\n\n# Build all workspaces except `contracts`\nyarn build\n\n# Compile Solidity contracts (may occasionally throw a Hardhat config error)\nyarn workspace @selfxyz/contracts build\n\n# Run type-checking across the repo\nyarn types\n```",
+                  "originalHeader": "Workflow > Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 62,
+                  "line_end": 77
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "```bash\n# Run all checks before PR - only on changed workspaces since main\n# Format and lint changed workspaces (workspace-specific scripts first, then fallback to root)\nyarn workspaces foreach -A -p -v --topological-dev --since=origin/main run nice --if-present\n\n# Run global checks across all workspaces\nyarn lint && yarn types && yarn build && yarn test\n\n# Alternative: Run workspace-specific checks for changed workspaces only\n# yarn workspaces foreach -A -p -v --topological-dev --since=origin/main run lint --if-present\n# yarn workspaces foreach -A -p -v --topological-dev --since=origin/main run types --if-present\n# yarn workspaces foreach -A -p -v --topological-dev --since=origin/main run build --if-present\n# yarn workspaces foreach -A -p -v --topological-dev --since=origin/main run test --if-present\n```",
+                  "originalHeader": "Workflow > Workflow Commands > Pre-PR Validation"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 83,
+                  "line_end": 96
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "```bash\n# After addressing review feedback\nyarn nice  # Fix any formatting issues in affected workspaces\nyarn test  # Ensure tests still pass\nyarn types # Verify type checking\n```",
+                  "originalHeader": "Workflow > Workflow Commands > Post-PR Cleanup"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 100,
+                  "line_end": 105
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "- Run `yarn build:deps` in affected workspace first\n- Check workspace-specific `AGENTS.md` for platform requirements\n- For mobile app: ensure iOS/Android prerequisites are met (see `app/AGENTS.md`)",
+                  "originalHeader": "Troubleshooting > Common Issues > Build Failures"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 163,
+                  "line_end": 165
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "- Run `yarn types` to see all type errors across workspaces\n- Some packages may need to be built first: `yarn build:deps`",
+                  "originalHeader": "Troubleshooting > Common Issues > Type Errors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 172,
+                  "line_end": 173
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "- Run unit tests where available:\n  - `yarn workspace @selfxyz/common test`\n  - `yarn workspace @selfxyz/circuits test` # may fail if OpenSSL algorithms are missing\n  - `yarn workspace @selfxyz/mobile-app test`\n  - `yarn workspace @selfxyz/mobile-sdk-alpha test`\n  - For Noir circuits, run `nargo test -p <crate>` in each `noir/crates/*` directory.\n  - Tests for `@selfxyz/contracts` are currently disabled in CI and may be skipped.",
+                  "originalHeader": "Workflow > Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 109,
+                  "line_end": 115
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "- E2E tests (mobile app) - **Run automatically in CI/CD, not required locally**:\n  - E2E tests execute automatically in GitHub Actions on PRs and main branch\n  - Local E2E testing is optional (see `app/AGENTS.md` for local setup if needed)\n  - Commands available: `yarn workspace @selfxyz/mobile-app test:e2e:ios` / `test:e2e:android`",
+                  "originalHeader": "Workflow > Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 117,
+                  "line_end": 120
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "**CRITICAL**: Never create nested `require('react-native')` calls in tests. This causes out-of-memory (OOM) errors in CI/CD pipelines.",
+                  "originalHeader": "Workflow > Tests > Test Memory Optimization"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 123,
+                  "line_end": 123
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "- Use ES6 `import` statements instead of `require()` when possible\n- Avoid dynamic `require()` calls in `beforeEach`/`afterEach` hooks\n- Prefer top-level imports over nested requires\n- See `.cursor/rules/test-memory-optimization.mdc` for detailed guidelines",
+                  "originalHeader": "Workflow > Tests > Test Memory Optimization"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 125,
+                  "line_end": 128
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] CI pipeline passes all stages\n- [ ] No new linting/formatting issues introduced\n- [ ] Type checking passes in all affected workspaces\n- [ ] Build artifacts generated successfully",
+                  "originalHeader": "Workflow > Post-PR Validation > Automated Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 50,
+                  "line_end": 53
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "- Check workspace-specific test setup requirements\n- For mobile app tests: ensure native modules are properly mocked\n- See `.cursor/rules/test-memory-optimization.mdc` for test memory issues",
+                  "originalHeader": "Troubleshooting > Common Issues > Test Failures"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 168,
+                  "line_end": 170
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_conf_env",
+            "label": "Conf.&Env.",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "- Ensure Node.js 22.x is installed (see `.nvmrc` for exact version), then:\n  - `nvm use`\n  - `corepack enable && corepack prepare yarn@stable --activate`\n  - Verify: `node -v && yarn -v`",
+                  "originalHeader": "Workflow > Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 22,
+                  "line_end": 25
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "- Use Prettier configuration from `.prettierrc` files.\n- Follow `.editorconfig` for line endings and indentation.",
+                  "originalHeader": "Workflow > Formatting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 136,
+                  "line_end": 137
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "- Ensure Node.js 22.x is installed: `nvm use`\n- Clear Yarn cache: `yarn cache clean`\n- Remove `node_modules` and reinstall: `rm -rf node_modules && yarn install`",
+                  "originalHeader": "Troubleshooting > Common Issues > Yarn Install Fails"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 158,
+                  "line_end": 160
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_devops",
+            "label": "DevOps",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "Use the shared composite actions in `.github/actions` when caching dependencies in GitHub workflows. They provide consistent cache paths and keys:\n\n- `cache-yarn` for Yarn dependencies\n- `cache-bundler` for Ruby gems\n- `cache-gradle` for Gradle wrappers and caches\n- `cache-pods` for CocoaPods\n\nEach action accepts an optional `cache-version` input (often combined with `GH_CACHE_VERSION` and a tool-specific version). Avoid calling `actions/cache` directly so future workflows follow the same strategy.",
+                  "originalHeader": "Workflow > CI Caching"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 131,
+                  "line_end": 134
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Address CodeRabbitAI feedback (or document why not)\n- [ ] Resolve any security warnings\n- [ ] Verify performance benchmarks still pass\n- [ ] Confirm no sensitive data exposed in logs/comments",
+                  "originalHeader": "Workflow > Post-PR Validation > Review Integration"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 56,
+                  "line_end": 59
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Clear commit messages following conventional format\n- [ ] PR description includes context for AI reviewers\n- [ ] Complex changes have inline comments explaining intent\n- [ ] Security-sensitive changes flagged for special review",
+                  "originalHeader": "Workflow > Pre-PR Checklist > AI Review Preparation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 38,
+                  "line_end": 41
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Identify any known issues that need separate PRs\n- [ ] Note any performance implications\n- [ ] Document any breaking changes",
+                  "originalHeader": "Workflow > Pre-PR Checklist > Follow-up Planning"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 45,
+                  "line_end": 47
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "- Write short, imperative commit messages (e.g. `Fix address validation`).\n- The pull request body should summarize the changes and mention test results.",
+                  "originalHeader": "Workflow > Commit Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 140,
+                  "line_end": 141
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "These instructions apply to the entire repository unless overridden by a nested `AGENTS.md`.",
+                  "originalHeader": "Scope"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 177,
+                  "line_end": 177
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "This repository is a Yarn v4 monorepo with several workspaces:\n\n- `app` – mobile app (@selfxyz/mobile-app)\n- `circuits` – zk-SNARK circuits (@selfxyz/circuits)\n- `common` – shared utilities (@selfxyz/common)\n- `contracts` – solidity contracts (@selfxyz/contracts)\n- `sdk/core` – core TypeScript SDK (@selfxyz/core)\n- `sdk/qrcode` – qrcode SDK (@selfxyz/qrcode)\n- `packages/mobile-sdk-alpha` – alpha version of the SDK (@selfxyz/mobile-sdk-alpha)\n- `noir` – noir circuits",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 9,
+                  "line_end": 18
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 1,
+        "children": [
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 1,
+            "children": [
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "Some workspaces have additional instructions in their own `AGENTS.md` files:\n\n- `app/AGENTS.md` - Mobile app development, E2E testing, deployment\n- `packages/mobile-sdk-alpha/AGENTS.md` - SDK development, testing guidelines, package validation\n- `noir/AGENTS.md` - Noir circuit development\n\nThese workspace-specific files override or extend the root instructions for their respective areas.",
+                  "originalHeader": "Workspace-Specific Instructions"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 144,
+                  "line_end": 151
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

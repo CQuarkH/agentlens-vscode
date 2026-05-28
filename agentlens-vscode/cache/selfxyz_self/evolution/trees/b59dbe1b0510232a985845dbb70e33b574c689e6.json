@@ -1,0 +1,279 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmp8lzpjm__.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 11,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Run `yarn install` once before running any other commands. This installs root dependencies and sets up husky hooks.",
+                  "originalHeader": "Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 18,
+                  "line_end": 18
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "# Fix linting and formatting issues automatically (for packages that support it)\nyarn workspace @selfxyz/mobile-sdk-alpha nice\nyarn workspace @selfxyz/common nice\nyarn workspace @selfxyz/app nice",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 24,
+                  "line_end": 27
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "# Lint all packages in parallel\nyarn lint",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 29,
+                  "line_end": 30
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "# Build all workspaces except `contracts`\nyarn build",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 32,
+                  "line_end": 33
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "# Compile Solidity contracts (may occasionally throw a Hardhat config error)\nyarn workspace @selfxyz/contracts build",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 35,
+                  "line_end": 36
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "# Run type-checking across the repo\nyarn types",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 38,
+                  "line_end": 39
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "`yarn workspace @selfxyz/common test`",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 44,
+                  "line_end": 44
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "`yarn workspace @selfxyz/circuits test` # may fail if OpenSSL algorithms are missing",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 45,
+                  "line_end": 45
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "`yarn workspace @selfxyz/mobile-app test`",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 46,
+                  "line_end": 46
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "`yarn workspace @selfxyz/mobile-sdk-alpha test`",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 47,
+                  "line_end": 47
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "For Noir circuits, run `nargo test -p <crate>` in each `noir/crates/*` directory.",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 48,
+                  "line_end": 48
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Use Prettier configuration from `.prettierrc` files.",
+                  "originalHeader": "Formatting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 53,
+                  "line_end": 53
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Follow `.editorconfig` for line endings and indentation.",
+                  "originalHeader": "Formatting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 54,
+                  "line_end": 54
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Write short, imperative commit messages (e.g. `Fix address validation`).",
+                  "originalHeader": "Commit Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 57,
+                  "line_end": 57
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "The pull request body should summarize the changes and mention test results.",
+                  "originalHeader": "Commit Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 58,
+                  "line_end": 58
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

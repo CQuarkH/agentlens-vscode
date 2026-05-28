@@ -1,0 +1,1055 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmpv5448jcw.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 12,
+        "children": [
+          {
+            "id": "cat_ui_ux",
+            "label": "UI/UX",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Use collapsible sections (`<details>` tags) for non-actionable feedback, explanations, or background information",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 8,
+                  "line_end": 8
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Keep actionable items (bugs, required changes) visible by default",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 9,
+                  "line_end": 9
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "**Always visible**: Security issues, bugs, breaking changes",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 43,
+                  "line_end": 43
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "**Collapsible**: Style suggestions, minor optimizations, educational content",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 44,
+                  "line_end": 44
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_security",
+            "label": "Security",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_55",
+                "type": "rule",
+                "content": {
+                  "text": "**PolyForm Shield License** for source code",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 371,
+                  "line_end": 371
+                }
+              },
+              {
+                "id": "rule_56",
+                "type": "rule",
+                "content": {
+                  "text": "**Non-root container** execution (user 65532)",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 376,
+                  "line_end": 376
+                }
+              },
+              {
+                "id": "rule_57",
+                "type": "rule",
+                "content": {
+                  "text": "**TLS by default** for gRPC connections",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 378,
+                  "line_end": 378
+                }
+              },
+              {
+                "id": "rule_58",
+                "type": "rule",
+                "content": {
+                  "text": "**RBAC permissions** via kubebuilder annotations",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 379,
+                  "line_end": 379
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_performance",
+            "label": "Performance",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_64",
+                "type": "rule",
+                "content": {
+                  "text": "**Efficient BadgerDB usage** with proper indexing",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 438,
+                  "line_end": 438
+                }
+              },
+              {
+                "id": "rule_65",
+                "type": "rule",
+                "content": {
+                  "text": "**Batch gRPC operations** for network efficiency",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 439,
+                  "line_end": 439
+                }
+              },
+              {
+                "id": "rule_66",
+                "type": "rule",
+                "content": {
+                  "text": "**Context cancellation** for graceful shutdowns",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 440,
+                  "line_end": 440
+                }
+              },
+              {
+                "id": "rule_67",
+                "type": "rule",
+                "content": {
+                  "text": "**Memory pooling** for high-frequency operations",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 441,
+                  "line_end": 441
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after:\n- Modifying kubebuilder annotations (`+kubebuilder:rbac`)\n- Changing CRD definitions\n- Updating webhook configurations",
+                  "originalHeader": "Code Generation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 121,
+                  "line_end": 125
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** run `make gen-license-headers` before committing",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 128,
+                  "line_end": 128
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "All Go files must have the PolyForm Shield license header",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 129,
+                  "line_end": 129
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after annotation changes",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 432,
+                  "line_end": 432
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Don't forget license headers before committing",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 433,
+                  "line_end": 433
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Test with both AMD64 and ARM64 architectures",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 434,
+                  "line_end": 434
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 22,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 22,
+            "children": [
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "All collectors must follow a consistent constructor pattern:\n```go\nfunc NewXCollector(logger logr.Logger, config performance.CollectionConfig) (*XCollector, error) {\n    // 1. Validate paths are absolute\n    if !filepath.IsAbs(config.HostProcPath) {\n        return nil, fmt.Errorf(\"HostProcPath must be an absolute path, got: %q\", config.HostProcPath)\n    }\n    if !filepath.IsAbs(config.HostSysPath) {  // If collector uses sysfs\n        return nil, fmt.Errorf(\"HostSysPath must be an absolute path, got: %q\", config.HostSysPath)\n    }\n    \n    // 2. Define capabilities\n    capabilities := performance.CollectorCapabilities{\n        SupportsOneShot:    true,\n        SupportsContinuous: false,\n        RequiresRoot:       false,\n        RequiresEBPF:       false,\n        MinKernelVersion:   \"2.6.0\",\n    }\n    \n    // 3. Return collector with pre-computed paths\n    return &XCollector{\n        BaseCollector: performance.NewBaseCollector(...),\n        specificPath: filepath.Join(config.HostProcPath, \"specific/file\"),\n    }, nil\n}\n```",
+                  "originalHeader": "Constructor Pattern"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 155,
+                  "line_end": 182
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Every collector must include a compile-time interface check:\n```go\n// Compile-time interface check\nvar _ performance.Collector = (*NetworkCollector)(nil)\n```",
+                  "originalHeader": "Compile-Time Interface Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 185,
+                  "line_end": 189
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Collectors must clearly distinguish between critical and optional data and should never panic:\n\n- **Critical files**: Return error immediately if unavailable (e.g., /proc/loadavg for LoadCollector)\n- **Optional files**: Log warning and continue with graceful degradation (e.g., /sys/class/net/* metadata)\n- **Parse errors**: Handle based on field importance - critical fields cause errors, optional fields are logged\n- **Panic prevention**: Collectors must use proper error handling instead of panicking. All errors should be returned to the caller",
+                  "originalHeader": "Error Handling Strategy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 210,
+                  "line_end": 216
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "**Graceful Degradation**: When optional data is unavailable, collectors should:\n1. Log the issue at appropriate verbosity level (V(2) for debug info)\n2. Continue processing with available data\n3. Return partial results rather than failing entirely\n4. Document which fields may be missing in degraded mode",
+                  "originalHeader": "Error Handling Strategy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 218,
+                  "line_end": 223
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "Document the error handling strategy in method comments:\n```go\n// collectNetworkStats reads network statistics\n//\n// Error handling strategy:\n// - /proc/net/dev is critical - returns error if unavailable\n// - /sys/class/net/* files are optional - logs warnings but continues\n// - Malformed lines in /proc/net/dev are skipped with logging\n// - Never panics - all errors are returned to caller\n```",
+                  "originalHeader": "Error Handling Strategy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 225,
+                  "line_end": 234
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "In order to use a collector, it has to be added to the registry so that the manager knows about it.\nThis is typically done in the init() function in the source file where the collector is implemented:",
+                  "originalHeader": "Adding Collector to Registry"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 236,
+                  "line_end": 237
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Use `PartialNewContinuousPointCollector` if the collector is collecting runtime statistics.",
+                  "originalHeader": "Adding Collector to Registry"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 241,
+                  "line_end": 241
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "Use `PartialOnceContinuousCollector` when collecting hardware information or if the collector needs to run just once.",
+                  "originalHeader": "Adding Collector to Registry"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 252,
+                  "line_end": 252
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "**Early returns** to reduce nesting",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 425,
+                  "line_end": 425
+                }
+              },
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "**Functional patterns** where applicable",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 426,
+                  "line_end": 426
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "**Concise implementations** without unnecessary comments",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 427,
+                  "line_end": 427
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "**Error wrapping** with context",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 428,
+                  "line_end": 428
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "Always Use CO-RE Macros\n   - Prefer `BPF_CORE_READ()` over direct field access\n   - Use `BPF_CORE_READ_STR()` for string fields\n   - Check field existence with `BPF_CORE_FIELD_EXISTS()`",
+                  "originalHeader": "CO-RE Best Practices"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 549,
+                  "line_end": 553
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "Handle Missing Fields Gracefully\n   - Not all kernel versions have all fields\n   - Use conditional compilation or runtime checks\n   - Provide fallback behavior",
+                  "originalHeader": "CO-RE Best Practices"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 559,
+                  "line_end": 562
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "For new `.bpf.c` files:\n1. Create `ebpf/src/your_program.bpf.c`\n2. Include CO-RE headers:\n   ```c\n   #include \"vmlinux.h\"\n   #include <bpf/bpf_core_read.h>\n   ```\n3. Use CO-RE macros for kernel struct access\n4. Add to `BPF_PROGS` in `ebpf/Makefile`\n5. Run `make build-ebpf`",
+                  "originalHeader": "Adding New eBPF Programs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 519,
+                  "line_end": 529
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "For new struct definitions:\n1. Create `ebpf/include/your_collector_types.h` with C structs\n2. Run `make generate-ebpf-types` to generate Go types\n3. Generated files appear in `pkg/performance/collectors/`",
+                  "originalHeader": "Adding New eBPF Programs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 531,
+                  "line_end": 534
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "When implementing collectors that support continuous collection (ContinuousCollector interface), follow this standardized pattern for proper lifecycle management:",
+                  "originalHeader": "Continuous Collector Pattern"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 337,
+                  "line_end": 337
+                }
+              },
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "**Define the data structure** in `pkg/performance/types.go`",
+                  "originalHeader": "Collector Development Workflow"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 399,
+                  "line_end": 399
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "**Create the collector** in `pkg/performance/collectors/your_collector.go`\n   - Include compile-time interface check\n   - Follow constructor pattern with path validation\n   - Document error handling strategy",
+                  "originalHeader": "Collector Development Workflow"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 400,
+                  "line_end": 403
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "**Create comprehensive tests** in `pkg/performance/collectors/your_collector_test.go`\n   - Use `collectors_test` package\n   - Include constructor tests\n   - Add helper functions following naming patterns\n   - Test edge cases and error scenarios",
+                  "originalHeader": "Collector Development Workflow"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 404,
+                  "line_end": 408
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "**Update collector registry**\n   - Write an init() function in `your_collector.go` to add the collector to the registry",
+                  "originalHeader": "Collector Development Workflow"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 409,
+                  "line_end": 410
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "Validate /proc file parsing with realistic data",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 435,
+                  "line_end": 435
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 23,
+        "children": [
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 18,
+            "children": [
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "Use standard Go testing framework",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 133,
+                  "line_end": 133
+                }
+              },
+              {
+                "id": "rule_34",
+                "type": "rule",
+                "content": {
+                  "text": "Tests located alongside implementation files",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 134,
+                  "line_end": 134
+                }
+              },
+              {
+                "id": "rule_35",
+                "type": "rule",
+                "content": {
+                  "text": "Table-driven tests for comprehensive coverage",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 135,
+                  "line_end": 135
+                }
+              },
+              {
+                "id": "rule_36",
+                "type": "rule",
+                "content": {
+                  "text": "Mock external dependencies (gRPC, AWS, K8s)",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 136,
+                  "line_end": 136
+                }
+              },
+              {
+                "id": "rule_37",
+                "type": "rule",
+                "content": {
+                  "text": "**Constructor tests**: Separate test function for constructor validation",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 310,
+                  "line_end": 310
+                }
+              },
+              {
+                "id": "rule_38",
+                "type": "rule",
+                "content": {
+                  "text": "**Path validation**: Test absolute vs relative paths, empty paths",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 311,
+                  "line_end": 311
+                }
+              },
+              {
+                "id": "rule_39",
+                "type": "rule",
+                "content": {
+                  "text": "**File interdependency**: Test behavior when related files unavailable",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 312,
+                  "line_end": 312
+                }
+              },
+              {
+                "id": "rule_40",
+                "type": "rule",
+                "content": {
+                  "text": "**Return type validation**: Explicit type assertions with proper error messages",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 313,
+                  "line_end": 313
+                }
+              },
+              {
+                "id": "rule_41",
+                "type": "rule",
+                "content": {
+                  "text": "**Graceful degradation**: Document and test critical vs optional files",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 314,
+                  "line_end": 314
+                }
+              },
+              {
+                "id": "rule_42",
+                "type": "rule",
+                "content": {
+                  "text": "**Boundary conditions**: Test zero values, maximum values (e.g., max uint64)",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 315,
+                  "line_end": 315
+                }
+              },
+              {
+                "id": "rule_43",
+                "type": "rule",
+                "content": {
+                  "text": "**Malformed input**: Test partial data, missing fields, corrupt formats",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 316,
+                  "line_end": 316
+                }
+              },
+              {
+                "id": "rule_44",
+                "type": "rule",
+                "content": {
+                  "text": "**Special cases**: Test virtual interfaces, disabled devices, etc.",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 317,
+                  "line_end": 317
+                }
+              },
+              {
+                "id": "rule_45",
+                "type": "rule",
+                "content": {
+                  "text": "Don't test static properties (Name, RequiresRoot)",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 320,
+                  "line_end": 320
+                }
+              },
+              {
+                "id": "rule_46",
+                "type": "rule",
+                "content": {
+                  "text": "Don't test compile-time interface checks (e.g., `var _ performance.Collector = (*XCollector)(nil)`)",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 321,
+                  "line_end": 321
+                }
+              },
+              {
+                "id": "rule_47",
+                "type": "rule",
+                "content": {
+                  "text": "Focus on parsing logic and error handling",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 322,
+                  "line_end": 322
+                }
+              },
+              {
+                "id": "rule_48",
+                "type": "rule",
+                "content": {
+                  "text": "Use realistic test data from actual /proc files",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 323,
+                  "line_end": 323
+                }
+              },
+              {
+                "id": "rule_49",
+                "type": "rule",
+                "content": {
+                  "text": "Test collectors in `collectors_test` package (external testing)",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 324,
+                  "line_end": 324
+                }
+              },
+              {
+                "id": "rule_50",
+                "type": "rule",
+                "content": {
+                  "text": "Name test functions consistently: `TestXCollector_Constructor`, `TestXCollector_Collect`",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 325,
+                  "line_end": 325
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 5,
+            "children": [
+              {
+                "id": "rule_59",
+                "type": "rule",
+                "content": {
+                  "text": "Use `make help` to see the full list of available commands.",
+                  "originalHeader": "Common Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 101,
+                  "line_end": 101
+                }
+              },
+              {
+                "id": "rule_60",
+                "type": "rule",
+                "content": {
+                  "text": "make gen-license-headers      # ALWAYS run before committing",
+                  "originalHeader": "Core Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 110,
+                  "line_end": 110
+                }
+              },
+              {
+                "id": "rule_61",
+                "type": "rule",
+                "content": {
+                  "text": "make build-and-load-image     # Rebuild and redeploy in one command",
+                  "originalHeader": "Quick Development Iteration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 122,
+                  "line_end": 122
+                }
+              },
+              {
+                "id": "rule_62",
+                "type": "rule",
+                "content": {
+                  "text": "**Run validation**:\n   ```bash\n   make test                    # Run tests\n   make fmt                     # Run go fmt\n   make lint                    # Check code style\n   make gen-license-headers     # Ensure license headers\n   ```",
+                  "originalHeader": "Collector Development Workflow"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 411,
+                  "line_end": 417
+                }
+              },
+              {
+                "id": "rule_63",
+                "type": "rule",
+                "content": {
+                  "text": "Test Across Kernels\n   - Test on minimum supported kernel (4.18)\n   - Verify on latest stable kernel\n   - Use KIND clusters with different kernel versions",
+                  "originalHeader": "CO-RE Best Practices"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 555,
+                  "line_end": 558
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 4,
+        "children": [
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_51",
+                "type": "rule",
+                "content": {
+                  "text": "**Type-level documentation**: Explain purpose, data sources, references",
+                  "originalHeader": "Documentation Standards"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 330,
+                  "line_end": 330
+                }
+              },
+              {
+                "id": "rule_52",
+                "type": "rule",
+                "content": {
+                  "text": "**Method documentation**: Include format examples and error handling strategy",
+                  "originalHeader": "Documentation Standards"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 331,
+                  "line_end": 331
+                }
+              },
+              {
+                "id": "rule_53",
+                "type": "rule",
+                "content": {
+                  "text": "**Inline documentation**: Explain complex parsing logic or non-obvious decisions",
+                  "originalHeader": "Documentation Standards"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 332,
+                  "line_end": 332
+                }
+              },
+              {
+                "id": "rule_54",
+                "type": "rule",
+                "content": {
+                  "text": "**Reference links**: Include kernel documentation links where applicable",
+                  "originalHeader": "Documentation Standards"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 333,
+                  "line_end": 333
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -189,7 +189,7 @@ export class ASTWebview {
             current: i + 1,
             total: missingCommits.length,
           });
-          await this.api.generate(filePath, repoName);
+          await this.api.generate(filePath, repoName, missingCommits[i]);
         }
         const result = await this.api.getEvolution(filePath, repoName);
         if (result.status === "complete") {

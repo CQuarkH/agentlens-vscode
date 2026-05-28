@@ -1,0 +1,639 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmp5yi0w4s7.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_ui_ux",
+            "label": "UI/UX",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "Use collapsible sections (`<details>` tags) for non-actionable feedback, explanations, or background information",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 8,
+                  "line_end": 8
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "Keep actionable items (bugs, required changes) visible by default",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 9,
+                  "line_end": 9
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "**Always visible**: Security issues, bugs, breaking changes",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 44,
+                  "line_end": 44
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "**Collapsible**: Style suggestions, minor optimizations, educational content",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 45,
+                  "line_end": 45
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_security",
+            "label": "Security",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_36",
+                "type": "rule",
+                "content": {
+                  "text": "**PolyForm Shield License** for source code",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 258,
+                  "line_end": 258
+                }
+              },
+              {
+                "id": "rule_37",
+                "type": "rule",
+                "content": {
+                  "text": "**Non-root container** execution (user 65532)",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 263,
+                  "line_end": 263
+                }
+              },
+              {
+                "id": "rule_38",
+                "type": "rule",
+                "content": {
+                  "text": "**Minimal distroless base** image",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 264,
+                  "line_end": 264
+                }
+              },
+              {
+                "id": "rule_39",
+                "type": "rule",
+                "content": {
+                  "text": "**TLS by default** for gRPC connections",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 265,
+                  "line_end": 265
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 6,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after:\n- Modifying kubebuilder annotations (`+kubebuilder:rbac`)\n- Changing CRD definitions\n- Updating webhook configurations",
+                  "originalHeader": "Code Generation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 131,
+                  "line_end": 135
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** run `make gen-license-headers` before committing",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 138,
+                  "line_end": 138
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "All Go files must have the PolyForm Shield license header",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 139,
+                  "line_end": 139
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after annotation changes",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 310,
+                  "line_end": 310
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "Don't forget license headers before committing",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 311,
+                  "line_end": 311
+                }
+              },
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "Test with both AMD64 and ARM64 architectures",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 312,
+                  "line_end": 312
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 17,
+        "children": [
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 14,
+            "children": [
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "Use standard Go testing framework",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 143,
+                  "line_end": 143
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "Tests located alongside implementation files",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 144,
+                  "line_end": 144
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "Table-driven tests for comprehensive coverage",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 145,
+                  "line_end": 145
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "Mock external dependencies (gRPC, AWS, K8s)",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 146,
+                  "line_end": 146
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "**Path validation**: Test absolute vs relative paths",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 199,
+                  "line_end": 199
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "**File interdependency**: Test behavior when related files unavailable",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 200,
+                  "line_end": 200
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "**Return type validation**: Explicit type assertions",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 201,
+                  "line_end": 201
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "**Graceful degradation**: Document critical vs optional files",
+                  "originalHeader": "Testing Requirements"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 202,
+                  "line_end": 202
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "Don't test static properties (Name, RequiresRoot)",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 205,
+                  "line_end": 205
+                }
+              },
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "Focus on parsing logic and error handling",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 206,
+                  "line_end": 206
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "Use realistic test data from actual /proc files",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 207,
+                  "line_end": 207
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "Test collectors in `collectors_test` package",
+                  "originalHeader": "Testing Principles"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 208,
+                  "line_end": 208
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "Validate /proc file parsing with realistic data",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 313,
+                  "line_end": 313
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "**Mock external dependencies** (gRPC, AWS, K8s)\n- **Table-driven tests** for comprehensive coverage\n- **Temporary file systems** for isolation\n- **Testify** for assertions and mocking",
+                  "originalHeader": "Unit Testing"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 280,
+                  "line_end": 283
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "Use `make help` to see the full list of available commands.",
+                  "originalHeader": "Common Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 107,
+                  "line_end": 107
+                }
+              },
+              {
+                "id": "rule_34",
+                "type": "rule",
+                "content": {
+                  "text": "make gen-license-headers      # ALWAYS run before committing",
+                  "originalHeader": "Core Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 116,
+                  "line_end": 116
+                }
+              },
+              {
+                "id": "rule_35",
+                "type": "rule",
+                "content": {
+                  "text": "make build-and-load-image     # Rebuild and redeploy in one command",
+                  "originalHeader": "Quick Development Iteration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 128,
+                  "line_end": 128
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "**Early returns** to reduce nesting",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 304,
+                  "line_end": 304
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "**Functional patterns** where applicable",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 305,
+                  "line_end": 305
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "**Concise implementations** without unnecessary comments",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 306,
+                  "line_end": 306
+                }
+              },
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "**Error wrapping** with context",
+                  "originalHeader": "Code Style"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 307,
+                  "line_end": 307
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "Place `//go:generate` directives in the userspace packages that will use the eBPF programs, rather than in a centralized location. This keeps the generation logic co-located with the code that uses it.",
+                  "originalHeader": "Generation Pattern"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 349,
+                  "line_end": 349
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "**Efficient BadgerDB usage** with proper indexing",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 317,
+                  "line_end": 317
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "**Batch gRPC operations** for network efficiency",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 318,
+                  "line_end": 318
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "**Context cancellation** for graceful shutdowns",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 319,
+                  "line_end": 319
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

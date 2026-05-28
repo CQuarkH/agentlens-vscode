@@ -1,0 +1,62 @@
+[
+  {
+    "sha": "70e30c3e58b04cd2fb9f0fa355ef1f4ca4463fb5",
+    "date": "2025-07-17T17:33:01Z",
+    "message": "docs: add comprehensive CLAUDE.md for development guidance (#39)",
+    "changes": 384
+  },
+  {
+    "sha": "792eeadf6e7ad1c2aba2fe714804f974c260f98f",
+    "date": "2025-07-18T18:19:25Z",
+    "message": "feat: add eBPF build environment with BTF support (#30)",
+    "changes": 25
+  },
+  {
+    "sha": "7cfeb20a6ac9cf91afb699a0bff2b5e1366e09b2",
+    "date": "2025-07-18T15:16:39Z",
+    "message": "build: remove vendoring deps",
+    "changes": 4
+  },
+  {
+    "sha": "9d98a2ffd9b68b9e2b2c924fd6dbfbe9e2ad77af",
+    "date": "2025-07-21T16:21:06Z",
+    "message": "feat: add collapsible feedback guidelines for Claude PR reviews",
+    "changes": 49
+  },
+  {
+    "sha": "dc5c28a59171375bb138a660ca960b1311357214",
+    "date": "2025-07-22T19:30:01Z",
+    "message": "refactor: standardize performance collector patterns and error handling (#55)",
+    "changes": 180
+  },
+  {
+    "sha": "9f55fc56e685d729a1ba63fd65998177bf57598b",
+    "date": "2025-07-22T19:43:09Z",
+    "message": "refactor: create global registry for collector factories",
+    "changes": 37
+  },
+  {
+    "sha": "946ff6401b11801927bd6085e3539f3b834d1ea0",
+    "date": "2025-07-23T19:14:16Z",
+    "message": "feat: add process statistics collector (#61)",
+    "changes": 109
+  },
+  {
+    "sha": "ebf083200e6aea92adbf42b4d5599deea80f4b12",
+    "date": "2025-07-28T14:59:36Z",
+    "message": "feat: Add CO-RE eBPF infrastructure and execsnoop implementation (#42)",
+    "changes": 129
+  },
+  {
+    "sha": "7020f047256f49060ac7db4bff3436faf45eabf8",
+    "date": "2025-08-08T20:10:36Z",
+    "message": "chore: add specialized commit-author agent for git message compliance (#117)",
+    "changes": 4
+  },
+  {
+    "sha": "2a08641718c02638254c322ef907b15cd12926ac",
+    "date": "2025-08-11T19:46:03Z",
+    "message": "refactor: improve documentation organization and add linux-systems-expert agent (#118)",
+    "changes": 660
+  }
+]

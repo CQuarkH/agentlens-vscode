@@ -63,11 +63,11 @@ export class ApiClient {
     return await res.json();
   }
 
-  async generate(filePath: string, repo?: string): Promise<GenerateResponse> {
+  async generate(filePath: string, repo?: string, commit?: string): Promise<GenerateResponse> {
     const res = await fetch(`${this.baseUrl}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ file_path: filePath, repo }),
+      body: JSON.stringify({ file_path: filePath, repo, commit }),
     });
     if (!res.ok) {
       return { status: "error", message: `HTTP ${res.status}` };

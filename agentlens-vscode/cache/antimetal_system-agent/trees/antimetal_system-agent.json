@@ -1,0 +1,1159 @@
+{
+  "projectInfo": {
+    "repoName": "antimetal/system-agent",
+    "agentsMdSource": "antimetal_system-agent.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_general",
+        "label": "General",
+        "type": "category",
+        "count": 16,
+        "children": [
+          {
+            "id": "cat_ai_integration",
+            "label": "AI Integration",
+            "type": "label",
+            "count": 9,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `commit-author` agent for creating commit messages, reviewing commits, or generating PR descriptions",
+                  "originalHeader": "Git Commits and PRs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 107,
+                  "line_end": 107
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** use the `linux-systems-expert` agent when developing or debugging Linux system collectors, eBPF programs, or /proc or /sys parsers",
+                  "originalHeader": "Linux Systems and eBPF Development"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 111,
+                  "line_end": 111
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "**IMPORTANT**: Always use the `wiki-keeper` agent for ALL wiki operations via the Task tool.",
+                  "originalHeader": "Wiki-Keeper Agent"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 261,
+                  "line_end": 261
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "**Always use wiki-keeper** instead of reading wiki files directly",
+                  "originalHeader": "Best Practices"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 295,
+                  "line_end": 295
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "**Provide context** about code changes when requesting updates",
+                  "originalHeader": "Best Practices"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 296,
+                  "line_end": 296
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "**Trust the agent's summaries** - avoid requesting full content",
+                  "originalHeader": "Best Practices"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 297,
+                  "line_end": 297
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "Use the wiki-keeper agent for:\n- **Searching documentation** before implementing features\n- **Checking if features are documented**\n- **Updating documentation** after code changes\n- **Creating new documentation** for new features\n- **Analyzing documentation completeness**\n- **Finding architecture decisions and design patterns**",
+                  "originalHeader": "When to Use Wiki-Keeper"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 269,
+                  "line_end": 276
+                }
+              },
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "The agent ensures compliance with project commit conventions and formatting standards",
+                  "originalHeader": "Git Commits and PRs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 108,
+                  "line_end": 108
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "The agent has deep expertise in kernel interfaces, CO-RE/BTF, performance monitoring, and cross-kernel compatibility",
+                  "originalHeader": "Linux Systems and eBPF Development"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 112,
+                  "line_end": 112
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_system_overview",
+            "label": "System Overview",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent is a Kubernetes controller that connects infrastructure to the Antimetal platform for cloud resource management. It collects K8s resources, monitors system performance, and streams data via gRPC.",
+                  "originalHeader": "Project Overview"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 55,
+                  "line_end": 55
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent includes a comprehensive performance monitoring system that collects system metrics from /proc and /sys filesystems. Collectors follow a dual-interface pattern (PointCollector for one-shot, ContinuousCollector for streaming) with standardized error handling and testing methodologies.",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 116,
+                  "line_end": 116
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "The Antimetal Agent supports eBPF-based collectors for deep kernel observability using CO-RE (Compile Once - Run Everywhere) technology for portability across kernel versions 4.18+.",
+                  "originalHeader": "eBPF Development"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 247,
+                  "line_end": 247
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_documentation",
+            "label": "Documentation",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_62",
+                "type": "rule",
+                "content": {
+                  "text": "For detailed performance collector development including implementation patterns, testing methodology, continuous collectors, and examples, see **[docs/performance-collectors.md](docs/performance-collectors.md)**.",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 124,
+                  "line_end": 124
+                }
+              },
+              {
+                "id": "rule_63",
+                "type": "rule",
+                "content": {
+                  "text": "For implementation details, see the system-agent wiki documentation on cgroup collectors.",
+                  "originalHeader": "Container Metrics Collection"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 135,
+                  "line_end": 135
+                }
+              },
+              {
+                "id": "rule_64",
+                "type": "rule",
+                "content": {
+                  "text": "For detailed eBPF development guidance including CO-RE support, adding new programs, troubleshooting, and best practices, see **[docs/ebpf-development.md](docs/ebpf-development.md)**.",
+                  "originalHeader": "eBPF Development"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 253,
+                  "line_end": 253
+                }
+              },
+              {
+                "id": "rule_65",
+                "type": "rule",
+                "content": {
+                  "text": "When referencing wiki documentation in code comments:\n```go\n// See wiki: Cgroup/Memory-Collector.md for algorithm details\n```",
+                  "originalHeader": "Code References"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 316,
+                  "line_end": 319
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 15,
+        "children": [
+          {
+            "id": "cat_architecture",
+            "label": "Architecture",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "- `cmd/` - Application entry points\n- `internal/` - Private application code (intake, kubernetes controller)\n- `pkg/` - Public packages (aws, performance, resource store)\n- `config/` - K8s manifests and Kustomize\n- `ebpf/` - eBPF programs and build system",
+                  "originalHeader": "Directory Structure"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 79,
+                  "line_end": 83
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "- **In-memory storage** for development/testing\n- **Event-driven subscriptions** for real-time updates\n- **RDF triplet relationships** (subject, predicate, object)\n- **Efficient indexing** for complex queries",
+                  "originalHeader": "BadgerDB Integration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 148,
+                  "line_end": 151
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "- **Streaming gRPC** for efficient data upload\n- **Batched deltas** with configurable batch sizes\n- **Exponential backoff** for connection failures\n- **Stream recovery** with automatic reconnection\n- **Heartbeat mechanism** for connection health",
+                  "originalHeader": "Intake Service Communication"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 168,
+                  "line_end": 172
+                }
+              },
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "- **Automatic version detection**: Supports both cgroup v1 and v2\n- **Multi-runtime support**: Docker, containerd, CRI-O, Podman\n- **Zero-configuration**: Auto-discovers containers without runtime APIs\n- **Graceful degradation**: Handles missing files and permissions",
+                  "originalHeader": "Container Metrics Collection"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 130,
+                  "line_end": 133
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 11,
+            "children": [
+              {
+                "id": "rule_36",
+                "type": "rule",
+                "content": {
+                  "text": "**Early returns** to reduce nesting",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 227,
+                  "line_end": 227
+                }
+              },
+              {
+                "id": "rule_37",
+                "type": "rule",
+                "content": {
+                  "text": "**Functional patterns** where applicable",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 228,
+                  "line_end": 228
+                }
+              },
+              {
+                "id": "rule_38",
+                "type": "rule",
+                "content": {
+                  "text": "**Concise implementations** without unnecessary comments",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 229,
+                  "line_end": 229
+                }
+              },
+              {
+                "id": "rule_39",
+                "type": "rule",
+                "content": {
+                  "text": "**Error wrapping** with context",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 230,
+                  "line_end": 230
+                }
+              },
+              {
+                "id": "rule_40",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS use `any` instead of `interface{}`**",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 231,
+                  "line_end": 231
+                }
+              },
+              {
+                "id": "rule_41",
+                "type": "rule",
+                "content": {
+                  "text": "**Google C++ Style** as base (via `.clang-format`)",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 235,
+                  "line_end": 235
+                }
+              },
+              {
+                "id": "rule_42",
+                "type": "rule",
+                "content": {
+                  "text": "**Pointer alignment**: `Type* variable` (pointer attached to type)",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 236,
+                  "line_end": 236
+                }
+              },
+              {
+                "id": "rule_43",
+                "type": "rule",
+                "content": {
+                  "text": "**Indent width**: 2 spaces",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 237,
+                  "line_end": 237
+                }
+              },
+              {
+                "id": "rule_44",
+                "type": "rule",
+                "content": {
+                  "text": "**Column limit**: 80 characters",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 238,
+                  "line_end": 238
+                }
+              },
+              {
+                "id": "rule_45",
+                "type": "rule",
+                "content": {
+                  "text": "**Format with `make fmt.clang`** before committing",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 239,
+                  "line_end": 239
+                }
+              },
+              {
+                "id": "rule_46",
+                "type": "rule",
+                "content": {
+                  "text": "**Include ordering**: vmlinux.h first, then system headers, then local headers",
+                  "originalHeader": "C/C++ and eBPF Code"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 240,
+                  "line_end": 240
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 18,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "Run `make help` for the full list.",
+                  "originalHeader": "Common Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 89,
+                  "line_end": 89
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "**Key commands:**\n- `make build-ebpf` - Build eBPF programs with CO-RE support\n- `make generate-ebpf-bindings` - Generate Go bindings from eBPF C code",
+                  "originalHeader": "eBPF Development"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 249,
+                  "line_end": 251
+                }
+              },
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS format with `make fmt`** before committing",
+                  "originalHeader": "Golang"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 228,
+                  "line_end": 228
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "- Use standard Go testing framework\n- Tests located alongside implementation files\n- Table-driven tests for comprehensive coverage\n- Mock external dependencies (gRPC, AWS, K8s)",
+                  "originalHeader": "Testing Philosophy"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 99,
+                  "line_end": 102
+                }
+              },
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "- **Mock external dependencies** (gRPC, AWS, K8s)\n- **Table-driven tests** for comprehensive coverage\n- **Temporary file systems** for isolation\n- **Testify** for assertions and mocking",
+                  "originalHeader": "Unit Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 202,
+                  "line_end": 205
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "Integration tests (files with `//go:build integration` tag) should always assume:\n- **Linux environment**: Never check `runtime.GOOS` - integration tests only run on Linux\n- **Proper permissions**: Never check `os.Geteuid()` - assume tests have required permissions (root, CAP_BPF, etc.)\n- **Required capabilities**: Use `require.NoError()` for permission-related operations rather than skipping\n- **Kernel features**: Check kernel version for feature availability, but don't skip for OS type",
+                  "originalHeader": "Integration Test Environment Assumptions"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 210,
+                  "line_end": 215
+                }
+              },
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "- **KIND clusters** for K8s integration\n- **Mock intake service** for gRPC testing\n- **BadgerDB in-memory** for storage testing",
+                  "originalHeader": "Integration Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 208,
+                  "line_end": 210
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "- **Benchmarks** for critical paths\n- **Load testing** with realistic data volumes\n- **Memory profiling** for optimization",
+                  "originalHeader": "Performance Testing"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 222,
+                  "line_end": 224
+                }
+              },
+              {
+                "id": "rule_25",
+                "type": "rule",
+                "content": {
+                  "text": "- **Comprehensive testing with mock filesystems**",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 122,
+                  "line_end": 122
+                }
+              },
+              {
+                "id": "rule_26",
+                "type": "rule",
+                "content": {
+                  "text": "Test with both AMD64 and ARM64 architectures",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 243,
+                  "line_end": 243
+                }
+              },
+              {
+                "id": "rule_27",
+                "type": "rule",
+                "content": {
+                  "text": "Validate /proc file parsing with realistic data",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 244,
+                  "line_end": 244
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_conf_env",
+            "label": "Conf.&Env.",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_51",
+                "type": "rule",
+                "content": {
+                  "text": "- **Docker** (rootless, containerd snapshotter enabled)\n- **kubectl** for K8s operations\n- **Go 1.24+** as specified in go.mod",
+                  "originalHeader": "Prerequisites"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 86,
+                  "line_end": 88
+                }
+              },
+              {
+                "id": "rule_52",
+                "type": "rule",
+                "content": {
+                  "text": "- `NODE_NAME`: Node identification\n- `HOST_PROC`, `HOST_SYS`, `HOST_DEV`: Containerized filesystem paths",
+                  "originalHeader": "Environment Variables"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 193,
+                  "line_end": 194
+                }
+              },
+              {
+                "id": "rule_53",
+                "type": "rule",
+                "content": {
+                  "text": "The wiki tracks the `master` branch and should always use the latest documentation, not a pinned commit. Use `--remote` flag to get latest changes.",
+                  "originalHeader": "Git Operations"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 313,
+                  "line_end": 313
+                }
+              },
+              {
+                "id": "rule_54",
+                "type": "rule",
+                "content": {
+                  "text": "- **Constructor pattern** with path validation and capabilities\n- **Registry system** for collector management\n- **Graceful degradation** for optional data",
+                  "originalHeader": "Performance Collectors"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 119,
+                  "line_end": 121
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_devops",
+            "label": "DevOps",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_69",
+                "type": "rule",
+                "content": {
+                  "text": "- **linux/amd64** and **linux/arm64** support\n- **GoReleaser** for automated releases\n- **Distroless base** for minimal attack surface",
+                  "originalHeader": "Docker Multi-Arch"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 225,
+                  "line_end": 227
+                }
+              },
+              {
+                "id": "rule_70",
+                "type": "rule",
+                "content": {
+                  "text": "- **Kustomize** for configuration management\n- **Helm charts** published separately\n- **antimetal-system** namespace by default",
+                  "originalHeader": "Deployment"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 230,
+                  "line_end": 232
+                }
+              },
+              {
+                "id": "rule_71",
+                "type": "rule",
+                "content": {
+                  "text": "The project maintains comprehensive documentation in a GitHub Wiki, available as a git submodule in the `.wiki/` directory.",
+                  "originalHeader": "Wiki Documentation Integration"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 257,
+                  "line_end": 257
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 8,
+            "children": [
+              {
+                "id": "rule_28",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after:\n- Modifying kubebuilder annotations (`+kubebuilder:rbac`)\n- Changing CRD definitions\n- Updating webhook configurations",
+                  "originalHeader": "Code Generation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 96,
+                  "line_end": 100
+                }
+              },
+              {
+                "id": "rule_29",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** run `make gen-license-headers` before committing",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 103,
+                  "line_end": 103
+                }
+              },
+              {
+                "id": "rule_30",
+                "type": "rule",
+                "content": {
+                  "text": "**ALL** .go files must have the PolyForm Shield license header located in @tools/license_check/license_header.txt",
+                  "originalHeader": "License Headers"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 104,
+                  "line_end": 104
+                }
+              },
+              {
+                "id": "rule_31",
+                "type": "rule",
+                "content": {
+                  "text": "**ALWAYS** run `make lint-fix` before creating a commit",
+                  "originalHeader": "Git Commits and PRs"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 106,
+                  "line_end": 106
+                }
+              },
+              {
+                "id": "rule_32",
+                "type": "rule",
+                "content": {
+                  "text": "Always run `make generate` after annotation changes",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 241,
+                  "line_end": 241
+                }
+              },
+              {
+                "id": "rule_33",
+                "type": "rule",
+                "content": {
+                  "text": "Don't forget license headers before committing",
+                  "originalHeader": "Common Pitfalls"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 242,
+                  "line_end": 242
+                }
+              },
+              {
+                "id": "rule_34",
+                "type": "rule",
+                "content": {
+                  "text": "# ALWAYS pull latest wiki changes (not pinned to specific commit)\ngit submodule update --remote --merge .wiki",
+                  "originalHeader": "Git Operations"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 300,
+                  "line_end": 301
+                }
+              },
+              {
+                "id": "rule_35",
+                "type": "rule",
+                "content": {
+                  "text": "# IMPORTANT: Avoid committing the .wiki submodule reference\n# If you see .wiki as modified in git status, DO NOT stage it\ngit add .  # Stage your changes\ngit reset .wiki  # Unstage the submodule reference\ngit commit -m \"your changes\"  # Commit without updating wiki reference",
+                  "originalHeader": "Git Operations"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 307,
+                  "line_end": 311
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_quality",
+        "label": "Quality",
+        "type": "category",
+        "count": 14,
+        "children": [
+          {
+            "id": "cat_performance",
+            "label": "Performance",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_47",
+                "type": "rule",
+                "content": {
+                  "text": "**Efficient BadgerDB usage** with proper indexing",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 246,
+                  "line_end": 246
+                }
+              },
+              {
+                "id": "rule_48",
+                "type": "rule",
+                "content": {
+                  "text": "**Batch gRPC operations** for network efficiency",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 247,
+                  "line_end": 247
+                }
+              },
+              {
+                "id": "rule_49",
+                "type": "rule",
+                "content": {
+                  "text": "**Context cancellation** for graceful shutdowns",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 248,
+                  "line_end": 248
+                }
+              },
+              {
+                "id": "rule_50",
+                "type": "rule",
+                "content": {
+                  "text": "**Memory pooling** for high-frequency operations",
+                  "originalHeader": "Performance Optimization"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 249,
+                  "line_end": 249
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_security",
+            "label": "Security",
+            "type": "label",
+            "count": 4,
+            "children": [
+              {
+                "id": "rule_55",
+                "type": "rule",
+                "content": {
+                  "text": "**PolyForm Shield License** for source code",
+                  "originalHeader": "License Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 197,
+                  "line_end": 197
+                }
+              },
+              {
+                "id": "rule_56",
+                "type": "rule",
+                "content": {
+                  "text": "**Non-root container** execution (user 65532)",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 201,
+                  "line_end": 201
+                }
+              },
+              {
+                "id": "rule_57",
+                "type": "rule",
+                "content": {
+                  "text": "**Minimal distroless base** image",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 202,
+                  "line_end": 202
+                }
+              },
+              {
+                "id": "rule_58",
+                "type": "rule",
+                "content": {
+                  "text": "**TLS by default** for gRPC connections",
+                  "originalHeader": "Runtime Security"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 203,
+                  "line_end": 203
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_debugging",
+            "label": "Debugging",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_59",
+                "type": "rule",
+                "content": {
+                  "text": "- **Structured logging** with logr\n- **Contextual logging** with component names\n- **Configurable log levels** via zap",
+                  "originalHeader": "Logging"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 208,
+                  "line_end": 210
+                }
+              },
+              {
+                "id": "rule_60",
+                "type": "rule",
+                "content": {
+                  "text": "- **Prometheus metrics** via controller-runtime\n- **Health checks** (`/healthz`, `/readyz`)\n- **Pprof support** for performance profiling",
+                  "originalHeader": "Metrics and Health"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 213,
+                  "line_end": 215
+                }
+              },
+              {
+                "id": "rule_61",
+                "type": "rule",
+                "content": {
+                  "text": "```bash\nkubectl logs -n antimetal-system <pod-name>\nkubectl get pods -n antimetal-system\nkubectl describe deployment -n antimetal-system agent\n```",
+                  "originalHeader": "Debugging Commands"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 218,
+                  "line_end": 222
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_maintenance",
+            "label": "Maintenance",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_66",
+                "type": "rule",
+                "content": {
+                  "text": "**IMPORTANT**: Use collapsible sections (`<details>` tags) for non-actionable feedback, explanations, or background information",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 10,
+                  "line_end": 10
+                }
+              },
+              {
+                "id": "rule_67",
+                "type": "rule",
+                "content": {
+                  "text": "Keep actionable items (bugs, required changes) visible by default",
+                  "originalHeader": "Feedback Structure"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 11,
+                  "line_end": 11
+                }
+              },
+              {
+                "id": "rule_68",
+                "type": "rule",
+                "content": {
+                  "text": "1. **Always visible**: Security issues, bugs, breaking changes\n2. **Collapsible**: Style suggestions, minor optimizations, educational content\n3. **Focus on**: Constructive, actionable feedback over nitpicking",
+                  "originalHeader": "Review Priorities"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 43,
+                  "line_end": 45
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

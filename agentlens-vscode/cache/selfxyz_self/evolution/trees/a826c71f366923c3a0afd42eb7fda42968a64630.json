@@ -1,0 +1,429 @@
+{
+  "projectInfo": {
+    "repoName": "tmp",
+    "agentsMdSource": "tmpwd_f3eay.md"
+  },
+  "rootNode": {
+    "id": "root",
+    "label": "AGENTS.md Context",
+    "type": "root",
+    "children": [
+      {
+        "id": "macro_build",
+        "label": "Build",
+        "type": "category",
+        "count": 14,
+        "children": [
+          {
+            "id": "cat_build_and_run",
+            "label": "Build and Run",
+            "type": "label",
+            "count": 7,
+            "children": [
+              {
+                "id": "rule_1",
+                "type": "rule",
+                "content": {
+                  "text": "**Package Manager:** Yarn",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 3,
+                  "line_end": 3
+                }
+              },
+              {
+                "id": "rule_2",
+                "type": "rule",
+                "content": {
+                  "text": "**Commands to use:** yarn install, yarn add, yarn remove",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 5,
+                  "line_end": 5
+                }
+              },
+              {
+                "id": "rule_3",
+                "type": "rule",
+                "content": {
+                  "text": "**Note:** Do not use npm or pnpm.",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 7,
+                  "line_end": 7
+                }
+              },
+              {
+                "id": "rule_4",
+                "type": "rule",
+                "content": {
+                  "text": "Run `yarn install` once before running any other commands. This installs root dependencies and sets up husky hooks.",
+                  "originalHeader": "Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 24,
+                  "line_end": 24
+                }
+              },
+              {
+                "id": "rule_5",
+                "type": "rule",
+                "content": {
+                  "text": "# Fix linting and formatting issues automatically (for packages that support it)\nyarn workspaces foreach -A -p -v --topological-dev --since=HEAD run nice --if-present\n\n# Lint all packages in parallel\nyarn lint\n\n# Build all workspaces except `contracts`\nyarn build\n\n# Compile Solidity contracts (may occasionally throw a Hardhat config error)\nyarn workspace @selfxyz/contracts build\n\n# Run type-checking across the repo\nyarn types",
+                  "originalHeader": "Commit Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 57,
+                  "line_end": 70
+                }
+              },
+              {
+                "id": "rule_6",
+                "type": "rule",
+                "content": {
+                  "text": "# Run all checks before PR - only on changed workspaces since main\n# Format and lint changed workspaces (workspace-specific scripts first, then fallback to root)\nyarn workspaces foreach -A -p -v --topological-dev --since=origin/main run nice --if-present\n\n# Run global checks across all workspaces\nyarn lint && yarn types && yarn build && yarn test",
+                  "originalHeader": "Pre-PR Validation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 76,
+                  "line_end": 81
+                }
+              },
+              {
+                "id": "rule_7",
+                "type": "rule",
+                "content": {
+                  "text": "# After addressing review feedback\nyarn nice  # Fix any formatting issues in affected workspaces\nyarn test  # Ensure tests still pass\nyarn types # Verify type checking",
+                  "originalHeader": "Post-PR Cleanup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 91,
+                  "line_end": 94
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_conf_env",
+            "label": "Conf.&Env.",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_8",
+                "type": "rule",
+                "content": {
+                  "text": "Ensure Node.js 22.x is installed (see `.nvmrc` for exact version), then:\n  - `nvm use`\n  - `corepack enable && corepack prepare yarn@stable --activate`\n  - Verify: `node -v && yarn -v`",
+                  "originalHeader": "Setup"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 21,
+                  "line_end": 24
+                }
+              },
+              {
+                "id": "rule_9",
+                "type": "rule",
+                "content": {
+                  "text": "This repository is a Yarn v4 monorepo with several workspaces:\n\n- `app` – mobile app (@selfxyz/mobile-app)\n- `circuits` – zk-SNARK circuits (@selfxyz/circuits)\n- `common` – shared utilities (@selfxyz/common)\n- `contracts` – solidity contracts (@selfxyz/contracts)\n- `sdk/core` – core TypeScript SDK (@selfxyz/core)\n- `sdk/qrcode` – qrcode SDK (@selfxyz/qrcode)\n- `packages/mobile-sdk-alpha` – alpha version of the SDK (@selfxyz/mobile-sdk-alpha)\n- `noir` – noir circuits",
+                  "originalHeader": "Package Management"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "Paragraph",
+                  "line_start": 9,
+                  "line_end": 18
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_testing",
+            "label": "Testing",
+            "type": "label",
+            "count": 3,
+            "children": [
+              {
+                "id": "rule_16",
+                "type": "rule",
+                "content": {
+                  "text": "Run unit tests where available:\n  - `yarn workspace @selfxyz/common test`\n  - `yarn workspace @selfxyz/circuits test` # may fail if OpenSSL algorithms are missing\n  - `yarn workspace @selfxyz/mobile-app test`\n  - `yarn workspace @selfxyz/mobile-sdk-alpha test`\n  - For Noir circuits, run `nargo test -p <crate>` in each `noir/crates/*` directory.\n  - Tests for `@selfxyz/contracts` are currently disabled in CI and may be skipped.",
+                  "originalHeader": "Tests"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 98,
+                  "line_end": 104
+                }
+              },
+              {
+                "id": "rule_17",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] `yarn test` passes in affected packages",
+                  "originalHeader": "Code Quality"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 31,
+                  "line_end": 31
+                }
+              },
+              {
+                "id": "rule_18",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] No new linting/formatting issues introduced\n- [ ] Type checking passes in all affected workspaces",
+                  "originalHeader": "Automated Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 50,
+                  "line_end": 51
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_devops",
+            "label": "DevOps",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_19",
+                "type": "rule",
+                "content": {
+                  "text": "Use the shared composite actions in `.github/actions` when caching dependencies in GitHub workflows. They provide consistent cache paths and keys:\n\n- `cache-yarn` for Yarn dependencies\n- `cache-bundler` for Ruby gems\n- `cache-gradle` for Gradle wrappers and caches\n- `cache-pods` for CocoaPods",
+                  "originalHeader": "CI Caching"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 107,
+                  "line_end": 112
+                }
+              },
+              {
+                "id": "rule_20",
+                "type": "rule",
+                "content": {
+                  "text": "Each action accepts an optional `cache-version` input (often combined with `GH_CACHE_VERSION` and a tool-specific version). Avoid calling `actions/cache` directly so future workflows follow the same strategy.",
+                  "originalHeader": "CI Caching"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 114,
+                  "line_end": 114
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_management",
+        "label": "Management",
+        "type": "category",
+        "count": 8,
+        "children": [
+          {
+            "id": "cat_development_process",
+            "label": "Development Process",
+            "type": "label",
+            "count": 6,
+            "children": [
+              {
+                "id": "rule_10",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] `yarn nice` (or equivalent) passes in affected workspaces\n- [ ] `yarn types` passes across the repo\n- [ ] `yarn test` passes in affected packages\n- [ ] `yarn build` succeeds for all workspaces",
+                  "originalHeader": "Code Quality"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 29,
+                  "line_end": 32
+                }
+              },
+              {
+                "id": "rule_11",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Clear commit messages following conventional format\n- [ ] PR description includes context for AI reviewers\n- [ ] Complex changes have inline comments explaining intent\n- [ ] Security-sensitive changes flagged for special review",
+                  "originalHeader": "AI Review Preparation"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 35,
+                  "line_end": 38
+                }
+              },
+              {
+                "id": "rule_12",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Identify any known issues that need separate PRs\n- [ ] Note any performance implications\n- [ ] Document any breaking changes",
+                  "originalHeader": "Follow-up Planning"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 41,
+                  "line_end": 43
+                }
+              },
+              {
+                "id": "rule_13",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] CI pipeline passes all stages\n- [ ] No new linting/formatting issues introduced\n- [ ] Type checking passes in all affected workspaces\n- [ ] Build artifacts generated successfully",
+                  "originalHeader": "Automated Checks"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 49,
+                  "line_end": 52
+                }
+              },
+              {
+                "id": "rule_14",
+                "type": "rule",
+                "content": {
+                  "text": "- [ ] Address CodeRabbitAI feedback (or document why not)\n- [ ] Resolve any security warnings\n- [ ] Verify performance benchmarks still pass\n- [ ] Confirm no sensitive data exposed in logs/comments",
+                  "originalHeader": "Review Integration"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 55,
+                  "line_end": 58
+                }
+              },
+              {
+                "id": "rule_15",
+                "type": "rule",
+                "content": {
+                  "text": "These instructions apply to the entire repository unless overridden by a nested `AGENTS.md`.",
+                  "originalHeader": "Scope"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "Paragraph",
+                  "line_start": 127,
+                  "line_end": 127
+                }
+              }
+            ]
+          },
+          {
+            "id": "cat_project_management",
+            "label": "Project Management",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_23",
+                "type": "rule",
+                "content": {
+                  "text": "Write short, imperative commit messages (e.g. `Fix address validation`).",
+                  "originalHeader": "Commit Guidelines"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 121,
+                  "line_end": 121
+                }
+              },
+              {
+                "id": "rule_24",
+                "type": "rule",
+                "content": {
+                  "text": "The pull request body should summarize the changes and mention test results.",
+                  "originalHeader": "Commit Guidelines"
+                },
+                "metadata": {
+                  "strength": "SHOULD",
+                  "format": "ListItem",
+                  "line_start": 122,
+                  "line_end": 122
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "macro_implementation",
+        "label": "Implementation",
+        "type": "category",
+        "count": 2,
+        "children": [
+          {
+            "id": "cat_impl_details",
+            "label": "Impl. Details",
+            "type": "label",
+            "count": 2,
+            "children": [
+              {
+                "id": "rule_21",
+                "type": "rule",
+                "content": {
+                  "text": "Use Prettier configuration from `.prettierrc` files.",
+                  "originalHeader": "Formatting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 117,
+                  "line_end": 117
+                }
+              },
+              {
+                "id": "rule_22",
+                "type": "rule",
+                "content": {
+                  "text": "Follow `.editorconfig` for line endings and indentation.",
+                  "originalHeader": "Formatting"
+                },
+                "metadata": {
+                  "strength": "MUST",
+                  "format": "ListItem",
+                  "line_start": 118,
+                  "line_end": 118
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
