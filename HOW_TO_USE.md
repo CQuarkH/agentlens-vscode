@@ -26,24 +26,19 @@
    code agentlens-vscode
    ```
 
-4. **Instalar dependencias npm** (solo la primera vez)
-   ```bash
-   npm install
-   ```
-
-5. **Iniciar el Extension Development Host**
+4. **Iniciar el Extension Development Host**
    - Presionar `F5` en VSCode
    - Se abre una nueva ventana con la extensión cargada
 
-6. **Abrir un archivo markdown de ejemplo**
+5. **Abrir un archivo markdown de ejemplo**
    - En la nueva ventana, abrir `samples/cartography-cncf_cartography.md`
 
-7. **Ejecutar el comando de la extensión**
+6. **Ejecutar el comando de la extensión**
    - Presionar `Ctrl+Shift+P`
    - Escribir y seleccionar **"AgentLens: Show AST Visualization"**
    - El panel webview se abre en el costado
 
-8. **Usar la extensión**
+7. **Usar la extensión**
    - Hacer clic en **"Load Static Tree"** para ver la jerarquía del AST
    - Hacer clic en **"Load Evolution Timeline"** para ver el historial de cambios entre commits
    - Hacer clic en cualquier nodo **rule** para resaltar su instrucción en el editor markdown
