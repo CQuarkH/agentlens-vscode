@@ -11,7 +11,9 @@
     "Visualization",
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:agentlens.showAST"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
