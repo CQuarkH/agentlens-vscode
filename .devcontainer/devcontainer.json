@@ -1,16 +1,15 @@
 {
-  "name": "AgentLens Extension Dev",
+  "name": "AgentLens Evaluation Environment",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "postCreateCommand": "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && cd agentlens-vscode && npm install && npm run compile",
+  "postCreateCommand": "python3 -m venv .venv && .venv/bin/pip install -r agentlens-vscode/backend/requirements.txt && cd agentlens-vscode && npm install && npx vsce package && code --install-extension agentlens-*.vsix",
+  "postAttachCommand": "code agentlens-vscode/samples/cartography-cncf_cartography.md",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "dbaeumer.vscode-eslint"
-      ],
       "settings": {
         "agentlens.cacheRoot": "${containerWorkspaceFolder}/agentlens-vscode/cache",
-        "agentlens.projectRoot": "${containerWorkspaceFolder}"
+        "agentlens.projectRoot": "${containerWorkspaceFolder}",
+        "agentlens.pythonPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "workbench.startupEditor": "none"
       }
     }
   },
