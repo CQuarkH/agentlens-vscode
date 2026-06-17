@@ -1,7 +1,7 @@
 {
   "name": "AgentLens Evaluation Environment",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "postCreateCommand": "python3 -m venv .venv && .venv/bin/pip install -r agentlens-vscode/backend/requirements.txt && code --install-extension agentlens-*.vsix",
+  "postCreateCommand": "python3 -m venv .venv && .venv/bin/pip install -r agentlens-vscode/backend/requirements.txt && code --install-extension agentlens-vscode/agentlens-*.vsix",
   "postAttachCommand": "code agentlens-vscode/samples/cartography-cncf_cartography.md",
   "customizations": {
     "vscode": {
