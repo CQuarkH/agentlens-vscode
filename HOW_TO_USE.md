@@ -17,9 +17,9 @@
    - Aparece la visualización AST en una pestaña nueva
 
 4. **Interacción**
-   - **Vista Static Tree**: Árbol colapsable con métricas (LBL, RUL, COD, FRE, LEN, SYM)
-   - **Vista Evolution**: Muestra el timeline de cambios del archivo entre commits
-   - **Colapsar paneles**: Click en el badge "Metrics" o "Added vs Deleted" para ocultar/mostrar
+   - **Vista Estática**: Dentro del panel de la extensión, hacer click en el botón **"Load Static Tree"** para cargar el árbol colapsable con métricas (LBL, RUL, COD, FRE, LEN, SYM).
+   - **Vista Evolutiva**: Dentro del panel de la extensión, hacer click en el tab **"Evolution Timeline"**, y luego en el botón **"Load Evolution Tree"** para cargar el timeline de cambios del archivo entre commits. Esto permite ir viendo como van creciendo o decreciendo las métricas en cada cambio de version del archivo.
+   - **Colapsar paneles**: Click en el badge **"Metrics"** o **"Added vs Deleted"** para ocultar/mostrar
    - **Seleccionar regla**: Click en cualquier nodo → se marca con borde azul
 
 5. **Probar otros samples**
